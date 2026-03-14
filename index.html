@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M.A.S.H. — Your Future Awaits!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --pink:   #ff3cac;
+      --purple: #784ba0;
+      --blue:   #2b86c5;
+      --yellow: #ffe135;
+      --green:  #39ff14;
+      --orange: #ff6b35;
+      --red:    #ff2d55;
+      --cyan:   #00f5ff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ff3cac 0%, #784ba0 40%, #2b86c5 100%);
+      font-family: 'Nunito', 'Comic Sans MS', cursive;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* ── Stars background ── */
+    body::before {
+      content: '★ ☆ ✦ ✧ ★ ✦ ☆ ✧ ★ ☆ ✦ ✧ ★ ✦ ☆ ✧ ★ ☆ ✦ ✧ ★ ✦ ☆ ✧ ★ ☆ ✦ ✧';
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      font-size: 1.4rem;
+      letter-spacing: 1.2rem;
+      color: rgba(255,255,255,0.12);
+      word-break: break-all;
+      line-height: 2.2rem;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Layout ── */
+    #app {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+    }
+
+    /* ── Title ── */
+    .title {
+      text-align: center;
+      margin-bottom: 0.2rem;
+    }
+    .title h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(3.5rem, 12vw, 7rem);
+      letter-spacing: 0.15em;
+      text-shadow:
+        4px 4px 0 #ff3cac,
+        8px 8px 0 #784ba0,
+        0 0 40px #ffe135,
+        0 0 80px #ff3cac;
+      color: #ffe135;
+      line-height: 1;
+    }
+    .subtitle {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffe135;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+      text-align: center;
+      margin-bottom: 2rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Cards ── */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .cat-card {
+      background: rgba(255,255,255,0.12);
+      border: 3px solid;
+      border-radius: 18px;
+      padding: 1rem 1rem 1.2rem;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+    .cat-card:nth-child(1) { border-color: var(--yellow); }
+    .cat-card:nth-child(2) { border-color: var(--pink); }
+    .cat-card:nth-child(3) { border-color: var(--cyan); }
+    .cat-card:nth-child(4) { border-color: var(--green); }
+    .cat-card:nth-child(5) { border-color: var(--orange); }
+
+    .cat-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.2rem;
+      margin-bottom: 0.7rem;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.35);
+      display: flex;
+      align-items: center;
+      gap: 0.4em;
+    }
+    .cat-card:nth-child(1) .cat-title { color: var(--yellow); }
+    .cat-card:nth-child(2) .cat-title { color: var(--pink); }
+    .cat-card:nth-child(3) .cat-title { color: var(--cyan); }
+    .cat-card:nth-child(4) .cat-title { color: var(--green); }
+    .cat-card:nth-child(5) .cat-title { color: var(--orange); }
+
+    .mash-fixed {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .mash-chip {
+      background: rgba(255,255,255,0.18);
+      border: 2px solid var(--yellow);
+      border-radius: 999px;
+      padding: 0.2rem 0.75rem;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #fff;
+    }
+
+    .option-inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .option-inputs input {
+      background: rgba(255,255,255,0.15);
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 10px;
+      padding: 0.45rem 0.75rem;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .option-inputs input::placeholder { color: rgba(255,255,255,0.45); font-weight: 400; }
+    .option-inputs input:focus {
+      border-color: #fff;
+      background: rgba(255,255,255,0.25);
+    }
+
+    /* ── Number picker ── */
+    .number-section {
+      background: rgba(255,255,255,0.12);
+      border: 3px solid var(--pink);
+      border-radius: 18px;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1.8rem;
+      backdrop-filter: blur(6px);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+    }
+    .number-section label {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.2rem;
+      color: var(--pink);
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+      white-space: nowrap;
+    }
+    .number-section input[type=number] {
+      background: rgba(255,255,255,0.2);
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 10px;
+      padding: 0.5rem 0.75rem;
+      color: #fff;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.4rem;
+      width: 90px;
+      outline: none;
+      text-align: center;
+    }
+    .number-section input[type=number]:focus { border-color: #fff; }
+    .number-section input[type=number]::-webkit-inner-spin-button { opacity: 0.5; }
+
+    .btn-spiral {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      border: 3px solid #fff;
+      border-radius: 999px;
+      color: #fff;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1rem;
+      padding: 0.5rem 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-spiral:hover { transform: scale(1.06); box-shadow: 0 6px 18px rgba(0,0,0,0.4); }
+    .btn-spiral:active { transform: scale(0.97); }
+
+    .or-text { color: rgba(255,255,255,0.6); font-size: 0.9rem; }
+
+    /* ── Main CTA ── */
+    .btn-reveal {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, var(--yellow) 0%, var(--orange) 100%);
+      border: 4px solid #fff;
+      border-radius: 999px;
+      color: #3a1a00;
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      padding: 0.9rem 2rem;
+      cursor: pointer;
+      text-shadow: none;
+      box-shadow: 0 6px 24px rgba(255,107,53,0.6), 0 0 0 4px rgba(255,255,255,0.2);
+      transition: transform 0.15s, box-shadow 0.15s;
+      letter-spacing: 0.03em;
+    }
+    .btn-reveal:hover { transform: scale(1.03); box-shadow: 0 10px 32px rgba(255,107,53,0.8), 0 0 0 6px rgba(255,255,255,0.3); }
+    .btn-reveal:active { transform: scale(0.98); }
+
+    /* ── Screens ── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ── Elimination screen ── */
+    #elimScreen .categories-grid { margin-bottom: 1.5rem; }
+
+    .elim-card {
+      background: rgba(255,255,255,0.12);
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 18px;
+      padding: 1rem;
+      backdrop-filter: blur(6px);
+    }
+
+    .elim-card .cat-title { color: #fff; }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.6rem;
+      border-radius: 10px;
+      margin-bottom: 0.35rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: background 0.25s;
+      position: relative;
+    }
+    .option-item .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      flex-shrink: 0;
+      transition: background 0.3s;
+    }
+
+    .option-item.active .dot { background: var(--green); box-shadow: 0 0 6px var(--green); }
+
+    .option-item.current {
+      background: rgba(255,255,255,0.2);
+    }
+    .option-item.current .dot { background: var(--yellow); box-shadow: 0 0 8px var(--yellow); }
+
+    .option-item.eliminated .option-text {
+      text-decoration: line-through;
+      color: rgba(255,255,255,0.35);
+    }
+    .option-item.eliminated .dot { background: var(--red); opacity: 0.5; }
+
+    .option-item.winner {
+      background: rgba(255,225,53,0.2);
+      border: 2px solid var(--yellow);
+      animation: pulseWin 1.2s ease-in-out infinite;
+    }
+    .option-item.winner .dot { background: var(--yellow); box-shadow: 0 0 10px var(--yellow); }
+    .option-item.winner .option-text { color: var(--yellow); }
+
+    @keyframes pulseWin {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,225,53,0.4); }
+      50%       { box-shadow: 0 0 0 8px rgba(255,225,53,0); }
+    }
+
+    .count-display {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .count-display .magic-num {
+      font-family: 'Fredoka One', cursive;
+      font-size: 5rem;
+      color: var(--yellow);
+      text-shadow: 4px 4px 0 rgba(0,0,0,0.3), 0 0 30px var(--yellow);
+      line-height: 1;
+    }
+    .count-display .count-label {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .elim-status {
+      text-align: center;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.3rem;
+      color: #fff;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+      min-height: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn-skip {
+      display: block;
+      margin: 0 auto 1rem;
+      background: rgba(255,255,255,0.15);
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 999px;
+      color: rgba(255,255,255,0.75);
+      font-family: 'Fredoka One', cursive;
+      font-size: 1rem;
+      padding: 0.4rem 1.4rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-skip:hover { background: rgba(255,255,255,0.25); }
+
+    /* ── Results screen ── */
+    #resultsScreen {
+      text-align: center;
+    }
+
+    .results-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(2rem, 7vw, 3.5rem);
+      color: var(--yellow);
+      text-shadow: 4px 4px 0 rgba(0,0,0,0.3), 0 0 40px var(--yellow);
+      margin-bottom: 0.5rem;
+    }
+
+    .destiny-sentence {
+      background: rgba(0,0,0,0.35);
+      border: 3px solid var(--yellow);
+      border-radius: 18px;
+      padding: 1.2rem 1.5rem;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      line-height: 1.8;
+      margin: 1.2rem 0 1.8rem;
+      text-align: left;
+      backdrop-filter: blur(6px);
+    }
+    .destiny-sentence .winner-word {
+      color: var(--yellow);
+      font-weight: 900;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.1em;
+      text-shadow: 0 0 10px var(--yellow);
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .result-card {
+      border: 3px solid;
+      border-radius: 18px;
+      padding: 1rem;
+      background: rgba(0,0,0,0.25);
+      backdrop-filter: blur(6px);
+      text-align: center;
+      animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    .result-card:nth-child(1) { border-color: var(--yellow); animation-delay: 0.1s; }
+    .result-card:nth-child(2) { border-color: var(--pink);   animation-delay: 0.2s; }
+    .result-card:nth-child(3) { border-color: var(--cyan);   animation-delay: 0.3s; }
+    .result-card:nth-child(4) { border-color: var(--green);  animation-delay: 0.4s; }
+    .result-card:nth-child(5) { border-color: var(--orange); animation-delay: 0.5s; }
+
+    @keyframes popIn {
+      from { transform: scale(0.5) rotate(-8deg); opacity: 0; }
+      to   { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    .result-card .rc-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 0.3rem;
+    }
+    .result-card .rc-emoji { font-size: 2rem; margin-bottom: 0.2rem; }
+    .result-card .rc-value {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.4rem;
+      color: #fff;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+    }
+    .result-card:nth-child(1) .rc-value { color: var(--yellow); }
+    .result-card:nth-child(2) .rc-value { color: var(--pink); }
+    .result-card:nth-child(3) .rc-value { color: var(--cyan); }
+    .result-card:nth-child(4) .rc-value { color: var(--green); }
+    .result-card:nth-child(5) .rc-value { color: var(--orange); }
+
+    .btn-again {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      border: 4px solid #fff;
+      border-radius: 999px;
+      color: #fff;
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.5rem;
+      padding: 0.8rem 2.5rem;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(120,75,160,0.6);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-again:hover { transform: scale(1.05); }
+    .btn-again:active { transform: scale(0.97); }
+
+    /* ── Bounce animation for title ── */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+    .title h1 { animation: bounce 2s ease-in-out infinite; }
+
+    /* ── Confetti burst (CSS-only, triggered by class) ── */
+    .confetti-container {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      pointer-events: none;
+      z-index: 999;
+      overflow: hidden;
+      height: 100vh;
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 10px; height: 14px;
+      top: -20px;
+      animation: confettiFall linear forwards;
+    }
+    @keyframes confettiFall {
+      to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+    ::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 4px; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ══════════════════════════════════
+       SCREEN 1 — INPUT
+  ══════════════════════════════════ -->
+  <div id="inputScreen" class="screen active">
+    <div class="title">
+      <h1>M.A.S.H.</h1>
+    </div>
+    <p class="subtitle">✨ Your Future Has Already Been Written ✨</p>
+
+    <div class="categories-grid" id="categoryGrid">
+
+      <!-- MASH — fixed -->
+      <div class="cat-card">
+        <div class="cat-title">🏠 Where You'll Live</div>
+        <div class="mash-fixed">
+          <span class="mash-chip">Mansion</span>
+          <span class="mash-chip">Apartment</span>
+          <span class="mash-chip">Shack</span>
+          <span class="mash-chip">House</span>
+        </div>
+      </div>
+
+      <!-- Who you'll marry -->
+      <div class="cat-card">
+        <div class="cat-title">💕 Who You'll Marry</div>
+        <div class="option-inputs" data-category="marry">
+          <input type="text" placeholder="e.g. Chris Evans" maxlength="30" />
+          <input type="text" placeholder="e.g. Your Crush" maxlength="30" />
+          <input type="text" placeholder="e.g. A Golden Retriever" maxlength="30" />
+          <input type="text" placeholder="e.g. ??? Mystery Person" maxlength="30" />
+        </div>
+      </div>
+
+      <!-- Car -->
+      <div class="cat-card">
+        <div class="cat-title">🚗 Car You'll Drive</div>
+        <div class="option-inputs" data-category="car">
+          <input type="text" placeholder="e.g. Lamborghini" maxlength="30" />
+          <input type="text" placeholder="e.g. Mom's Minivan" maxlength="30" />
+          <input type="text" placeholder="e.g. Rusty Bicycle" maxlength="30" />
+          <input type="text" placeholder="e.g. Shopping Cart" maxlength="30" />
+        </div>
+      </div>
+
+      <!-- Job -->
+      <div class="cat-card">
+        <div class="cat-title">💼 Your Job</div>
+        <div class="option-inputs" data-category="job">
+          <input type="text" placeholder="e.g. Astronaut" maxlength="30" />
+          <input type="text" placeholder="e.g. TikTok Influencer" maxlength="30" />
+          <input type="text" placeholder="e.g. Professional Napper" maxlength="30" />
+          <input type="text" placeholder="e.g. Evil Overlord" maxlength="30" />
+        </div>
+      </div>
+
+      <!-- Kids -->
+      <div class="cat-card">
+        <div class="cat-title">👶 Number of Kids</div>
+        <div class="option-inputs" data-category="kids">
+          <input type="text" placeholder="e.g. 0" maxlength="20" />
+          <input type="text" placeholder="e.g. 2" maxlength="20" />
+          <input type="text" placeholder="e.g. 5" maxlength="20" />
+          <input type="text" placeholder="e.g. 47" maxlength="20" />
+        </div>
+      </div>
+
+    </div><!-- /categories-grid -->
+
+    <!-- Number picker -->
+    <div class="number-section">
+      <label for="magicNum">🔢 Magic Number:</label>
+      <input type="number" id="magicNum" min="1" max="20" placeholder="?" />
+      <span class="or-text">— or —</span>
+      <button class="btn-spiral" id="spiralBtn">🌀 Pick for me!</button>
+    </div>
+
+    <button class="btn-reveal" id="revealBtn">✨ REVEAL MY FUTURE ✨</button>
+  </div><!-- /inputScreen -->
+
+
+  <!-- ══════════════════════════════════
+       SCREEN 2 — ELIMINATION
+  ══════════════════════════════════ -->
+  <div id="elimScreen" class="screen">
+    <div class="title">
+      <h1>M.A.S.H.</h1>
+    </div>
+    <p class="subtitle">⚡ The Fates Are Deciding... ⚡</p>
+
+    <div class="count-display">
+      <div class="count-label">Magic Number</div>
+      <div class="magic-num" id="magicNumDisplay">?</div>
+    </div>
+
+    <div class="elim-status" id="elimStatus">Counting begins...</div>
+
+    <div class="categories-grid" id="elimGrid"></div>
+
+    <button class="btn-skip" id="skipBtn">⏩ Skip to results</button>
+  </div><!-- /elimScreen -->
+
+
+  <!-- ══════════════════════════════════
+       SCREEN 3 — RESULTS
+  ══════════════════════════════════ -->
+  <div id="resultsScreen" class="screen">
+    <div class="title">
+      <h1>M.A.S.H.</h1>
+    </div>
+    <p class="subtitle">🔮 The Future Has Spoken! 🔮</p>
+
+    <h2 class="results-title">Your Destiny Is Sealed!</h2>
+
+    <div class="destiny-sentence" id="destinySentence"></div>
+
+    <div class="results-grid" id="resultsGrid"></div>
+
+    <button class="btn-again" id="againBtn">🔄 Play Again!</button>
+  </div><!-- /resultsScreen -->
+
+</div><!-- /app -->
+
+<!-- Confetti container -->
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+// ─────────────────────────────────────────
+//  State
+// ─────────────────────────────────────────
+const MASH_OPTIONS = ['Mansion', 'Apartment', 'Shack', 'House'];
+const CATEGORIES = [
+  { key: 'mash',  label: 'Where You\'ll Live', emoji: '🏠', fixed: true,  options: [...MASH_OPTIONS] },
+  { key: 'marry', label: 'Who You\'ll Marry',  emoji: '💕', fixed: false, options: [] },
+  { key: 'car',   label: 'Car You\'ll Drive',  emoji: '🚗', fixed: false, options: [] },
+  { key: 'job',   label: 'Your Job',           emoji: '💼', fixed: false, options: [] },
+  { key: 'kids',  label: 'Number of Kids',     emoji: '👶', fixed: false, options: [] },
+];
+
+let magicNumber = 0;
+let allOptions  = [];   // flat [{catIndex, optIndex, text, eliminated, winner}, ...]
+let counter     = 0;
+let animTimeout = null;
+let skipped     = false;
+
+// ─────────────────────────────────────────
+//  Screen helpers
+// ─────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ─────────────────────────────────────────
+//  Spiral / random number
+// ─────────────────────────────────────────
+document.getElementById('spiralBtn').addEventListener('click', () => {
+  const n = Math.floor(Math.random() * 9) + 2; // 2–10
+  document.getElementById('magicNum').value = n;
+  const btn = document.getElementById('spiralBtn');
+  btn.textContent = `🌀 Got it: ${n}!`;
+  setTimeout(() => { btn.textContent = '🌀 Pick for me!'; }, 1500);
+});
+
+// ─────────────────────────────────────────
+//  REVEAL button
+// ─────────────────────────────────────────
+document.getElementById('revealBtn').addEventListener('click', () => {
+  const num = parseInt(document.getElementById('magicNum').value, 10);
+  if (!num || num < 1) {
+    alert('Please enter a magic number (or let us pick one for you)!');
+    return;
+  }
+
+  // Gather inputs
+  const filled = [];
+  document.querySelectorAll('.option-inputs').forEach(group => {
+    const catKey = group.dataset.category;
+    const vals = [...group.querySelectorAll('input')].map(i => i.value.trim()).filter(Boolean);
+    filled.push({ key: catKey, vals });
+  });
+
+  for (const { key, vals } of filled) {
+    if (vals.length < 2) {
+      alert(`Please fill in at least 2 options for each category!`);
+      return;
+    }
+  }
+
+  // Load options into state
+  magicNumber = num;
+  CATEGORIES.forEach(cat => {
+    if (!cat.fixed) {
+      const match = filled.find(f => f.key === cat.key);
+      cat.options = match ? match.vals : [];
+    }
+  });
+
+  startElimination();
+});
+
+// ─────────────────────────────────────────
+//  Build flat options list
+// ─────────────────────────────────────────
+function buildAllOptions() {
+  allOptions = [];
+  CATEGORIES.forEach((cat, ci) => {
+    cat.options.forEach((text, oi) => {
+      allOptions.push({ catIndex: ci, optIndex: oi, text, eliminated: false, winner: false });
+    });
+  });
+}
+
+// ─────────────────────────────────────────
+//  Render elimination grid
+// ─────────────────────────────────────────
+function renderElimGrid(currentGlobalIdx) {
+  const grid = document.getElementById('elimGrid');
+  grid.innerHTML = '';
+
+  CATEGORIES.forEach((cat, ci) => {
+    const card = document.createElement('div');
+    card.className = 'elim-card';
+    card.innerHTML = `<div class="cat-title">${cat.emoji} ${cat.label}</div>`;
+
+    cat.options.forEach((text, oi) => {
+      const opt = allOptions.find(o => o.catIndex === ci && o.optIndex === oi);
+      const div = document.createElement('div');
+      const globalIdx = allOptions.indexOf(opt);
+      div.className = 'option-item';
+      div.id = `opt-${ci}-${oi}`;
+
+      if (opt.winner) {
+        div.classList.add('winner');
+      } else if (opt.eliminated) {
+        div.classList.add('eliminated');
+      } else if (globalIdx === currentGlobalIdx) {
+        div.classList.add('current');
+      } else {
+        div.classList.add('active');
+      }
+
+      div.innerHTML = `<span class="dot"></span><span class="option-text">${escHtml(text)}</span>`;
+      card.appendChild(div);
+    });
+
+    grid.appendChild(card);
+  });
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─────────────────────────────────────────
+//  Elimination logic
+// ─────────────────────────────────────────
+function startElimination() {
+  buildAllOptions();
+  skipped = false;
+  counter = 0;
+
+  document.getElementById('magicNumDisplay').textContent = magicNumber;
+  showScreen('elimScreen');
+  renderElimGrid(-1);
+
+  runElimStep();
+}
+
+function getActive() {
+  return allOptions.filter(o => !o.eliminated && !o.winner);
+}
+
+function runElimStep() {
+  const active = getActive();
+
+  // Check if done (1 per category)
+  const catsDone = CATEGORIES.every((cat, ci) => {
+    const remaining = allOptions.filter(o => o.catIndex === ci && !o.eliminated);
+    return remaining.length === 1;
+  });
+
+  if (catsDone) {
+    // Mark winners
+    CATEGORIES.forEach((cat, ci) => {
+      const survivors = allOptions.filter(o => o.catIndex === ci && !o.eliminated);
+      if (survivors.length === 1) survivors[0].winner = true;
+    });
+    renderElimGrid(-1);
+    document.getElementById('elimStatus').textContent = '✨ Your fate is sealed! ✨';
+    setTimeout(showResults, skipped ? 0 : 1500);
+    return;
+  }
+
+  // Count up to magic number in active options
+  counter = (counter) % active.length; // just in case
+  let steps = magicNumber;
+  let idx = counter;
+
+  // Advance idx by magicNumber steps through active
+  idx = (counter + magicNumber - 1) % active.length;
+  counter = (idx + 1) % active.length;
+
+  const toEliminate = active[idx];
+
+  // Animate: briefly highlight current then eliminate
+  const animDelay = skipped ? 0 : 400;
+
+  renderElimGrid(allOptions.indexOf(toEliminate));
+  scrollToOption(toEliminate);
+
+  if (skipped) {
+    toEliminate.eliminated = true;
+    renderElimGrid(-1);
+    runElimStep();
+    return;
+  }
+
+  document.getElementById('elimStatus').textContent =
+    `Eliminating: "${escHtml(toEliminate.text)}" 💥`;
+
+  animTimeout = setTimeout(() => {
+    toEliminate.eliminated = true;
+    renderElimGrid(-1);
+
+    // Recalculate counter based on remaining active
+    const newActive = getActive();
+    if (newActive.length > 0) counter = counter % newActive.length;
+
+    setTimeout(runElimStep, 350);
+  }, animDelay);
+}
+
+function scrollToOption(opt) {
+  const el = document.getElementById(`opt-${opt.catIndex}-${opt.optIndex}`);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ─────────────────────────────────────────
+//  Skip button
+// ─────────────────────────────────────────
+document.getElementById('skipBtn').addEventListener('click', () => {
+  if (animTimeout) clearTimeout(animTimeout);
+  skipped = true;
+
+  // Run elimination instantly
+  while (true) {
+    const active = getActive();
+    const catsDone = CATEGORIES.every((cat, ci) => {
+      const remaining = allOptions.filter(o => o.catIndex === ci && !o.eliminated);
+      return remaining.length === 1;
+    });
+    if (catsDone) break;
+    if (active.length === 0) break;
+
+    const idx = (counter + magicNumber - 1) % active.length;
+    counter = (idx + 1) % (active.length - 1 || 1);
+    active[idx].eliminated = true;
+  }
+
+  CATEGORIES.forEach((cat, ci) => {
+    const survivors = allOptions.filter(o => o.catIndex === ci && !o.eliminated);
+    if (survivors.length === 1) survivors[0].winner = true;
+  });
+
+  renderElimGrid(-1);
+  showResults();
+});
+
+// ─────────────────────────────────────────
+//  Results
+// ─────────────────────────────────────────
+function showResults() {
+  const winners = CATEGORIES.map((cat, ci) => {
+    const w = allOptions.find(o => o.catIndex === ci && o.winner);
+    return { cat, text: w ? w.text : '???' };
+  });
+
+  // Destiny sentence
+  const [home, marry, car, job, kids] = winners;
+  document.getElementById('destinySentence').innerHTML =
+    `You will live in a <span class="winner-word">${escHtml(home.text)}</span> ` +
+    `with <span class="winner-word">${escHtml(marry.text)}</span>, ` +
+    `drive a <span class="winner-word">${escHtml(car.text)}</span>, ` +
+    `work as a <span class="winner-word">${escHtml(job.text)}</span>, ` +
+    `and have <span class="winner-word">${escHtml(kids.text)}</span> kid${kids.text === '1' ? '' : 's'}. ` +
+    `<strong>Deal with it! 😎</strong>`;
+
+  // Result cards
+  const grid = document.getElementById('resultsGrid');
+  grid.innerHTML = '';
+  winners.forEach(({ cat, text }) => {
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    card.innerHTML = `
+      <div class="rc-emoji">${cat.emoji}</div>
+      <div class="rc-label">${cat.label}</div>
+      <div class="rc-value">${escHtml(text)}</div>
+    `;
+    grid.appendChild(card);
+  });
+
+  showScreen('resultsScreen');
+  launchConfetti();
+}
+
+// ─────────────────────────────────────────
+//  Confetti
+// ─────────────────────────────────────────
+const CONFETTI_COLORS = ['#ff3cac','#ffe135','#39ff14','#00f5ff','#ff6b35','#784ba0','#fff'];
+
+function launchConfetti() {
+  const container = document.getElementById('confettiContainer');
+  container.innerHTML = '';
+  const count = 80;
+  for (let i = 0; i < count; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.cssText = `
+      left: ${Math.random() * 100}%;
+      background: ${CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)]};
+      width: ${6 + Math.random() * 10}px;
+      height: ${8 + Math.random() * 12}px;
+      border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+      animation-duration: ${1.5 + Math.random() * 2.5}s;
+      animation-delay: ${Math.random() * 1}s;
+      opacity: ${0.7 + Math.random() * 0.3};
+    `;
+    container.appendChild(piece);
+  }
+  // Clean up after animation
+  setTimeout(() => { container.innerHTML = ''; }, 4000);
+}
+
+// ─────────────────────────────────────────
+//  Play Again
+// ─────────────────────────────────────────
+document.getElementById('againBtn').addEventListener('click', () => {
+  // Reset categories
+  CATEGORIES.forEach(cat => { if (!cat.fixed) cat.options = []; });
+  // Clear inputs
+  document.querySelectorAll('.option-inputs input').forEach(i => { i.value = ''; });
+  document.getElementById('magicNum').value = '';
+  showScreen('inputScreen');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
+</body>
+</html>
