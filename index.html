@@ -566,14 +566,198 @@ const PLACEHOLDERS = {
 };
 
 const RANDOM_POOLS = {
-  city:      ['New York City','Tokyo','Paris','Los Angeles','London','Bali','Sydney','Dubai','Rome','Barcelona','Reykjavik','New Orleans','Nashville','Costa Rica','Antarctica','Bikini Bottom','Narnia','The Moon','Middle of Nowhere, USA','Area 51','Hogwarts','The Matrix','A Van Down by the River'],
-  car:       ['Lamborghini Huracán','Ferrari 488','Bugatti Veyron','Tesla Cybertruck','Rolls-Royce Phantom','1999 Honda Civic',"Mom's Minivan",'A Shopping Cart','Riding Lawnmower','Ice Cream Truck','DeLorean','School Bus','Jetski (on dry land)','Batmobile','Mystery Machine','Flintstones Car'],
-  job:       ['Astronaut','Professional Napper','TikTok Influencer','Evil Overlord','Dog Whisperer','Royal Food Taster','Underwater Basket Weaver','Cryptid Researcher','Time Traveler','Dragon Tamer','Pizza Critic','Professional Pillow Tester','CEO of Vibes','Submarine Sandwich Artist','Influencer\'s Influencer','Professional Dog Walker (of 300 dogs)'],
-  kids:      ['0','1','2','3','5','7','12','47','A sports team\'s worth','Too many to count','None (just 12 cats)'],
-  honeymoon: ['The Maldives','Paris, France','Bali, Indonesia','Las Vegas','The Moon','International Space Station','Narnia','Costco','The Metaverse','Hogwarts','Chuck E. Cheese','Middle Earth','Antarctica','A Disney Cruise','Dubai','The Shire'],
-  misc:      ['Win the lottery','Start a (benevolent) cult','Go viral for the wrong reason','Discover a new species','Write a terrible memoir','Accidentally become mayor','Get a star on the Hollywood Walk of Fame','Invent something useless but wildly profitable','Become a local legend','Be featured on a true crime podcast (as the hero)','Build a time machine','Adopt 37 cats','Run for president on a whim','Ghost-write a celebrity\'s autobiography'],
-  marry_male:   ['Chris Hemsworth','Ryan Reynolds','Brad Pitt','Idris Elba','George Clooney','Leonardo DiCaprio','Keanu Reeves','Harry Styles','Timothée Chalamet','Zac Efron','Dwayne Johnson','Tom Holland','Pedro Pascal','Ryan Gosling','Michael B. Jordan','Drake','Bad Bunny','Shawn Mendes','Zayn Malik','Paul Rudd'],
-  marry_female: ['Beyoncé','Taylor Swift','Rihanna','Jennifer Lawrence','Margot Robbie','Zendaya','Selena Gomez','Ariana Grande','Emma Stone','Gal Gadot','Scarlett Johansson','Megan Fox','Olivia Rodrigo','Billie Eilish','Lady Gaga','Priyanka Chopra','Anya Taylor-Joy','Florence Pugh','Sydney Sweeney','Sabrina Carpenter'],
+  city: [
+    // North America
+    'New York City, USA','Los Angeles, USA','Chicago, USA','Miami, USA','New Orleans, USA',
+    'Nashville, USA','Austin, USA','San Francisco, USA','Seattle, USA','Denver, USA',
+    'Portland, USA','Savannah, USA','Asheville, USA','Charleston, USA','Sedona, USA',
+    'New Haven, USA','Detroit, USA','Minneapolis, USA','Salt Lake City, USA','Honolulu, USA',
+    'Toronto, Canada','Vancouver, Canada','Montreal, Canada','Quebec City, Canada',
+    'Mexico City, Mexico','Cancún, Mexico','Oaxaca, Mexico',
+    // Europe
+    'London, UK','Paris, France','Rome, Italy','Barcelona, Spain','Madrid, Spain',
+    'Amsterdam, Netherlands','Berlin, Germany','Vienna, Austria','Prague, Czech Republic',
+    'Budapest, Hungary','Lisbon, Portugal','Athens, Greece','Santorini, Greece',
+    'Dublin, Ireland','Edinburgh, Scotland','Copenhagen, Denmark','Stockholm, Sweden',
+    'Oslo, Norway','Reykjavik, Iceland','Zurich, Switzerland','Florence, Italy',
+    'Venice, Italy','Dubrovnik, Croatia','Porto, Portugal','Seville, Spain',
+    // Asia
+    'Tokyo, Japan','Kyoto, Japan','Osaka, Japan','Seoul, South Korea','Beijing, China',
+    'Shanghai, China','Hong Kong','Singapore','Bangkok, Thailand','Bali, Indonesia',
+    'Hanoi, Vietnam','Ho Chi Minh City, Vietnam','Chiang Mai, Thailand','Mumbai, India',
+    'Jaipur, India','Kathmandu, Nepal','Colombo, Sri Lanka','Taipei, Taiwan',
+    'Kuala Lumpur, Malaysia','Manila, Philippines','Ulaanbaatar, Mongolia',
+    // Middle East & Africa
+    'Dubai, UAE','Abu Dhabi, UAE','Marrakech, Morocco','Cape Town, South Africa',
+    'Nairobi, Kenya','Cairo, Egypt','Zanzibar, Tanzania','Accra, Ghana',
+    // South America & Caribbean
+    'Buenos Aires, Argentina','Rio de Janeiro, Brazil','São Paulo, Brazil',
+    'Cartagena, Colombia','Medellín, Colombia','Lima, Peru','Cusco, Peru',
+    'Santiago, Chile','Montevideo, Uruguay','Havana, Cuba','San Juan, Puerto Rico',
+    // Oceania
+    'Sydney, Australia','Melbourne, Australia','Auckland, New Zealand',
+    'Queenstown, New Zealand','Fiji',
+    // Fun/silly
+    'The Moon','Bikini Bottom','Narnia','Hogwarts','Middle Earth','Area 51',
+    'A Van Down by the River','Atlantis','The Matrix','Antarctica',
+  ],
+  car: [
+    // Luxury/sports
+    'Lamborghini Huracán','Ferrari 488 Spider','Bugatti Chiron','Rolls-Royce Phantom',
+    'Bentley Continental GT','Aston Martin DB11','McLaren 720S','Porsche 911 Turbo S',
+    'Mercedes-AMG GT','BMW M4 Competition','Audi R8','Maserati GranTurismo',
+    'Jaguar F-Type','Lotus Emira','Pagani Huayra','Koenigsegg Agera',
+    // Electric
+    'Tesla Model S Plaid','Tesla Cybertruck','Rivian R1T','Lucid Air Grand Touring',
+    'BMW iX','Porsche Taycan','Mercedes EQS','Audi e-tron GT',
+    // Everyday / fun
+    '1999 Honda Civic (with spoiler)','Toyota Camry (beige)','Jeep Wrangler',
+    "Mom's Minivan","Dad's Pickup Truck",'Subaru Outback (with kayak on top)',
+    'Ford Bronco','Chevy Silverado','Ram 1500','Toyota Tacoma',
+    'Volkswagen Golf GTI','Mini Cooper S','Fiat 500','Smart Car',
+    'Kia Soul','Honda Element','PT Cruiser (unironically)','Pontiac Aztek',
+    // Classic / quirky
+    'DeLorean DMC-12','1967 Ford Mustang','1969 Chevrolet Camaro','VW Beetle (classic)',
+    'Jeep Cherokee (1994)','Ford Pinto','AMC Gremlin',
+    // Nontraditional
+    'Vespa Scooter','Moped','Electric Scooter','Vintage Bicycle','Fixie Bike',
+    'Mountain Bike','E-Bike','Harley-Davidson Motorcycle','Sidecar Motorcycle',
+    'Golf Cart','Riding Lawnmower','Segway','Skateboard (very fast)','Rollerblades',
+    'Horse and Carriage','Rickshaw','Canoe (on dry land)','School Bus (converted to RV)',
+    'Ice Cream Truck','Batmobile','Mystery Machine','Flintstones Car',
+  ],
+  job: [
+    // Traditional prestige
+    'Astronaut','Surgeon','Fighter Pilot','Marine Biologist','Forensic Scientist',
+    'Archaeologist','Architect','Civil Engineer','Diplomat','Judge',
+    'Professor','Research Scientist','Pharmacist','Veterinarian','Geologist',
+    // Creative
+    'Novelist','Screenwriter','Film Director','Musician','Stand-Up Comedian',
+    'Graphic Designer','Fashion Designer','Interior Designer','Tattoo Artist',
+    'Photographer','Podcast Host','Muralist','Video Game Developer','Animator',
+    'Voiceover Artist','Playwright','Choreographer',
+    // Modern / tech
+    'TikTok Influencer','YouTuber','Twitch Streamer','App Developer',
+    'AI Prompt Engineer','Crypto Trader','NFT Artist (somehow profitable)','SEO Wizard',
+    'UX Designer','Data Scientist','Cybersecurity Expert','Drone Operator',
+    // Food & hospitality
+    'Michelin-Star Chef','Food Critic','Sommelier','Competitive BBQ Pitmaster',
+    'Barista (world champion)','Chocolatier','Cheese Sommelier',
+    // Outdoor / adventurous
+    'Professional Surfer','Mountain Guide','Wildlife Photographer','Park Ranger',
+    'Deep Sea Diver','Storm Chaser','Antarctic Researcher',
+    // Wild cards
+    'Professional Napper','Royal Food Taster','Dog Whisperer','Dragon Tamer',
+    'Underwater Basket Weaver','Cryptid Researcher','Time Traveler','CEO of Vibes',
+    'Professional Cuddler','Ethical Hacker','Professional Line-Stander',
+    'Submarine Sandwich Artist','Mattress Tester','Luxury Hotel Inspector',
+    'Professional Bridesmaid','Odor Judge (yes, this is real)','Snake Milker',
+    'Professional Forager','Escape Room Designer','Treehouse Builder',
+  ],
+  kids: [
+    'None','None (just a very spoiled dog)','None (just 12 cats)','None (and thriving)',
+    '1','2','3','4','5','6','7','8','10','12',
+    'A sports team\'s worth','Too many to count','47',
+  ],
+  honeymoon: [
+    'The Maldives','Bali, Indonesia','Paris, France','Santorini, Greece',
+    'Amalfi Coast, Italy','Tuscany, Italy','Kyoto, Japan','Maui, Hawaii',
+    'Bora Bora, French Polynesia','Seychelles','Fiji','Tulum, Mexico',
+    'Queenstown, New Zealand','Safari in Kenya','The Swiss Alps',
+    'Dubrovnik, Croatia','Banff, Canada','Patagonia, Argentina',
+    'Iceland (Northern Lights tour)','The Galápagos Islands','Costa Rica',
+    'Las Vegas','New Orleans','Nashville','A Disney Cruise',
+    'Overwater Bungalow (anywhere)','A Mediterranean Cruise',
+    'Trans-Siberian Railway','A Nile River Cruise',
+    // Silly
+    'The Moon','International Space Station','Narnia','Hogwarts','Middle Earth',
+    'The Metaverse','Costco','Chuck E. Cheese','Area 51',
+    'A Cruise to Nowhere','The Shire','Atlantis (resort OR the myth)',
+  ],
+  misc: [
+    // Fitness & adventure
+    'Complete an Ironman Triathlon','Run a Marathon (all 26.2 miles)','Climb Mt. Everest',
+    'Skydive over the Grand Canyon','Surf a 30-foot wave','Compete in the Olympics',
+    'Complete a Spartan Race','Hike the Appalachian Trail','Summit Kilimanjaro',
+    'Swim the English Channel','Cycle across the country','Compete in a Ninja Warrior course',
+    'Run the Boston Marathon','Do a polar plunge in Antarctica','Learn to wingsuit fly',
+    // Water & vehicles
+    'Own a boat','Charter a yacht for a summer','Learn to sail around the world',
+    'Get a pilot\'s license','Buy a vintage motorcycle and ride Route 66',
+    'Drive across the country with no GPS','Own a lake house',
+    // Creative & intellectual
+    'Write and publish a novel','Record an album','Learn to play 3 instruments',
+    'Speak 4 languages fluently','Earn a black belt in martial arts',
+    'Master oil painting','Learn glassblowing','Write a screenplay that gets made',
+    'Host your own cooking show','Design and build your own home',
+    'Get a PhD just for fun','Learn to code and build an app',
+    // Social & giving
+    'Start a successful charity','Build a school in another country',
+    'Mentor 100 young professionals','Host a massive block party that becomes an annual tradition',
+    'Organize a community garden','Volunteer on every continent',
+    // Fame & recognition
+    'Get a star on the Hollywood Walk of Fame','Win a Grammy','Appear on a magazine cover',
+    'Give a TED Talk','Be named to a Forbes list','Win a Pulitzer Prize',
+    'Become a local legend','Have a street named after you',
+    // Wild & fun
+    'Own a vineyard','Start a hot sauce company','Open a bookstore/café',
+    'Buy a castle in Europe','Adopt a retired racehorse',
+    'Throw the most epic birthday party anyone has ever seen',
+    'Have a cameo in a blockbuster film','Win a cooking competition on TV',
+    'Discover a new hiking trail and name it after yourself',
+    'Get featured in a documentary','Collect a rare piece of art',
+    'Brew your own award-winning beer','Open a food truck','Invent something useful',
+    'Plant a forest (1,000+ trees)','Win a world record',
+  ],
+  marry_male: [
+    // Hollywood A-list
+    'Chris Hemsworth','Ryan Reynolds','Brad Pitt','Leonardo DiCaprio','George Clooney',
+    'Tom Hanks','Denzel Washington','Will Smith','Keanu Reeves','Morgan Freeman',
+    'Johnny Depp','Robert Downey Jr.','Hugh Jackman','Matt Damon','Ben Affleck',
+    'Bradley Cooper','Tom Cruise','Liam Neeson','Jude Law','Orlando Bloom',
+    // Current generation
+    'Timothée Chalamet','Tom Holland','Zac Efron','Ansel Elgort','Dylan O\'Brien',
+    'Noah Centineo','Cole Sprouse','KJ Apa','Charles Melton','Finn Wittrock',
+    'Glen Powell','Jacob Elordi','Austin Butler','Barry Keoghan','Paul Mescal',
+    // Action / leading men
+    'Dwayne Johnson','Idris Elba','Michael B. Jordan','Ryan Gosling','Pedro Pascal',
+    'Oscar Isaac','Sebastian Stan','Anthony Mackie','Jon Hamm','Chris Pine',
+    'Chris Evans','Chris Pratt','Jeremy Renner','Armie Hammer','Garrett Hedlund',
+    // Music
+    'Harry Styles','Shawn Mendes','Zayn Malik','Drake','Bad Bunny',
+    'Post Malone','Ed Sheeran','Bruno Mars','John Legend','Justin Timberlake',
+    'The Weeknd','Frank Ocean','Usher','Justin Bieber','Niall Horan',
+    // Sports
+    'LeBron James','Stephen Curry','Novak Djokovic','Rafael Nadal','Roger Federer',
+    'Cristiano Ronaldo','Lionel Messi','Patrick Mahomes','Aaron Rodgers','Tom Brady',
+    // Wild cards
+    'Paul Rudd','Bill Murray (in his prime)','Pedro Almodóvar\'s muse','a very charming stranger',
+  ],
+  marry_female: [
+    // Hollywood A-list
+    'Beyoncé','Rihanna','Jennifer Lopez','Angelina Jolie','Sandra Bullock',
+    'Meryl Streep (icon energy)','Cate Blanchett','Julia Roberts','Halle Berry',
+    'Salma Hayek','Cameron Diaz','Drew Barrymore','Reese Witherspoon','Nicole Kidman',
+    'Charlize Theron','Penélope Cruz','Eva Longoria','Sofia Vergara',
+    // Current generation
+    'Taylor Swift','Zendaya','Selena Gomez','Ariana Grande','Olivia Rodrigo',
+    'Billie Eilish','Sabrina Carpenter','Dua Lipa','Lizzo','Normani',
+    'Camila Cabello','Doja Cat','SZA','Lana Del Rey','Gracie Abrams',
+    // Film
+    'Jennifer Lawrence','Margot Robbie','Emma Stone','Scarlett Johansson','Gal Gadot',
+    'Megan Fox','Ana de Armas','Florence Pugh','Anya Taylor-Joy','Sydney Sweeney',
+    'Rachel McAdams','Natalie Portman','Keira Knightley','Emma Watson','Lupita Nyong\'o',
+    'Viola Davis','Taraji P. Henson','Kerry Washington','Priyanka Chopra','Deepika Padukone',
+    // TV / streaming
+    'Millie Bobby Brown','Jenna Ortega','Hailee Steinfeld','Alexandra Daddario',
+    'Emilia Clarke','Sophie Turner','Maisie Williams','Elizabeth Olsen',
+    'Kaley Cuoco','Mindy Kaling','Tina Fey','Amy Poehler','Sandra Oh',
+    // Sports
+    'Serena Williams','Simone Biles','Alex Morgan','Megan Rapinoe',
+    'Naomi Osaka','Coco Gauff','Gabby Thomas','Sha\'Carri Richardson',
+    // Wild cards
+    'Dolly Parton (living legend)','Oprah (yes)','Michelle Obama (aspirational)',
+  ],
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
