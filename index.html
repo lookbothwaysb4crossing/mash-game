@@ -1,554 +1,825 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>M.A.S.H. — Your Future Awaits!</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --pink:   #ff3cac;
-      --purple: #784ba0;
-      --blue:   #2b86c5;
-      --yellow: #ffe135;
-      --green:  #39ff14;
-      --orange: #ff6b35;
-      --red:    #ff2d55;
-      --cyan:   #00f5ff;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M.A.S.H. Fortune Teller ✨</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --hot-pink: #FF1493;
+    --dark-pink: #AA0066;
+    --light-pink: #FFF0F7;
+    --mid-pink: #FFB6C1;
+    --bar-start: #FF9DD8;
+    --bar-end: #FF5DAE;
+  }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #ff3cac 0%, #784ba0 40%, #2b86c5 100%);
-      font-family: 'Nunito', 'Comic Sans MS', cursive;
-      color: #fff;
-      overflow-x: hidden;
-    }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--light-pink);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ctext x='5' y='20' font-size='14' fill='%23FFB6C1' opacity='0.5'%3E%E2%98%85%3C/text%3E%3Ctext x='35' y='45' font-size='10' fill='%23FFB6C1' opacity='0.4'%3E%E2%99%A5%3C/text%3E%3Ctext x='50' y='15' font-size='8' fill='%23FF9DD8' opacity='0.3'%3E%E2%9C%A6%3C/text%3E%3Ctext x='15' y='55' font-size='7' fill='%23DDA0DD' opacity='0.35'%3E%E2%98%85%3C/text%3E%3Ctext x='28' y='28' font-size='6' fill='%23FF69B4' opacity='0.25'%3E%E2%99%A5%3C/text%3E%3C/svg%3E");
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    overflow-x: hidden;
+    position: relative;
+  }
 
-    body::before {
-      content: '★ ☆ ✦ ✧ ★ ✦ ☆ ✧ ★ ☆ ✦ ✧ ★ ✦ ☆ ✧ ★ ☆ ✦ ✧ ★ ✦ ☆ ✧ ★ ☆ ✦ ✧';
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      font-size: 1.4rem;
-      letter-spacing: 1.2rem;
-      color: rgba(255,255,255,0.1);
-      word-break: break-all;
-      line-height: 2.2rem;
-      pointer-events: none;
-      z-index: 0;
-    }
+  /* Floating background sparkles */
+  .bg-sparkle {
+    position: fixed;
+    pointer-events: none;
+    font-size: 18px;
+    opacity: 0;
+    animation: floatUp 8s ease-in infinite;
+    z-index: 0;
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.6; }
+    90%  { opacity: 0.3; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
 
-    /* ── Layout ── */
-    #app {
-      position: relative;
-      z-index: 1;
-      max-width: 920px;
-      margin: 0 auto;
-      padding: 1.5rem 1rem 4rem;
-    }
+  /* Cursor sparkle trail */
+  .cursor-sparkle {
+    position: fixed;
+    pointer-events: none;
+    font-size: 14px;
+    z-index: 99999;
+    animation: sparkRise 0.9s ease-out forwards;
+  }
+  @keyframes sparkRise {
+    0%   { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-50px) scale(0); opacity: 0; }
+  }
 
-    /* ── Shared Title Block ── */
-    .title-block {
-      text-align: center;
-      margin-bottom: 0.4rem;
-    }
+  /* Marquee ticker */
+  .marquee-bar {
+    width: 100%;
+    max-width: 900px;
+    background: linear-gradient(90deg, #FF9DD8, #FF5DAE, #FF9DD8);
+    color: white;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 6px 0;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(255,93,174,0.4);
+  }
+  .marquee-inner {
+    display: inline-block;
+    animation: marqueeScroll 30s linear infinite;
+  }
+  @keyframes marqueeScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
 
-    .mash-h1 {
-      font-family: 'Fredoka One', cursive;
-      font-size: clamp(3.5rem, 12vw, 7rem);
-      letter-spacing: 0.05em;
-      line-height: 1;
-      color: var(--yellow);
-    }
+  /* Browser chrome */
+  .browser-frame {
+    width: 100%;
+    max-width: 900px;
+    background: #ECE9D8;
+    border: 2px solid #919B8C;
+    border-top: none;
+    box-shadow: 2px 2px 0 #fff inset, -2px -2px 0 #808080 inset, 0 4px 16px rgba(0,0,0,0.18);
+    position: relative;
+    z-index: 5;
+    border-radius: 0 0 4px 4px;
+  }
+  .browser-titlebar {
+    background: linear-gradient(to right, #FF9DD8, #FF5DAE);
+    padding: 5px 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+  }
+  .browser-title-text {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: white;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .xp-btn {
+    width: 18px; height: 18px;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.4);
+    font-size: 10px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: default;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+  .xp-close  { background: linear-gradient(135deg,#ff7070,#cc0000); color: white; }
+  .xp-min    { background: linear-gradient(135deg,#ffe07a,#ccaa00); color: #333; }
+  .xp-max    { background: linear-gradient(135deg,#70ff70,#00aa00); color: #333; }
+  .browser-toolbar {
+    background: linear-gradient(to bottom, #f5f0f5, #e8ddf0);
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 2px solid #919B8C;
+  }
+  .browser-nav-btn {
+    background: linear-gradient(to bottom, #FFE4F5, #FFB6DA);
+    border: 1px solid #FF9DD8;
+    border-radius: 3px;
+    padding: 2px 8px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--dark-pink);
+    cursor: default;
+    white-space: nowrap;
+  }
+  .address-bar {
+    flex: 1;
+    background: white;
+    border: 2px inset #999;
+    padding: 2px 6px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: #333;
+    border-radius: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .browser-body {
+    background: var(--light-pink);
+    padding: 20px;
+    min-height: 500px;
+  }
 
-    /* MASH letter states */
-    .ml {
-      display: inline-block;
-      text-shadow: 4px 4px 0 #ff3cac, 8px 8px 0 #784ba0, 0 0 40px #ffe135;
-      animation: bounce 2s ease-in-out infinite;
-      transition: color 0.3s, text-shadow 0.3s;
-    }
-    .ml:nth-child(1) { animation-delay: 0s; }
-    .ml:nth-child(3) { animation-delay: 0.15s; }
-    .ml:nth-child(5) { animation-delay: 0.3s; }
-    .ml:nth-child(7) { animation-delay: 0.45s; }
-    .md { display: inline-block; color: var(--yellow); opacity: 0.6; }
+  /* MASH title */
+  .mash-h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(3rem, 10vw, 5.5rem);
+    text-align: center;
+    margin-bottom: 4px;
+    line-height: 1;
+    letter-spacing: 4px;
+  }
+  .ml {
+    display: inline-block;
+    background: linear-gradient(90deg, #ff0080, #ff6600, #ffff00, #00ff80, #0080ff, #8000ff, #ff0080);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: holoBounce 0.8s ease infinite alternate, holoShift 3s linear infinite;
+  }
+  @keyframes holoBounce {
+    0%   { transform: translateY(0) scale(1); }
+    100% { transform: translateY(-8px) scale(1.05); }
+  }
+  @keyframes holoShift {
+    0%   { background-position: 0% center; }
+    100% { background-position: 300% center; }
+  }
+  .ml.ml-eliminated {
+    background: none;
+    -webkit-text-fill-color: #ccc;
+    color: #ccc;
+    text-decoration: line-through;
+    opacity: 0.4;
+    animation: none;
+  }
+  .ml.ml-winner {
+    background: linear-gradient(90deg, #00ff88, #39ff14, #00ff88);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: holoBounce 0.3s ease infinite alternate, holoShift 1s linear infinite;
+    filter: drop-shadow(0 0 8px #00ff88);
+  }
+  .ml.ml-current {
+    background: none;
+    -webkit-text-fill-color: white;
+    color: white;
+    animation: brightPulse 0.5s ease infinite alternate;
+    text-shadow: 0 0 10px #fff, 0 0 20px #FF1493;
+  }
+  @keyframes brightPulse {
+    0%   { filter: brightness(1) drop-shadow(0 0 6px white); }
+    100% { filter: brightness(1.4) drop-shadow(0 0 16px white); }
+  }
+  .md {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(3rem, 10vw, 5.5rem);
+    color: var(--hot-pink);
+    -webkit-text-fill-color: var(--hot-pink);
+  }
+  .mash-legend {
+    text-align: center;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+    color: var(--dark-pink);
+    opacity: 0.8;
+    margin-bottom: 2px;
+  }
+  .subtitle {
+    text-align: center;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    color: var(--dark-pink);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
 
-    .ml.ml-eliminated {
-      text-decoration: line-through;
-      color: rgba(255,255,255,0.25) !important;
-      text-shadow: none !important;
-      animation: none !important;
-      opacity: 0.4;
-    }
-    .ml.ml-current {
-      color: #fff !important;
-      text-shadow: 0 0 30px #fff, 0 0 60px var(--yellow) !important;
-      animation: mlPulse 0.4s ease-in-out !important;
-    }
-    .ml.ml-winner {
-      color: var(--green) !important;
-      text-shadow: 0 0 20px var(--green), 4px 4px 0 rgba(0,100,0,0.5) !important;
-      animation: bounce 0.8s ease-in-out infinite !important;
-    }
+  /* Screens */
+  .screen { display: none; }
+  .screen.active { display: block; }
 
-    @keyframes mlPulse {
-      0%,100% { transform: scale(1); }
-      50%      { transform: scale(1.25); }
-    }
-    @keyframes bounce {
-      0%,100% { transform: translateY(0); }
-      50%      { transform: translateY(-8px); }
-    }
+  /* XP Window cards */
+  .xp-window {
+    background: white;
+    border: 2px solid #DDA0DD;
+    border-radius: 6px 6px 4px 4px;
+    box-shadow: 2px 2px 0 rgba(255,255,255,0.8) inset, -1px -1px 0 rgba(0,0,0,0.1) inset, 0 4px 12px rgba(255,105,180,0.2);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .xp-titlebar {
+    background: linear-gradient(to right, #FF9DD8, #FF5DAE);
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .xp-titlebar-text {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: white;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+    flex: 1;
+  }
+  .xp-btns { display: flex; gap: 3px; }
+  .xp-btns .xp-btn { width: 14px; height: 14px; font-size: 8px; }
+  .xp-body {
+    padding: 12px;
+    background: linear-gradient(135deg, #fff 0%, #FFF5FB 100%);
+  }
 
-    .mash-legend {
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.5);
-      letter-spacing: 0.08em;
-      margin-top: 0.1rem;
-    }
+  /* Buttons */
+  .btn {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+    position: relative;
+    letter-spacing: 0.5px;
+  }
+  .btn:hover  { transform: translateY(-2px); }
+  .btn:active { transform: translateY(1px); }
+  .btn-pink {
+    background: linear-gradient(to bottom, #FF85C2, #FF1493);
+    color: white;
+    box-shadow: 0 4px 0 #AA0066, 2px 2px 0 rgba(255,255,255,0.4) inset, -1px -1px 0 rgba(0,0,0,0.2) inset;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+  }
+  .btn-pink:hover  { box-shadow: 0 6px 0 #AA0066, 2px 2px 0 rgba(255,255,255,0.4) inset; }
+  .btn-pink:active { box-shadow: 0 1px 0 #AA0066, 2px 2px 0 rgba(255,255,255,0.4) inset; }
+  .btn-lavender {
+    background: linear-gradient(to bottom, #DDA0DD, #BA55D3);
+    color: white;
+    box-shadow: 0 4px 0 #7B2C8B, 2px 2px 0 rgba(255,255,255,0.4) inset;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+  }
+  .btn-mint {
+    background: linear-gradient(to bottom, #A0FFD6, #39D98A);
+    color: #006644;
+    box-shadow: 0 4px 0 #006644, 2px 2px 0 rgba(255,255,255,0.5) inset;
+  }
+  .btn-yellow {
+    background: linear-gradient(to bottom, #FFE566, #FFB300);
+    color: #664400;
+    box-shadow: 0 4px 0 #996600, 2px 2px 0 rgba(255,255,255,0.5) inset;
+    font-size: 1.1rem;
+    padding: 12px 28px;
+  }
+  .btn-yellow:hover  { box-shadow: 0 6px 0 #996600, 2px 2px 0 rgba(255,255,255,0.5) inset; }
+  .btn-yellow:active { box-shadow: 0 1px 0 #996600, 2px 2px 0 rgba(255,255,255,0.5) inset; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none !important; }
+  .btn-sm { padding: 4px 10px; font-size: 0.8rem; border-radius: 6px; }
+  .dice-btn {
+    background: linear-gradient(to bottom, #FFE4F5, #FFB6DA);
+    border: 2px solid #FF9DD8;
+    border-radius: 6px;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.1s;
+    flex-shrink: 0;
+  }
+  .dice-btn:hover { transform: rotate(20deg) scale(1.1); }
 
-    .subtitle {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--yellow);
-      text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
-      text-align: center;
-      margin: 0.3rem 0 1.6rem;
-      letter-spacing: 0.05em;
-    }
+  /* Landing screen */
+  #landingScreen h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.8rem;
+    color: var(--hot-pink);
+    text-align: center;
+    margin-bottom: 16px;
+    text-shadow: 2px 2px 0 rgba(255,20,147,0.2);
+  }
+  .mash-badge-card {
+    background: linear-gradient(135deg, #FFFDE7, #FFF9C4);
+    border: 3px solid #FFD700;
+    border-radius: 10px;
+    padding: 12px 16px;
+    text-align: center;
+    margin-bottom: 16px;
+    box-shadow: 0 0 12px rgba(255,215,0,0.4), 2px 2px 0 rgba(255,255,255,0.8) inset;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #886600;
+  }
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .cat-card {
+    background: white;
+    border: 3px solid #DDA0DD;
+    border-radius: 10px;
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.15s, background 0.15s;
+    position: relative;
+    user-select: none;
+    box-shadow: 2px 2px 0 rgba(255,255,255,0.8) inset;
+  }
+  .cat-card:hover { transform: translateY(-3px); }
+  .cat-card.selected {
+    border-color: var(--hot-pink);
+    background: linear-gradient(135deg, #FFF0F7, #FFE4F5);
+    box-shadow: 0 0 10px rgba(255,20,147,0.2), 2px 2px 0 rgba(255,255,255,0.8) inset;
+  }
+  .cat-card.deselected {
+    border-color: #ccc;
+    background: #f5f5f5;
+    opacity: 0.7;
+    filter: grayscale(0.4);
+  }
+  .cat-check {
+    position: absolute;
+    top: 6px; right: 8px;
+    font-size: 16px;
+    color: var(--hot-pink);
+    display: none;
+  }
+  .cat-card.selected .cat-check { display: block; }
+  .cat-emoji { font-size: 2rem; margin-bottom: 4px; }
+  .cat-name {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--dark-pink);
+  }
+  @keyframes shakeCard {
+    0%,100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+  }
+  .shake { animation: shakeCard 0.4s ease; }
+  .selected-counter {
+    text-align: center;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.85rem;
+    color: var(--dark-pink);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .min-tooltip {
+    display: none;
+    font-size: 0.75rem;
+    color: #cc4400;
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .play-btn-wrap { text-align: center; margin-top: 10px; }
 
-    /* ── Screens ── */
-    .screen { display: none; }
-    .screen.active { display: block; }
+  /* Input screen */
+  .back-link {
+    display: inline-block;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    color: var(--dark-pink);
+    cursor: pointer;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    text-decoration: underline;
+  }
+  .back-link:hover { color: var(--hot-pink); }
+  .input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .input-row input[type="text"] {
+    flex: 1;
+    padding: 8px 12px;
+    border: 2px solid #FFB6DA;
+    border-radius: 8px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    background: #FFF5FB;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .input-row input[type="text"]:focus { border-color: var(--hot-pink); }
+  .gender-btn {
+    background: linear-gradient(to bottom, #E8D5FF, #C9A0FF);
+    border: 2px solid #BA55D3;
+    border-radius: 6px;
+    padding: 0 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #6A0DAD;
+    transition: background 0.2s;
+    white-space: nowrap;
+    height: 32px;
+    display: flex; align-items: center;
+    flex-shrink: 0;
+  }
+  .gender-btn:hover { background: linear-gradient(to bottom, #D5B8FF, #B07FFF); }
+  .magic-section {
+    margin: 20px 0;
+    text-align: center;
+  }
+  .magic-input-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .magic-input-row input[type="number"] {
+    width: 90px;
+    padding: 8px;
+    border: 2px solid #DDA0DD;
+    border-radius: 8px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    text-align: center;
+    color: var(--dark-pink);
+    background: white;
+    outline: none;
+  }
+  .reveal-btn-wrap { text-align: center; margin-top: 16px; }
 
-    /* ── Category Cards ── */
-    .categories-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
+  /* Elim screen */
+  #elimScreen .magic-num-display {
+    font-family: 'Fredoka One', cursive;
+    font-size: 4rem;
+    color: #FFB300;
+    text-align: center;
+    text-shadow: 3px 3px 0 #996600, 0 0 20px rgba(255,200,0,0.5);
+    margin-bottom: 6px;
+  }
+  .elim-status {
+    text-align: center;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--dark-pink);
+    margin-bottom: 20px;
+    min-height: 24px;
+  }
+  .elim-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .elim-cat-card {
+    background: white;
+    border: 2px solid #DDA0DD;
+    border-radius: 8px;
+    padding: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .elim-cat-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: white;
+    background: linear-gradient(to right, #FF9DD8, #FF5DAE);
+    margin: -10px -10px 8px -10px;
+    padding: 5px 8px;
+    border-radius: 6px 6px 0 0;
+  }
+  .elim-option {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.85rem;
+    color: #333;
+    padding: 4px 6px;
+    border-radius: 4px;
+    margin-bottom: 3px;
+    transition: all 0.3s;
+  }
+  .elim-option.current-highlight {
+    background: rgba(255,20,147,0.15);
+    border-left: 3px solid var(--hot-pink);
+    font-weight: 700;
+    color: var(--dark-pink);
+  }
+  .elim-option.eliminated {
+    text-decoration: line-through;
+    color: #bbb;
+    opacity: 0.5;
+  }
+  .elim-option.winner {
+    background: linear-gradient(135deg, #E8FFE8, #C8FFC8);
+    border-left: 3px solid #00cc44;
+    font-weight: 700;
+    color: #006622;
+  }
+  .elim-btn-wrap { text-align: center; }
 
-    .cat-card {
-      background: rgba(255,255,255,0.11);
-      border: 3px solid rgba(255,255,255,0.3);
-      border-radius: 18px;
-      padding: 0.9rem 1rem 1rem;
-      backdrop-filter: blur(6px);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.22);
-    }
+  /* Results screen */
+  #resultsScreen h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    color: var(--dark-pink);
+    text-align: center;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 0 rgba(170,0,102,0.2);
+  }
+  .destiny-story {
+    background: linear-gradient(135deg, #FFF0F7, #F0E6FF);
+    border: 2px solid #DDA0DD;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    color: #330033;
+    line-height: 1.7;
+    box-shadow: 0 0 20px rgba(221,160,221,0.3);
+  }
+  .destiny-story p { margin-bottom: 10px; }
+  .destiny-story p:last-child { margin-bottom: 0; }
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .result-card {
+    background: white;
+    border: 3px solid var(--hot-pink);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+    box-shadow: 0 0 14px rgba(255,20,147,0.2), 2px 2px 0 rgba(255,255,255,0.8) inset;
+  }
+  .result-emoji { font-size: 1.8rem; margin-bottom: 4px; }
+  .result-cat-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--dark-pink);
+    margin-bottom: 8px;
+    opacity: 0.8;
+  }
+  .result-value {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    color: var(--dark-pink);
+  }
+  .play-again-wrap { text-align: center; }
 
-    /* Card border colors by position */
-    .cat-card:nth-child(1)  { border-color: var(--pink); }
-    .cat-card:nth-child(2)  { border-color: var(--cyan); }
-    .cat-card:nth-child(3)  { border-color: var(--green); }
-    .cat-card:nth-child(4)  { border-color: var(--orange); }
-    .cat-card:nth-child(5)  { border-color: var(--yellow); }
-    .cat-card:nth-child(6)  { border-color: var(--purple); }
-    .cat-card:nth-child(7)  { border-color: var(--pink); }
+  /* Footer */
+  .retro-footer {
+    width: 100%;
+    max-width: 900px;
+    background: linear-gradient(to right, #FF9DD8, #FF5DAE);
+    padding: 10px 16px;
+    text-align: center;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: white;
+    border-radius: 0 0 6px 6px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(255,93,174,0.3);
+    line-height: 1.8;
+  }
+  .visitor-counter {
+    display: inline-block;
+    background: black;
+    color: #00ff00;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-top: 6px;
+    letter-spacing: 2px;
+    box-shadow: 0 0 8px rgba(0,255,0,0.4);
+  }
 
-    .cat-title {
-      font-family: 'Fredoka One', cursive;
-      font-size: 1.05rem;
-      margin-bottom: 0.6rem;
-      text-shadow: 2px 2px 0 rgba(0,0,0,0.35);
-    }
-    .cat-card:nth-child(1) .cat-title { color: var(--pink); }
-    .cat-card:nth-child(2) .cat-title { color: var(--cyan); }
-    .cat-card:nth-child(3) .cat-title { color: var(--green); }
-    .cat-card:nth-child(4) .cat-title { color: var(--orange); }
-    .cat-card:nth-child(5) .cat-title { color: var(--yellow); }
-    .cat-card:nth-child(6) .cat-title { color: #c9b3ff; }
-    .cat-card:nth-child(7) .cat-title { color: var(--pink); }
+  /* Confetti */
+  #confettiContainer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+    overflow: hidden;
+  }
+  .confetti-piece {
+    position: absolute;
+    top: -20px;
+    animation: confettiFall linear forwards;
+  }
+  @keyframes confettiFall {
+    0%   { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg) scale(0.5); opacity: 0; }
+  }
 
-    /* ── Input rows ── */
-    .option-inputs { display: flex; flex-direction: column; gap: 0.38rem; }
-
-    .input-row {
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-    .input-row input {
-      flex: 1;
-      min-width: 0;
-      background: rgba(255,255,255,0.14);
-      border: 2px solid rgba(255,255,255,0.28);
-      border-radius: 10px;
-      padding: 0.4rem 0.65rem;
-      color: #fff;
-      font-family: inherit;
-      font-size: 0.88rem;
-      font-weight: 700;
-      outline: none;
-      transition: border-color 0.2s, background 0.2s;
-    }
-    .input-row input::placeholder { color: rgba(255,255,255,0.38); font-weight: 400; }
-    .input-row input:focus { border-color: #fff; background: rgba(255,255,255,0.22); }
-
-    .rand-btn {
-      background: rgba(255,255,255,0.12);
-      border: 1.5px solid rgba(255,255,255,0.32);
-      border-radius: 8px;
-      color: #fff;
-      font-size: 0.95rem;
-      padding: 0.38rem 0.42rem;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: background 0.15s, transform 0.15s;
-      line-height: 1;
-    }
-    .rand-btn:hover { background: rgba(255,255,255,0.28); transform: scale(1.12); }
-    .rand-btn:active { transform: scale(0.88) rotate(30deg); }
-
-    .gender-btn {
-      background: rgba(255,255,255,0.1);
-      border: 1.5px solid rgba(255,255,255,0.3);
-      border-radius: 8px;
-      color: rgba(255,255,255,0.7);
-      font-size: 0.8rem;
-      padding: 0.38rem 0.4rem;
-      cursor: pointer;
-      flex-shrink: 0;
-      min-width: 28px;
-      text-align: center;
-      line-height: 1;
-      transition: background 0.15s, border-color 0.15s;
-    }
-    .gender-btn[data-gender="male"]   { border-color: var(--cyan);   background: rgba(0,245,255,0.18); color: var(--cyan); }
-    .gender-btn[data-gender="female"] { border-color: var(--pink);   background: rgba(255,60,172,0.18); color: var(--pink); }
-    .gender-btn[data-gender="any"]    { border-color: var(--yellow); background: rgba(255,225,53,0.13); color: var(--yellow); }
-
-    /* ── Number Section ── */
-    .number-section {
-      background: rgba(255,255,255,0.11);
-      border: 3px solid var(--pink);
-      border-radius: 18px;
-      padding: 1rem 1.3rem;
-      margin-bottom: 1.5rem;
-      backdrop-filter: blur(6px);
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.8rem;
-    }
-    .number-section label {
-      font-family: 'Fredoka One', cursive;
-      font-size: 1.1rem;
-      color: var(--pink);
-      white-space: nowrap;
-    }
-    .number-section input[type=number] {
-      background: rgba(255,255,255,0.18);
-      border: 2px solid rgba(255,255,255,0.38);
-      border-radius: 10px;
-      padding: 0.45rem 0.7rem;
-      color: #fff;
-      font-family: 'Fredoka One', cursive;
-      font-size: 1.3rem;
-      width: 80px;
-      outline: none;
-      text-align: center;
-    }
-    .number-section input[type=number]::-webkit-inner-spin-button { opacity: 0.5; }
-    .or-text { color: rgba(255,255,255,0.55); font-size: 0.88rem; }
-
-    .btn-spiral {
-      background: linear-gradient(135deg, var(--pink), var(--purple));
-      border: 3px solid #fff;
-      border-radius: 999px;
-      color: #fff;
-      font-family: 'Fredoka One', cursive;
-      font-size: 0.95rem;
-      padding: 0.45rem 1.1rem;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.15s;
-    }
-    .btn-spiral:hover { transform: scale(1.06); }
-
-    .btn-reveal {
-      display: block;
-      width: 100%;
-      background: linear-gradient(135deg, var(--yellow) 0%, var(--orange) 100%);
-      border: 4px solid #fff;
-      border-radius: 999px;
-      color: #3a1a00;
-      font-family: 'Fredoka One', cursive;
-      font-size: clamp(1.3rem, 4vw, 1.9rem);
-      padding: 0.85rem 2rem;
-      cursor: pointer;
-      box-shadow: 0 6px 24px rgba(255,107,53,0.55);
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-    .btn-reveal:hover { transform: scale(1.03); box-shadow: 0 10px 32px rgba(255,107,53,0.8); }
-    .btn-reveal:active { transform: scale(0.98); }
-
-    /* ── Elimination Screen ── */
-    .count-display { text-align: center; margin-bottom: 1.2rem; }
-    .count-display .magic-num {
-      font-family: 'Fredoka One', cursive;
-      font-size: 4.5rem;
-      color: var(--yellow);
-      text-shadow: 4px 4px 0 rgba(0,0,0,0.3), 0 0 30px var(--yellow);
-      line-height: 1;
-    }
-    .count-display .count-label {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.65);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .elim-status {
-      text-align: center;
-      font-family: 'Fredoka One', cursive;
-      font-size: 1.2rem;
-      color: #fff;
-      text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
-      min-height: 1.8rem;
-      margin-bottom: 1rem;
-    }
-
-    .elim-card {
-      background: rgba(255,255,255,0.11);
-      border: 3px solid rgba(255,255,255,0.28);
-      border-radius: 18px;
-      padding: 0.9rem;
-      backdrop-filter: blur(6px);
-    }
-    .elim-card:nth-child(1) { border-color: var(--pink); }
-    .elim-card:nth-child(2) { border-color: var(--cyan); }
-    .elim-card:nth-child(3) { border-color: var(--green); }
-    .elim-card:nth-child(4) { border-color: var(--orange); }
-    .elim-card:nth-child(5) { border-color: var(--yellow); }
-    .elim-card:nth-child(6) { border-color: var(--purple); }
-    .elim-card:nth-child(7) { border-color: var(--pink); }
-
-    .elim-card .cat-title { color: #fff; font-size: 1rem; }
-    .elim-card:nth-child(1) .cat-title { color: var(--pink); }
-    .elim-card:nth-child(2) .cat-title { color: var(--cyan); }
-    .elim-card:nth-child(3) .cat-title { color: var(--green); }
-    .elim-card:nth-child(4) .cat-title { color: var(--orange); }
-    .elim-card:nth-child(5) .cat-title { color: var(--yellow); }
-    .elim-card:nth-child(6) .cat-title { color: #c9b3ff; }
-    .elim-card:nth-child(7) .cat-title { color: var(--pink); }
-
-    .option-item {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.35rem 0.5rem;
-      border-radius: 9px;
-      margin-bottom: 0.3rem;
-      font-weight: 700;
-      font-size: 0.88rem;
-      transition: background 0.2s;
-    }
-    .option-item .dot {
-      width: 9px; height: 9px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.45);
-      flex-shrink: 0;
-      transition: background 0.25s;
-    }
-    .option-item.active .dot { background: rgba(255,255,255,0.55); }
-    .option-item.current { background: rgba(255,255,255,0.18); }
-    .option-item.current .dot { background: var(--yellow); box-shadow: 0 0 8px var(--yellow); }
-    .option-item.eliminated .option-text { text-decoration: line-through; color: rgba(255,255,255,0.3); }
-    .option-item.eliminated .dot { background: var(--red); opacity: 0.45; }
-    .option-item.winner {
-      background: rgba(255,225,53,0.18);
-      border: 2px solid var(--yellow);
-      animation: pulseWin 1.2s ease-in-out infinite;
-    }
-    .option-item.winner .dot { background: var(--yellow); box-shadow: 0 0 10px var(--yellow); }
-    .option-item.winner .option-text { color: var(--yellow); }
-
-    @keyframes pulseWin {
-      0%,100% { box-shadow: 0 0 0 0 rgba(255,225,53,0.4); }
-      50%      { box-shadow: 0 0 0 7px rgba(255,225,53,0); }
-    }
-
-    .btn-skip {
-      display: block;
-      margin: 0 auto 1rem;
-      background: rgba(255,255,255,0.13);
-      border: 2px solid rgba(255,255,255,0.38);
-      border-radius: 999px;
-      color: rgba(255,255,255,0.72);
-      font-family: 'Fredoka One', cursive;
-      font-size: 0.95rem;
-      padding: 0.38rem 1.3rem;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .btn-skip:hover { background: rgba(255,255,255,0.22); }
-
-    /* ── Results Screen ── */
-    #resultsScreen { text-align: center; }
-
-    .results-title {
-      font-family: 'Fredoka One', cursive;
-      font-size: clamp(1.8rem, 6vw, 3rem);
-      color: var(--yellow);
-      text-shadow: 4px 4px 0 rgba(0,0,0,0.3), 0 0 40px var(--yellow);
-      margin-bottom: 1rem;
-    }
-
-    .destiny-story {
-      background: rgba(0,0,0,0.32);
-      border: 3px solid var(--yellow);
-      border-radius: 18px;
-      padding: 1.3rem 1.6rem;
-      margin-bottom: 1.8rem;
-      text-align: left;
-      backdrop-filter: blur(6px);
-      line-height: 1.85;
-      font-size: clamp(0.9rem, 2.2vw, 1.05rem);
-    }
-    .destiny-story p { margin-bottom: 0.85rem; }
-    .destiny-story p:last-child { margin-bottom: 0; }
-    .destiny-story .winner-word {
-      color: var(--yellow);
-      font-weight: 900;
-      font-family: 'Fredoka One', cursive;
-      font-size: 1.05em;
-      text-shadow: 0 0 12px rgba(255,225,53,0.7);
-    }
-
-    .results-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
-      gap: 0.85rem;
-      margin-bottom: 2rem;
-    }
-
-    .result-card {
-      border: 3px solid;
-      border-radius: 18px;
-      padding: 0.9rem;
-      background: rgba(0,0,0,0.28);
-      backdrop-filter: blur(6px);
-      text-align: center;
-      animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
-    }
-    .result-card:nth-child(1) { border-color: var(--yellow); animation-delay: 0.05s; }
-    .result-card:nth-child(2) { border-color: var(--pink);   animation-delay: 0.12s; }
-    .result-card:nth-child(3) { border-color: var(--cyan);   animation-delay: 0.19s; }
-    .result-card:nth-child(4) { border-color: var(--green);  animation-delay: 0.26s; }
-    .result-card:nth-child(5) { border-color: var(--orange); animation-delay: 0.33s; }
-    .result-card:nth-child(6) { border-color: var(--purple); animation-delay: 0.40s; }
-    .result-card:nth-child(7) { border-color: var(--pink);   animation-delay: 0.47s; }
-    .result-card:nth-child(8) { border-color: var(--cyan);   animation-delay: 0.54s; }
-
-    @keyframes popIn {
-      from { transform: scale(0.5) rotate(-6deg); opacity: 0; }
-      to   { transform: scale(1)   rotate(0deg);  opacity: 1; }
-    }
-
-    .result-card .rc-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.55); margin-bottom: 0.2rem; }
-    .result-card .rc-emoji { font-size: 1.7rem; margin-bottom: 0.15rem; }
-    .result-card .rc-value { font-family: 'Fredoka One', cursive; font-size: 1.2rem; color: #fff; text-shadow: 2px 2px 0 rgba(0,0,0,0.3); }
-
-    .result-card:nth-child(1) .rc-value { color: var(--yellow); }
-    .result-card:nth-child(2) .rc-value { color: var(--pink); }
-    .result-card:nth-child(3) .rc-value { color: var(--cyan); }
-    .result-card:nth-child(4) .rc-value { color: var(--green); }
-    .result-card:nth-child(5) .rc-value { color: var(--orange); }
-    .result-card:nth-child(6) .rc-value { color: #c9b3ff; }
-    .result-card:nth-child(7) .rc-value { color: var(--pink); }
-    .result-card:nth-child(8) .rc-value { color: var(--cyan); }
-
-    .btn-again {
-      display: inline-block;
-      background: linear-gradient(135deg, var(--pink), var(--purple));
-      border: 4px solid #fff;
-      border-radius: 999px;
-      color: #fff;
-      font-family: 'Fredoka One', cursive;
-      font-size: 1.4rem;
-      padding: 0.75rem 2.2rem;
-      cursor: pointer;
-      box-shadow: 0 6px 24px rgba(120,75,160,0.6);
-      transition: transform 0.15s;
-    }
-    .btn-again:hover { transform: scale(1.05); }
-
-    /* ── Confetti ── */
-    .confetti-container { position: fixed; top: 0; left: 0; right: 0; pointer-events: none; z-index: 999; overflow: hidden; height: 100vh; }
-    .confetti-piece { position: absolute; top: -20px; animation: confettiFall linear forwards; }
-    @keyframes confettiFall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
-
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
-    ::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 4px; }
-  </style>
+  /* Responsive */
+  @media (max-width: 600px) {
+    .category-grid { grid-template-columns: repeat(2, 1fr); }
+    .mash-h1 { font-size: 2.8rem; }
+    .md { font-size: 2.8rem; }
+    .elim-grid { grid-template-columns: 1fr; }
+    .results-grid { grid-template-columns: repeat(2, 1fr); }
+    .browser-nav-btn { display: none; }
+    .browser-nav-btn:last-child { display: block; }
+  }
+</style>
 </head>
 <body>
-<div id="app">
 
-  <!-- Shared title (always shown) -->
-  <div class="title-block">
+<!-- Confetti (outside browser frame, position:fixed) -->
+<div id="confettiContainer"></div>
+
+<!-- Floating background sparkle elements -->
+<div class="bg-sparkle" style="left:5%; animation-delay:0s;   animation-duration:9s;">✨</div>
+<div class="bg-sparkle" style="left:12%;animation-delay:1.5s; animation-duration:11s;">★</div>
+<div class="bg-sparkle" style="left:22%;animation-delay:3s;   animation-duration:8s;">♥</div>
+<div class="bg-sparkle" style="left:35%;animation-delay:0.8s; animation-duration:12s;">✦</div>
+<div class="bg-sparkle" style="left:50%;animation-delay:2.2s; animation-duration:10s;">✿</div>
+<div class="bg-sparkle" style="left:63%;animation-delay:4s;   animation-duration:9s;">★</div>
+<div class="bg-sparkle" style="left:75%;animation-delay:1s;   animation-duration:13s;">✨</div>
+<div class="bg-sparkle" style="left:85%;animation-delay:3.5s; animation-duration:7s;">♥</div>
+<div class="bg-sparkle" style="left:92%;animation-delay:2s;   animation-duration:11s;">✦</div>
+
+<!-- Marquee ticker -->
+<div class="marquee-bar">
+  <div class="marquee-inner">
+    &nbsp;&nbsp;✨ welcome to M.A.S.H. fortune teller ✨ your destiny awaits ✨ powered by the stars ✨ best viewed in Internet Explorer 6.0 ✨ made with Paint.exe and ♥ ✨&nbsp;&nbsp;&nbsp;&nbsp;✨ welcome to M.A.S.H. fortune teller ✨ your destiny awaits ✨ powered by the stars ✨ best viewed in Internet Explorer 6.0 ✨ made with Paint.exe and ♥ ✨&nbsp;&nbsp;
+  </div>
+</div>
+
+<!-- Browser frame -->
+<div class="browser-frame">
+  <div class="browser-titlebar">
+    <div class="xp-btn xp-close">✕</div>
+    <div class="xp-btn xp-min">−</div>
+    <div class="xp-btn xp-max">□</div>
+    <div class="browser-title-text">✨ M.A.S.H. Fortune Teller ✨ — Microsoft Internet Explorer</div>
+  </div>
+  <div class="browser-toolbar">
+    <div class="browser-nav-btn">◀ Back</div>
+    <div class="browser-nav-btn">Forward ▶</div>
+    <div class="browser-nav-btn">⟳ Refresh</div>
+    <div class="address-bar">http://www.mash-fortune.geocities.com/destiny/index.html</div>
+    <div class="browser-nav-btn">Go ▶</div>
+  </div>
+  <div class="browser-body">
+
+    <!-- MASH Title (always visible) -->
     <h1 class="mash-h1">
       <span class="ml" id="ml-0">M</span><span class="md">.</span><span class="ml" id="ml-1">A</span><span class="md">.</span><span class="ml" id="ml-2">S</span><span class="md">.</span><span class="ml" id="ml-3">H</span><span class="md">.</span>
     </h1>
     <p class="mash-legend" id="mashLegend">Mansion · Apartment · Shack · House</p>
     <p class="subtitle" id="subtitle">✨ Your Future Has Already Been Written ✨</p>
-  </div>
 
-  <!-- ── SCREEN 1: INPUT ── -->
-  <div id="inputScreen" class="screen active">
-    <div class="categories-grid" id="inputGrid"></div>
+    <!-- SCREEN 0: LANDING (default active) -->
+    <div class="screen active" id="landingScreen">
+      <h2>~*~ pick your categories ~*~</h2>
 
-    <div class="number-section">
-      <label for="magicNum">🔢 Magic Number:</label>
-      <input type="number" id="magicNum" min="1" max="20" placeholder="?" />
-      <span class="or-text">— or —</span>
-      <button class="btn-spiral" id="spiralBtn">🌀 Pick for me!</button>
+      <div class="mash-badge-card">
+        🔒 <strong>M.A.S.H.</strong> (Mansion · Apartment · Shack · House) — Always Included!
+      </div>
+
+      <div class="category-grid" id="categoryGrid">
+        <!-- filled by JS -->
+      </div>
+
+      <div class="selected-counter" id="selectedCounter">7 / 7 selected</div>
+      <div class="min-tooltip" id="minTooltip">Need at least 3!</div>
+
+      <div class="play-btn-wrap">
+        <button class="btn btn-pink" id="playBtn" onclick="goToInput()" style="font-size:1.1rem;padding:14px 36px;">
+          💖 LET'S PLAY! 💖
+        </button>
+      </div>
     </div>
 
-    <button class="btn-reveal" id="revealBtn">✨ REVEAL MY FUTURE ✨</button>
-  </div>
+    <!-- SCREEN 1: INPUT -->
+    <div class="screen" id="inputScreen">
+      <span class="back-link" onclick="goToLanding()">← change categories</span>
+      <div id="inputGrid">
+        <!-- filled by JS -->
+      </div>
 
-  <!-- ── SCREEN 2: ELIMINATION ── -->
-  <div id="elimScreen" class="screen">
-    <div class="count-display">
-      <div class="count-label">Magic Number</div>
-      <div class="magic-num" id="magicNumDisplay">?</div>
+      <!-- Magic Number card -->
+      <div class="magic-section xp-window" style="padding:0;background:none;">
+        <div class="xp-titlebar">
+          <div class="xp-titlebar-text">🌀 Magic Number</div>
+          <div class="xp-btns">
+            <div class="xp-btn xp-close">✕</div>
+            <div class="xp-btn xp-min">−</div>
+            <div class="xp-btn xp-max">□</div>
+          </div>
+        </div>
+        <div class="xp-body" style="text-align:center;">
+          <div style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--dark-pink);margin-bottom:10px;">Choose your magic number (3–20)</div>
+          <div class="magic-input-row">
+            <input type="number" id="magicInput" min="3" max="20" placeholder="?">
+            <button class="btn btn-lavender btn-sm" onclick="pickMagicNumber()">🌀 Pick for me!</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal-btn-wrap">
+        <button class="btn btn-yellow" onclick="startElim()">✨ REVEAL MY FUTURE ✨</button>
+      </div>
     </div>
-    <div class="elim-status" id="elimStatus">Counting begins...</div>
-    <div class="categories-grid" id="elimGrid"></div>
-    <button class="btn-skip" id="skipBtn">⏩ Skip to results</button>
-  </div>
 
-  <!-- ── SCREEN 3: RESULTS ── -->
-  <div id="resultsScreen" class="screen">
-    <h2 class="results-title">🔮 Your Destiny Is Sealed! 🔮</h2>
-    <div class="destiny-story" id="destinyStory"></div>
-    <div class="results-grid" id="resultsGrid"></div>
-    <button class="btn-again" id="againBtn">🔄 Play Again!</button>
-  </div>
+    <!-- SCREEN 2: ELIMINATION -->
+    <div class="screen" id="elimScreen">
+      <div class="magic-num-display" id="elimMagicNum">?</div>
+      <div class="elim-status" id="elimStatus">Counting begins...</div>
+      <div class="elim-grid" id="elimGrid">
+        <!-- filled by JS -->
+      </div>
+      <div class="elim-btn-wrap">
+        <button class="btn btn-lavender" onclick="skipToResults()">⏩ Skip to results</button>
+      </div>
+    </div>
 
+    <!-- SCREEN 3: RESULTS -->
+    <div class="screen" id="resultsScreen">
+      <h2>🔮 Your Destiny Is Sealed! 🔮</h2>
+      <div class="destiny-story" id="destinyStory"></div>
+      <div class="results-grid" id="resultsGrid"></div>
+      <div class="play-again-wrap">
+        <button class="btn btn-pink" onclick="playAgain()" style="font-size:1.1rem;padding:14px 36px;">🔄 Play Again!</button>
+      </div>
+    </div>
+
+  </div><!-- /browser-body -->
+</div><!-- /browser-frame -->
+
+<!-- Footer -->
+<div class="retro-footer">
+  ✨ Best viewed in 800×600 ✨ Made with ♥ and Paint.exe ✨<br>
+  © 2003 mash-fortune.geocities.com — All rights reserved to the stars<br>
+  Visitors: <span class="visitor-counter" id="visitorCounter">000000</span>
 </div>
 
-<div class="confetti-container" id="confettiContainer"></div>
-
 <script>
-// ─────────────────────────────────────────────────────────────────────────────
-//  DATA
-// ─────────────────────────────────────────────────────────────────────────────
-
-// catIndex 0 = MASH (handled via title letters — no input card)
-// catIndex 1-7 = user-input categories
+// ===================== DATA =====================
 const CATEGORIES = [
   { key: 'mash',      label: 'Home Type',             emoji: '🏠', isMash: true,  options: ['Mansion','Apartment','Shack','House'] },
-  { key: 'city',      label: 'City You\'ll Live In',   emoji: '🌆', isMash: false, options: [] },
-  { key: 'marry',     label: 'Who You\'ll Marry',      emoji: '💕', isMash: false, options: [] },
-  { key: 'car',       label: 'Car You\'ll Drive',      emoji: '🚗', isMash: false, options: [] },
+  { key: 'city',      label: "City You'll Live In",   emoji: '🌆', isMash: false, options: [] },
+  { key: 'marry',     label: "Who You'll Marry",      emoji: '💕', isMash: false, options: [] },
+  { key: 'car',       label: "Car You'll Drive",      emoji: '🚗', isMash: false, options: [] },
   { key: 'job',       label: 'Your Job',               emoji: '💼', isMash: false, options: [] },
   { key: 'kids',      label: 'Number of Kids',         emoji: '👶', isMash: false, options: [] },
   { key: 'honeymoon', label: 'Honeymoon Destination',  emoji: '✈️', isMash: false, options: [] },
@@ -556,70 +827,58 @@ const CATEGORIES = [
 ];
 
 const PLACEHOLDERS = {
-  city:      ['e.g. New York City', 'e.g. Tokyo', 'e.g. The Moon', 'e.g. Bikini Bottom'],
-  marry:     ['e.g. Chris Hemsworth', 'e.g. Taylor Swift', 'e.g. Your Crush', 'e.g. A Mystery Person'],
-  car:       ['e.g. Lamborghini', 'e.g. Mom\'s Minivan', 'e.g. Rusty Bicycle', 'e.g. Shopping Cart'],
-  job:       ['e.g. Astronaut', 'e.g. TikTok Influencer', 'e.g. Professional Napper', 'e.g. Evil Overlord'],
-  kids:      ['e.g. 0', 'e.g. 2', 'e.g. 5', 'e.g. 47'],
-  honeymoon: ['e.g. Maldives', 'e.g. Paris', 'e.g. The Metaverse', 'e.g. Chuck E. Cheese'],
-  misc:      ['e.g. Win the lottery', 'e.g. Start a cult', 'e.g. Go viral', 'e.g. Become mayor'],
+  city:      ['e.g. New York City','e.g. Tokyo','e.g. The Moon','e.g. Bikini Bottom'],
+  marry:     ['e.g. Chris Hemsworth','e.g. Taylor Swift','e.g. Your Crush','e.g. A Mystery Person'],
+  car:       ['e.g. Lamborghini',"e.g. Mom's Minivan",'e.g. Rusty Bicycle','e.g. Shopping Cart'],
+  job:       ['e.g. Astronaut','e.g. TikTok Influencer','e.g. Professional Napper','e.g. Evil Overlord'],
+  kids:      ['e.g. 0','e.g. 2','e.g. 5','e.g. 47'],
+  honeymoon: ['e.g. Maldives','e.g. Paris','e.g. The Metaverse','e.g. Chuck E. Cheese'],
+  misc:      ['e.g. Win the lottery','e.g. Start a cult','e.g. Go viral','e.g. Become mayor'],
 };
 
 const RANDOM_POOLS = {
   city: [
-    // North America
     'New York City, USA','Los Angeles, USA','Chicago, USA','Miami, USA','New Orleans, USA',
     'Nashville, USA','Austin, USA','San Francisco, USA','Seattle, USA','Denver, USA',
     'Portland, USA','Savannah, USA','Asheville, USA','Charleston, USA','Sedona, USA',
     'New Haven, USA','Detroit, USA','Minneapolis, USA','Salt Lake City, USA','Honolulu, USA',
     'Toronto, Canada','Vancouver, Canada','Montreal, Canada','Quebec City, Canada',
     'Mexico City, Mexico','Cancún, Mexico','Oaxaca, Mexico',
-    // Europe
     'London, UK','Paris, France','Rome, Italy','Barcelona, Spain','Madrid, Spain',
     'Amsterdam, Netherlands','Berlin, Germany','Vienna, Austria','Prague, Czech Republic',
     'Budapest, Hungary','Lisbon, Portugal','Athens, Greece','Santorini, Greece',
     'Dublin, Ireland','Edinburgh, Scotland','Copenhagen, Denmark','Stockholm, Sweden',
     'Oslo, Norway','Reykjavik, Iceland','Zurich, Switzerland','Florence, Italy',
     'Venice, Italy','Dubrovnik, Croatia','Porto, Portugal','Seville, Spain',
-    // Asia
     'Tokyo, Japan','Kyoto, Japan','Osaka, Japan','Seoul, South Korea','Beijing, China',
     'Shanghai, China','Hong Kong','Singapore','Bangkok, Thailand','Bali, Indonesia',
     'Hanoi, Vietnam','Ho Chi Minh City, Vietnam','Chiang Mai, Thailand','Mumbai, India',
     'Jaipur, India','Kathmandu, Nepal','Colombo, Sri Lanka','Taipei, Taiwan',
     'Kuala Lumpur, Malaysia','Manila, Philippines','Ulaanbaatar, Mongolia',
-    // Middle East & Africa
     'Dubai, UAE','Abu Dhabi, UAE','Marrakech, Morocco','Cape Town, South Africa',
     'Nairobi, Kenya','Cairo, Egypt','Zanzibar, Tanzania','Accra, Ghana',
-    // South America & Caribbean
     'Buenos Aires, Argentina','Rio de Janeiro, Brazil','São Paulo, Brazil',
     'Cartagena, Colombia','Medellín, Colombia','Lima, Peru','Cusco, Peru',
     'Santiago, Chile','Montevideo, Uruguay','Havana, Cuba','San Juan, Puerto Rico',
-    // Oceania
     'Sydney, Australia','Melbourne, Australia','Auckland, New Zealand',
     'Queenstown, New Zealand','Fiji',
-    // Fun/silly
     'The Moon','Bikini Bottom','Narnia','Hogwarts','Middle Earth','Area 51',
     'A Van Down by the River','Atlantis','The Matrix','Antarctica',
   ],
   car: [
-    // Luxury/sports
     'Lamborghini Huracán','Ferrari 488 Spider','Bugatti Chiron','Rolls-Royce Phantom',
     'Bentley Continental GT','Aston Martin DB11','McLaren 720S','Porsche 911 Turbo S',
     'Mercedes-AMG GT','BMW M4 Competition','Audi R8','Maserati GranTurismo',
     'Jaguar F-Type','Lotus Emira','Pagani Huayra','Koenigsegg Agera',
-    // Electric
     'Tesla Model S Plaid','Tesla Cybertruck','Rivian R1T','Lucid Air Grand Touring',
     'BMW iX','Porsche Taycan','Mercedes EQS','Audi e-tron GT',
-    // Everyday / fun
     '1999 Honda Civic (with spoiler)','Toyota Camry (beige)','Jeep Wrangler',
     "Mom's Minivan","Dad's Pickup Truck",'Subaru Outback (with kayak on top)',
     'Ford Bronco','Chevy Silverado','Ram 1500','Toyota Tacoma',
     'Volkswagen Golf GTI','Mini Cooper S','Fiat 500','Smart Car',
     'Kia Soul','Honda Element','PT Cruiser (unironically)','Pontiac Aztek',
-    // Classic / quirky
     'DeLorean DMC-12','1967 Ford Mustang','1969 Chevrolet Camaro','VW Beetle (classic)',
     'Jeep Cherokee (1994)','Ford Pinto','AMC Gremlin',
-    // Nontraditional
     'Vespa Scooter','Moped','Electric Scooter','Vintage Bicycle','Fixie Bike',
     'Mountain Bike','E-Bike','Harley-Davidson Motorcycle','Sidecar Motorcycle',
     'Golf Cart','Riding Lawnmower','Segway','Skateboard (very fast)','Rollerblades',
@@ -627,26 +886,20 @@ const RANDOM_POOLS = {
     'Ice Cream Truck','Batmobile','Mystery Machine','Flintstones Car',
   ],
   job: [
-    // Traditional prestige
     'Astronaut','Surgeon','Fighter Pilot','Marine Biologist','Forensic Scientist',
     'Archaeologist','Architect','Civil Engineer','Diplomat','Judge',
     'Professor','Research Scientist','Pharmacist','Veterinarian','Geologist',
-    // Creative
     'Novelist','Screenwriter','Film Director','Musician','Stand-Up Comedian',
     'Graphic Designer','Fashion Designer','Interior Designer','Tattoo Artist',
     'Photographer','Podcast Host','Muralist','Video Game Developer','Animator',
     'Voiceover Artist','Playwright','Choreographer',
-    // Modern / tech
     'TikTok Influencer','YouTuber','Twitch Streamer','App Developer',
     'AI Prompt Engineer','Crypto Trader','NFT Artist (somehow profitable)','SEO Wizard',
     'UX Designer','Data Scientist','Cybersecurity Expert','Drone Operator',
-    // Food & hospitality
     'Michelin-Star Chef','Food Critic','Sommelier','Competitive BBQ Pitmaster',
     'Barista (world champion)','Chocolatier','Cheese Sommelier',
-    // Outdoor / adventurous
     'Professional Surfer','Mountain Guide','Wildlife Photographer','Park Ranger',
     'Deep Sea Diver','Storm Chaser','Antarctic Researcher',
-    // Wild cards
     'Professional Napper','Royal Food Taster','Dog Whisperer','Dragon Tamer',
     'Underwater Basket Weaver','Cryptid Researcher','Time Traveler','CEO of Vibes',
     'Professional Cuddler','Ethical Hacker','Professional Line-Stander',
@@ -657,7 +910,7 @@ const RANDOM_POOLS = {
   kids: [
     'None','None (just a very spoiled dog)','None (just 12 cats)','None (and thriving)',
     '1','2','3','4','5','6','7','8','10','12',
-    'A sports team\'s worth','Too many to count','47',
+    "A sports team's worth",'Too many to count','47',
   ],
   honeymoon: [
     'The Maldives','Bali, Indonesia','Paris, France','Santorini, Greece',
@@ -669,37 +922,30 @@ const RANDOM_POOLS = {
     'Las Vegas','New Orleans','Nashville','A Disney Cruise',
     'Overwater Bungalow (anywhere)','A Mediterranean Cruise',
     'Trans-Siberian Railway','A Nile River Cruise',
-    // Silly
     'The Moon','International Space Station','Narnia','Hogwarts','Middle Earth',
     'The Metaverse','Costco','Chuck E. Cheese','Area 51',
     'A Cruise to Nowhere','The Shire','Atlantis (resort OR the myth)',
   ],
   misc: [
-    // Fitness & adventure
     'Complete an Ironman Triathlon','Run a Marathon (all 26.2 miles)','Climb Mt. Everest',
     'Skydive over the Grand Canyon','Surf a 30-foot wave','Compete in the Olympics',
     'Complete a Spartan Race','Hike the Appalachian Trail','Summit Kilimanjaro',
     'Swim the English Channel','Cycle across the country','Compete in a Ninja Warrior course',
     'Run the Boston Marathon','Do a polar plunge in Antarctica','Learn to wingsuit fly',
-    // Water & vehicles
     'Own a boat','Charter a yacht for a summer','Learn to sail around the world',
-    'Get a pilot\'s license','Buy a vintage motorcycle and ride Route 66',
+    "Get a pilot's license","Buy a vintage motorcycle and ride Route 66",
     'Drive across the country with no GPS','Own a lake house',
-    // Creative & intellectual
     'Write and publish a novel','Record an album','Learn to play 3 instruments',
     'Speak 4 languages fluently','Earn a black belt in martial arts',
     'Master oil painting','Learn glassblowing','Write a screenplay that gets made',
     'Host your own cooking show','Design and build your own home',
     'Get a PhD just for fun','Learn to code and build an app',
-    // Social & giving
     'Start a successful charity','Build a school in another country',
     'Mentor 100 young professionals','Host a massive block party that becomes an annual tradition',
     'Organize a community garden','Volunteer on every continent',
-    // Fame & recognition
     'Get a star on the Hollywood Walk of Fame','Win a Grammy','Appear on a magazine cover',
     'Give a TED Talk','Be named to a Forbes list','Win a Pulitzer Prize',
     'Become a local legend','Have a street named after you',
-    // Wild & fun
     'Own a vineyard','Start a hot sauce company','Open a bookstore/café',
     'Buy a castle in Europe','Adopt a retired racehorse',
     'Throw the most epic birthday party anyone has ever seen',
@@ -710,229 +956,268 @@ const RANDOM_POOLS = {
     'Plant a forest (1,000+ trees)','Win a world record',
   ],
   marry_male: [
-    // Hollywood A-list
     'Chris Hemsworth','Ryan Reynolds','Brad Pitt','Leonardo DiCaprio','George Clooney',
     'Tom Hanks','Denzel Washington','Will Smith','Keanu Reeves','Morgan Freeman',
     'Johnny Depp','Robert Downey Jr.','Hugh Jackman','Matt Damon','Ben Affleck',
     'Bradley Cooper','Tom Cruise','Liam Neeson','Jude Law','Orlando Bloom',
-    // Current generation
     'Timothée Chalamet','Tom Holland','Zac Efron','Ansel Elgort','Dylan O\'Brien',
     'Noah Centineo','Cole Sprouse','KJ Apa','Charles Melton','Finn Wittrock',
     'Glen Powell','Jacob Elordi','Austin Butler','Barry Keoghan','Paul Mescal',
-    // Action / leading men
     'Dwayne Johnson','Idris Elba','Michael B. Jordan','Ryan Gosling','Pedro Pascal',
     'Oscar Isaac','Sebastian Stan','Anthony Mackie','Jon Hamm','Chris Pine',
     'Chris Evans','Chris Pratt','Jeremy Renner','Armie Hammer','Garrett Hedlund',
-    // Music
     'Harry Styles','Shawn Mendes','Zayn Malik','Drake','Bad Bunny',
     'Post Malone','Ed Sheeran','Bruno Mars','John Legend','Justin Timberlake',
     'The Weeknd','Frank Ocean','Usher','Justin Bieber','Niall Horan',
-    // Sports
     'LeBron James','Stephen Curry','Novak Djokovic','Rafael Nadal','Roger Federer',
     'Cristiano Ronaldo','Lionel Messi','Patrick Mahomes','Aaron Rodgers','Tom Brady',
-    // Wild cards
-    'Paul Rudd','Bill Murray (in his prime)','Pedro Almodóvar\'s muse','a very charming stranger',
+    'Paul Rudd','Bill Murray (in his prime)','a very charming stranger',
   ],
   marry_female: [
-    // Hollywood A-list
     'Beyoncé','Rihanna','Jennifer Lopez','Angelina Jolie','Sandra Bullock',
     'Meryl Streep (icon energy)','Cate Blanchett','Julia Roberts','Halle Berry',
     'Salma Hayek','Cameron Diaz','Drew Barrymore','Reese Witherspoon','Nicole Kidman',
     'Charlize Theron','Penélope Cruz','Eva Longoria','Sofia Vergara',
-    // Current generation
     'Taylor Swift','Zendaya','Selena Gomez','Ariana Grande','Olivia Rodrigo',
     'Billie Eilish','Sabrina Carpenter','Dua Lipa','Lizzo','Normani',
     'Camila Cabello','Doja Cat','SZA','Lana Del Rey','Gracie Abrams',
-    // Film
     'Jennifer Lawrence','Margot Robbie','Emma Stone','Scarlett Johansson','Gal Gadot',
     'Megan Fox','Ana de Armas','Florence Pugh','Anya Taylor-Joy','Sydney Sweeney',
     'Rachel McAdams','Natalie Portman','Keira Knightley','Emma Watson','Lupita Nyong\'o',
     'Viola Davis','Taraji P. Henson','Kerry Washington','Priyanka Chopra','Deepika Padukone',
-    // TV / streaming
     'Millie Bobby Brown','Jenna Ortega','Hailee Steinfeld','Alexandra Daddario',
     'Emilia Clarke','Sophie Turner','Maisie Williams','Elizabeth Olsen',
     'Kaley Cuoco','Mindy Kaling','Tina Fey','Amy Poehler','Sandra Oh',
-    // Sports
     'Serena Williams','Simone Biles','Alex Morgan','Megan Rapinoe',
-    'Naomi Osaka','Coco Gauff','Gabby Thomas','Sha\'Carri Richardson',
-    // Wild cards
+    'Naomi Osaka','Coco Gauff','Gabby Thomas',"Sha'Carri Richardson",
     'Dolly Parton (living legend)','Oprah (yes)','Michelle Obama (aspirational)',
   ],
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  STATE
-// ─────────────────────────────────────────────────────────────────────────────
-let magicNumber  = 0;
-let allOptions   = [];
-let counter      = 0;
-let animTimeout  = null;
+// ===================== STATE =====================
+let selectedCategoryKeys = new Set(['city','marry','car','job','kids','honeymoon','misc']);
+let magicNumber = 0;
+let allOptions = [];
+let counter = 0;
+let animTimeout = null;
+let elimIdx = 0;
+let marryGenders = ['neutral','neutral','neutral','neutral'];
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-function esc(str) {
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+// ===================== INIT =====================
+document.addEventListener('DOMContentLoaded', () => {
+  // Visitor counter
+  document.getElementById('visitorCounter').textContent =
+    String(Math.floor(Math.random() * 45000) + 5000).padStart(6,'0');
+
+  // Custom cursor: random color star SVG
+  const cursorColors = ['#FF69B4','#FF1493','#DA70D6','#BA55D3','#FF85C2','#DDA0DD','#87CEEB'];
+  const cc = cursorColors[Math.floor(Math.random() * cursorColors.length)];
+  const encodedColor = encodeURIComponent(cc);
+  const starSvg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolygon points='12%2C2 15%2C9 22%2C9 16.5%2C14 18.5%2C21 12%2C17 5.5%2C21 7.5%2C14 2%2C9 9%2C9' fill='${encodedColor}' stroke='white' stroke-width='1'/%3E%3C/svg%3E`;
+  document.documentElement.style.cursor = `url("${starSvg}") 12 12, auto`;
+
+  // Sparkle trail (throttled ~80ms)
+  let lastSparkle = 0;
+  const sparkChars = ['✦','★','✧','♥','✿','❋'];
+  const sparkColors = ['#FF69B4','#FF1493','#DA70D6','#BA55D3','#FF85C2','#DDA0DD','#87CEEB','#FFB6C1'];
+  document.addEventListener('mousemove', (e) => {
+    const now = Date.now();
+    if (now - lastSparkle < 80) return;
+    lastSparkle = now;
+    const div = document.createElement('div');
+    div.className = 'cursor-sparkle';
+    div.textContent = sparkChars[Math.floor(Math.random() * sparkChars.length)];
+    div.style.color = sparkColors[Math.floor(Math.random() * sparkColors.length)];
+    div.style.left = (e.clientX - 8) + 'px';
+    div.style.top  = (e.clientY - 8) + 'px';
+    document.body.appendChild(div);
+    setTimeout(() => div.remove(), 900);
+  });
+
+  buildCategoryGrid();
+});
+
+// ===================== LANDING SCREEN =====================
+function buildCategoryGrid() {
+  const grid = document.getElementById('categoryGrid');
+  grid.innerHTML = '';
+  CATEGORIES.filter(c => !c.isMash).forEach(cat => {
+    const card = document.createElement('div');
+    const isSel = selectedCategoryKeys.has(cat.key);
+    card.className = 'cat-card ' + (isSel ? 'selected' : 'deselected');
+    card.id = 'catCard_' + cat.key;
+    card.innerHTML = `
+      <span class="cat-check">✓</span>
+      <div class="cat-emoji">${cat.emoji}</div>
+      <div class="cat-name">${cat.label}</div>`;
+    card.addEventListener('click', () => toggleCategory(cat.key));
+    grid.appendChild(card);
+  });
+  updateCounter();
 }
 
-function getRandom(pool) {
-  return pool[Math.floor(Math.random() * pool.length)];
+function toggleCategory(key) {
+  const card = document.getElementById('catCard_' + key);
+  if (selectedCategoryKeys.has(key)) {
+    if (selectedCategoryKeys.size <= 3) {
+      card.classList.remove('shake');
+      void card.offsetWidth; // reflow to restart animation
+      card.classList.add('shake');
+      const tooltip = document.getElementById('minTooltip');
+      tooltip.style.display = 'block';
+      setTimeout(() => { tooltip.style.display = 'none'; }, 2000);
+      return;
+    }
+    selectedCategoryKeys.delete(key);
+    card.className = 'cat-card deselected';
+  } else {
+    selectedCategoryKeys.add(key);
+    card.className = 'cat-card selected';
+  }
+  updateCounter();
 }
 
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+function updateCounter() {
+  document.getElementById('selectedCounter').textContent =
+    selectedCategoryKeys.size + ' / 7 selected';
+  document.getElementById('playBtn').disabled = selectedCategoryKeys.size < 3;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  BUILD INPUT GRID
-// ─────────────────────────────────────────────────────────────────────────────
+function goToLanding() {
+  if (animTimeout) { clearTimeout(animTimeout); animTimeout = null; }
+  resetMashTitle();
+  document.getElementById('mashLegend').style.display = '';
+  document.getElementById('subtitle').style.display = '';
+  buildCategoryGrid();
+  showScreen('landingScreen');
+}
+
+function goToInput() {
+  if (selectedCategoryKeys.size < 3) {
+    const btn = document.getElementById('playBtn');
+    btn.classList.remove('shake');
+    void btn.offsetWidth;
+    btn.classList.add('shake');
+    return;
+  }
+  // Reset category options
+  CATEGORIES.forEach(cat => { if (!cat.isMash) cat.options = []; });
+  marryGenders = ['neutral','neutral','neutral','neutral'];
+  buildInputGrid();
+  showScreen('inputScreen');
+}
+
+// ===================== INPUT SCREEN =====================
 function buildInputGrid() {
   const grid = document.getElementById('inputGrid');
   grid.innerHTML = '';
-
-  // Only user-input categories (skip isMash)
-  CATEGORIES.filter(c => !c.isMash).forEach(cat => {
-    const card = document.createElement('div');
-    card.className = 'cat-card';
-    card.innerHTML = `<div class="cat-title">${cat.emoji} ${cat.label}</div>`;
-
-    const wrap = document.createElement('div');
-    wrap.className = 'option-inputs';
-    wrap.dataset.category = cat.key;
-
+  CATEGORIES.forEach(cat => {
+    if (cat.isMash || !selectedCategoryKeys.has(cat.key)) return;
+    const win = document.createElement('div');
+    win.className = 'xp-window';
+    let rowsHtml = '';
     for (let i = 0; i < 4; i++) {
-      const row = document.createElement('div');
-      row.className = 'input-row' + (cat.key === 'marry' ? ' marry-row' : '');
-
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.maxLength = 32;
-      input.placeholder = (PLACEHOLDERS[cat.key] || [])[i] || '';
-
-      row.appendChild(input);
-
-      // Gender toggle — only for marry
-      if (cat.key === 'marry') {
-        const gBtn = document.createElement('button');
-        gBtn.className = 'gender-btn';
-        gBtn.dataset.gender = 'any';
-        gBtn.title = 'Gender preference for random celebrity';
-        gBtn.textContent = '★';
-        row.appendChild(gBtn);
-      }
-
-      // Dice button
-      const dBtn = document.createElement('button');
-      dBtn.className = 'rand-btn';
-      dBtn.dataset.cat = cat.key;
-      dBtn.title = 'Random suggestion';
-      dBtn.textContent = '🎲';
-      row.appendChild(dBtn);
-
-      wrap.appendChild(row);
+      const ph = (PLACEHOLDERS[cat.key] || [])[i] || '';
+      const genderBtn = cat.key === 'marry'
+        ? `<button class="gender-btn" id="genderBtn_${i}" onclick="cycleGender(${i})" title="Toggle gender for random">★</button>`
+        : '';
+      rowsHtml += `
+        <div class="input-row">
+          <span style="font-family:'Fredoka One',cursive;font-size:1rem;color:var(--dark-pink);min-width:20px;flex-shrink:0;">${i+1}.</span>
+          <input type="text" id="inp_${cat.key}_${i}" placeholder="${ph}" autocomplete="off">
+          ${genderBtn}
+          <button class="dice-btn" onclick="rollDice('${cat.key}',${i})" title="Random!">🎲</button>
+        </div>`;
     }
-
-    card.appendChild(wrap);
-    grid.appendChild(card);
+    win.innerHTML = `
+      <div class="xp-titlebar">
+        <div class="xp-titlebar-text">${cat.emoji} ${cat.label}</div>
+        <div class="xp-btns">
+          <div class="xp-btn xp-close">✕</div>
+          <div class="xp-btn xp-min">−</div>
+          <div class="xp-btn xp-max">□</div>
+        </div>
+      </div>
+      <div class="xp-body">${rowsHtml}</div>`;
+    grid.appendChild(win);
   });
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  RANDOM GENERATION (dice buttons + gender toggle)
-// ─────────────────────────────────────────────────────────────────────────────
-document.getElementById('inputGrid').addEventListener('click', e => {
-  // Gender button cycle
-  if (e.target.classList.contains('gender-btn')) {
-    const btn = e.target;
-    const cur = btn.dataset.gender;
-    const next = cur === 'any' ? 'male' : cur === 'male' ? 'female' : 'any';
-    btn.dataset.gender = next;
-    btn.textContent = next === 'male' ? '♂' : next === 'female' ? '♀' : '★';
-    return;
-  }
+function cycleGender(idx) {
+  const states = ['neutral','male','female'];
+  const labels = { neutral:'★', male:'♂', female:'♀' };
+  const cur = marryGenders[idx] || 'neutral';
+  const next = states[(states.indexOf(cur) + 1) % 3];
+  marryGenders[idx] = next;
+  const btn = document.getElementById('genderBtn_' + idx);
+  if (btn) btn.textContent = labels[next];
+}
 
-  // Dice button
-  if (e.target.classList.contains('rand-btn')) {
-    const btn  = e.target;
-    const cat  = btn.dataset.cat;
-    const row  = btn.closest('.input-row');
-    const input = row.querySelector('input');
-    if (!input) return;
+function getMarryPool(gender) {
+  if (gender === 'male')   return RANDOM_POOLS.marry_male;
+  if (gender === 'female') return RANDOM_POOLS.marry_female;
+  return [...RANDOM_POOLS.marry_male, ...RANDOM_POOLS.marry_female];
+}
 
-    let val;
-    if (cat === 'marry') {
-      const gBtn   = row.querySelector('.gender-btn');
-      const gender = gBtn ? gBtn.dataset.gender : 'any';
-      const pool   = gender === 'male'   ? RANDOM_POOLS.marry_male
-                   : gender === 'female' ? RANDOM_POOLS.marry_female
-                   : [...RANDOM_POOLS.marry_male, ...RANDOM_POOLS.marry_female];
-      val = getRandom(pool);
-    } else {
-      val = getRandom(RANDOM_POOLS[cat] || []);
+function rollDice(key, idx) {
+  const pool = key === 'marry'
+    ? getMarryPool(marryGenders[idx] || 'neutral')
+    : (RANDOM_POOLS[key] || []);
+  if (!pool.length) return;
+  const inp = document.getElementById('inp_' + key + '_' + idx);
+  if (inp) inp.value = pool[Math.floor(Math.random() * pool.length)];
+}
+
+function pickMagicNumber() {
+  document.getElementById('magicInput').value = Math.floor(Math.random() * 18) + 3;
+}
+
+function startElim() {
+  // Collect inputs
+  CATEGORIES.forEach(cat => {
+    if (cat.isMash || !selectedCategoryKeys.has(cat.key)) return;
+    cat.options = [];
+    for (let i = 0; i < 4; i++) {
+      const inp = document.getElementById('inp_' + cat.key + '_' + i);
+      const raw = inp ? inp.value.trim() : '';
+      const fallback = (PLACEHOLDERS[cat.key] || [])[i]
+        ? (PLACEHOLDERS[cat.key][i]).replace(/^e\.g\. /,'')
+        : ('Option ' + (i+1));
+      cat.options.push(raw || fallback);
     }
-
-    input.value = val;
-    btn.style.transition = 'transform 0.25s';
-    btn.style.transform  = 'rotate(180deg) scale(1.2)';
-    setTimeout(() => { btn.style.transform = ''; }, 280);
-  }
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-//  SPIRAL / RANDOM NUMBER
-// ─────────────────────────────────────────────────────────────────────────────
-document.getElementById('spiralBtn').addEventListener('click', () => {
-  const n = Math.floor(Math.random() * 9) + 2;
-  document.getElementById('magicNum').value = n;
-  const btn = document.getElementById('spiralBtn');
-  btn.textContent = `🌀 Got ${n}!`;
-  setTimeout(() => { btn.textContent = '🌀 Pick for me!'; }, 1500);
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-//  REVEAL
-// ─────────────────────────────────────────────────────────────────────────────
-document.getElementById('revealBtn').addEventListener('click', () => {
-  const num = parseInt(document.getElementById('magicNum').value, 10);
-  if (!num || num < 1) {
-    alert('Please enter a magic number (or let us pick one for you)!');
-    return;
-  }
-
-  // Collect user inputs
-  const errors = [];
-  document.querySelectorAll('#inputGrid .option-inputs').forEach(wrap => {
-    const key  = wrap.dataset.category;
-    const vals = [...wrap.querySelectorAll('input')].map(i => i.value.trim()).filter(Boolean);
-    const cat  = CATEGORIES.find(c => c.key === key);
-    if (!cat) return;
-    if (vals.length < 2) { errors.push(cat.label); return; }
-    cat.options = vals;
   });
 
-  if (errors.length) {
-    alert(`Please fill in at least 2 options for: ${errors.join(', ')}`);
-    return;
-  }
+  // Magic number
+  let mn = parseInt(document.getElementById('magicInput').value);
+  if (isNaN(mn) || mn < 3 || mn > 20) mn = Math.floor(Math.random() * 18) + 3;
+  magicNumber = mn;
+  document.getElementById('magicInput').value = mn;
 
-  magicNumber = num;
-  startElimination();
-});
+  buildAllOptions();
+  counter = 0;
+  elimIdx = 0;
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  ELIMINATION — SETUP
-// ─────────────────────────────────────────────────────────────────────────────
+  document.getElementById('elimMagicNum').textContent = magicNumber;
+  document.getElementById('elimStatus').textContent = 'Counting begins...';
+  renderElimGrid(-1);
+  showScreen('elimScreen');
+  document.getElementById('mashLegend').style.display = '';
+  document.getElementById('subtitle').style.display = '';
+
+  animTimeout = setTimeout(runElimStep, 600);
+}
+
+// ===================== GAME LOGIC =====================
 function buildAllOptions() {
   allOptions = [];
   CATEGORIES.forEach((cat, ci) => {
+    if (!cat.isMash && !selectedCategoryKeys.has(cat.key)) return;
     cat.options.forEach((text, oi) => {
       allOptions.push({ catIndex: ci, optIndex: oi, text, eliminated: false, winner: false });
     });
   });
 }
 
-// Returns options only from categories that still have >1 non-eliminated non-winner
 function getActive() {
   return allOptions.filter(o => {
     if (o.eliminated || o.winner) return false;
@@ -944,336 +1229,280 @@ function getActive() {
 }
 
 function isDone() {
-  return CATEGORIES.every((_, ci) => {
-    const rem = allOptions.filter(o => o.catIndex === ci && !o.eliminated && !o.winner).length;
-    return rem === 1;
-  });
+  const activeCatIndices = [...new Set(allOptions.map(o => o.catIndex))];
+  return activeCatIndices.length > 0 && activeCatIndices.every(ci =>
+    allOptions.filter(o => o.catIndex === ci && !o.eliminated && !o.winner).length <= 1
+  );
 }
 
 function finalizeWinners() {
-  CATEGORIES.forEach((_, ci) => {
+  const activeCatIndices = [...new Set(allOptions.map(o => o.catIndex))];
+  activeCatIndices.forEach(ci => {
     const survivors = allOptions.filter(o => o.catIndex === ci && !o.eliminated && !o.winner);
     if (survivors.length === 1) survivors[0].winner = true;
   });
 }
 
-function startElimination() {
-  buildAllOptions();
-  counter = 0;
-
-  // Reset MASH letters
-  [0, 1, 2, 3].forEach(i => {
-    const el = document.getElementById(`ml-${i}`);
-    if (el) el.className = 'ml';
-  });
-  document.getElementById('mashLegend').style.display = '';
-
-  document.getElementById('magicNumDisplay').textContent = magicNumber;
-  document.getElementById('subtitle').textContent = '⚡ The Fates Are Deciding... ⚡';
-
-  renderElimGrid(-1);
-  showScreen('elimScreen');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  setTimeout(runElimStep, 500);
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-//  ELIMINATION — ANIMATION LOOP
-// ─────────────────────────────────────────────────────────────────────────────
 function runElimStep() {
   if (isDone()) {
     finalizeWinners();
-    renderElimGrid(-1);
-    updateMashTitle(-1);
-    document.getElementById('elimStatus').textContent = '✨ Your fate is sealed! ✨';
-    setTimeout(showResults, 1500);
+    updateMashTitle();
+    setTimeout(showResults, 800);
     return;
   }
 
   const active = getActive();
   if (active.length === 0) {
-    // Safety: force-finalize any categories with exactly 1 left
     finalizeWinners();
-    renderElimGrid(-1);
-    updateMashTitle(-1);
+    updateMashTitle();
     setTimeout(showResults, 800);
     return;
   }
 
-  const eliminateIdx = (counter + magicNumber - 1) % active.length;
-  const toEliminate  = active[eliminateIdx];
-  const globalIdx    = allOptions.indexOf(toEliminate);
-
-  // Update counter: after removal, the item that was at eliminateIdx+1
-  // occupies eliminateIdx in the new list
-  counter = eliminateIdx % Math.max(1, active.length - 1);
-
-  // Highlight before eliminating
+  const currentTarget = active[elimIdx % active.length];
+  const globalIdx = allOptions.indexOf(currentTarget);
   renderElimGrid(globalIdx);
-  updateMashTitle(globalIdx);
+  document.getElementById('elimStatus').textContent =
+    `Counting... ${(elimIdx % magicNumber) + 1} of ${magicNumber}`;
 
-  const isMashOpt = toEliminate.catIndex === 0;
-  const label = isMashOpt
-    ? `Crossing off the letter ${['M','A','S','H'][toEliminate.optIndex]}! (${toEliminate.text}) 💥`
-    : `Eliminating: "${esc(toEliminate.text)}" 💥`;
-  document.getElementById('elimStatus').textContent = label;
+  elimIdx++;
+  counter = elimIdx % Math.max(1, active.length - 1);
 
-  animTimeout = setTimeout(() => {
-    toEliminate.eliminated = true;
+  if (elimIdx % magicNumber === 0) {
+    // Eliminate
+    const victim = active[(elimIdx - 1) % active.length];
+    victim.eliminated = true;
     renderElimGrid(-1);
-    updateMashTitle(-1);
-
-    setTimeout(runElimStep, 340);
-  }, 420);
+    document.getElementById('elimStatus').textContent = `✕ "${victim.text}" is eliminated!`;
+    updateMashTitle();
+    animTimeout = setTimeout(runElimStep, 700);
+  } else {
+    animTimeout = setTimeout(runElimStep, 180);
+  }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  SKIP
-// ─────────────────────────────────────────────────────────────────────────────
-document.getElementById('skipBtn').addEventListener('click', () => {
-  if (animTimeout) clearTimeout(animTimeout);
-
-  // Run all eliminations instantly
+function skipToResults() {
+  if (animTimeout) { clearTimeout(animTimeout); animTimeout = null; }
   let safety = 0;
-  while (!isDone() && safety < 500) {
-    safety++;
+  while (!isDone() && safety < 20000) {
     const active = getActive();
-    if (active.length === 0) break;
-    const idx = (counter + magicNumber - 1) % active.length;
-    counter = idx % Math.max(1, active.length - 1);
-    active[idx].eliminated = true;
+    if (!active.length) break;
+    elimIdx++;
+    if (elimIdx % magicNumber === 0) {
+      const victim = active[(elimIdx - 1) % active.length];
+      victim.eliminated = true;
+    }
+    safety++;
   }
-
   finalizeWinners();
-  renderElimGrid(-1);
-  updateMashTitle(-1);
+  updateMashTitle();
   showResults();
-});
+}
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  RENDER ELIMINATION GRID (skips MASH category — handled by title)
-// ─────────────────────────────────────────────────────────────────────────────
+// ===================== ELIM GRID =====================
 function renderElimGrid(currentGlobalIdx) {
   const grid = document.getElementById('elimGrid');
   grid.innerHTML = '';
-
   CATEGORIES.forEach((cat, ci) => {
-    if (cat.isMash) return; // MASH handled by title letters
-
+    if (cat.isMash) return;
+    if (!selectedCategoryKeys.has(cat.key)) return;
     const card = document.createElement('div');
-    card.className = 'elim-card';
-    card.innerHTML = `<div class="cat-title">${cat.emoji} ${cat.label}</div>`;
-
-    cat.options.forEach((text, oi) => {
-      const opt = allOptions.find(o => o.catIndex === ci && o.optIndex === oi);
-      if (!opt) return;
-      const gIdx = allOptions.indexOf(opt);
-
+    card.className = 'elim-cat-card';
+    const titleBar = document.createElement('div');
+    titleBar.className = 'elim-cat-title';
+    titleBar.textContent = cat.emoji + ' ' + cat.label;
+    card.appendChild(titleBar);
+    allOptions.filter(o => o.catIndex === ci).forEach(opt => {
+      const gi = allOptions.indexOf(opt);
       const div = document.createElement('div');
-      div.className = 'option-item';
-      if      (opt.winner)                  div.classList.add('winner');
-      else if (opt.eliminated)              div.classList.add('eliminated');
-      else if (gIdx === currentGlobalIdx)   div.classList.add('current');
-      else                                  div.classList.add('active');
-
-      div.innerHTML = `<span class="dot"></span><span class="option-text">${esc(text)}</span>`;
+      div.className = 'elim-option';
+      if (opt.winner) {
+        div.classList.add('winner');
+        div.textContent = '🏆 ' + opt.text;
+      } else if (opt.eliminated) {
+        div.classList.add('eliminated');
+        div.textContent = opt.text;
+      } else if (gi === currentGlobalIdx) {
+        div.classList.add('current-highlight');
+        div.textContent = '👉 ' + opt.text;
+      } else {
+        div.textContent = opt.text;
+      }
       card.appendChild(div);
     });
-
     grid.appendChild(card);
   });
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  UPDATE MASH TITLE LETTERS
-// ─────────────────────────────────────────────────────────────────────────────
-function updateMashTitle(currentGlobalIdx) {
-  const mashOpts = allOptions.filter(o => o.catIndex === 0);
-  mashOpts.forEach((opt, i) => {
-    const el = document.getElementById(`ml-${i}`);
+// ===================== MASH TITLE =====================
+function updateMashTitle() {
+  const mashCat = CATEGORIES.find(c => c.isMash);
+  const ci = CATEGORIES.indexOf(mashCat);
+  allOptions.filter(o => o.catIndex === ci).forEach((opt, i) => {
+    const el = document.getElementById('ml-' + i);
     if (!el) return;
     el.className = 'ml';
-    const gIdx = allOptions.indexOf(opt);
-    if      (opt.winner)                  el.classList.add('ml-winner');
-    else if (opt.eliminated)              el.classList.add('ml-eliminated');
-    else if (gIdx === currentGlobalIdx)   el.classList.add('ml-current');
+    if (opt.winner)    el.classList.add('ml-winner');
+    else if (opt.eliminated) el.classList.add('ml-eliminated');
   });
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  RESULTS
-// ─────────────────────────────────────────────────────────────────────────────
-function showResults() {
-  document.getElementById('subtitle').textContent = '🔮 The Future Has Spoken! 🔮';
-  document.getElementById('mashLegend').style.display = 'none';
+function resetMashTitle() {
+  for (let i = 0; i < 4; i++) {
+    const el = document.getElementById('ml-' + i);
+    if (el) el.className = 'ml';
+  }
+}
 
-  // Build winners map
+// ===================== RESULTS =====================
+function showResults() {
+  finalizeWinners();
   const winners = {};
   CATEGORIES.forEach((cat, ci) => {
     const w = allOptions.find(o => o.catIndex === ci && o.winner);
-    winners[cat.key] = w ? w.text : '???';
+    if (w) winners[cat.key] = w.text;
   });
-
-  buildDestinyStory(winners);
+  document.getElementById('destinyStory').innerHTML = buildDestinyStory(winners);
   buildResultCards(winners);
   showScreen('resultsScreen');
+  document.getElementById('mashLegend').style.display = 'none';
+  document.getElementById('subtitle').style.display = 'none';
   launchConfetti();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function w(text) {
-  return `<span class="winner-word">${esc(text)}</span>`;
-}
-
-function buildDestinyStory(winners) {
-  const { mash, city, marry, car, job, kids, honeymoon, misc } = winners;
-
-  const homeCommentary = {
-    'Mansion':   "Yes — an actual, full-on <em>mansion</em>. Multiple wings. Probably a tennis court. You made it, babe.",
-    'Apartment': "Hey, it's cozy, it's chic, and it's definitely covered in IKEA furniture. Location is everything.",
-    'Shack':     "Look — a shack builds character. It also builds drafts, but you'll call it 'rustic charm' and people will believe you.",
-    'House':     "A house! With an actual yard! Maybe a white picket fence. Very classic, very you, very American dream.",
-  }[mash] || "Home is where the heart is, and your heart apparently lives there.";
-
-  const carCommentary = (() => {
-    const lower = car.toLowerCase();
-    if (lower.includes('cart') || lower.includes('lawnmower') || lower.includes('jetski')) return "Honestly? It's a statement. Nobody will see you coming.";
-    if (lower.includes('minivan')) return "Look, the minivan is underrated and you know it.";
-    if (lower.includes('lamborghini') || lower.includes('ferrari') || lower.includes('bugatti')) return "Okay, we see you. Pulling up like you own the place (because you do).";
-    if (lower.includes('batmobile')) return "This is the most legendary outcome in MASH history. Congratulations.";
-    return "A bold automotive choice that really speaks to your personality.";
-  })();
-
-  const jobCommentary = (() => {
-    const lower = job.toLowerCase();
-    if (lower.includes('napper'))    return "The hours are incredible. The benefits include unlimited pillows. We're jealous.";
-    if (lower.includes('overlord'))  return "An inspired career path. We won't ask too many questions.";
-    if (lower.includes('astronaut')) return "Aim for the stars — literally. Godspeed.";
-    if (lower.includes('influencer')) return "The algorithm has chosen you. There is no escape.";
-    if (lower.includes('traveler'))  return "The timeline thanks you in advance. Try not to break anything.";
-    return "Your parents will eventually stop asking when you're getting a 'real job.' Eventually.";
-  })();
-
-  const kidsStr = (() => {
-    const n = kids.toLowerCase();
-    if (n === '0') return "zero kids — very on brand, very at peace";
-    if (n === '1') return "one kid (the chosen one)";
-    if (n.includes('sports')) return "a full sports team's worth of children";
-    if (n.includes('too many') || n.includes('count')) return "more children than anyone dared to count";
-    if (n.includes('cat')) return kids; // preserve funny answers
-    return `${kids} kid${kids === '1' ? '' : 's'}`;
-  })();
-
-  const honeyCommentary = (() => {
-    const lower = honeymoon.toLowerCase();
-    if (lower.includes('costco'))    return "You'll buy 600 rolls of paper towels and call it romantic. Fair enough.";
-    if (lower.includes('moon') || lower.includes('space')) return "Pack light. Very, very light. Oxygen is limited.";
-    if (lower.includes('metaverse')) return "Put on the headset. Try not to get motion sickness on your honeymoon.";
-    if (lower.includes('narnia') || lower.includes('hogwarts') || lower.includes('middle earth')) return "The travel agent had some questions, but you insisted. Legend.";
-    if (lower.includes('chuck'))     return "An unconventional choice. The animatronic bear will perform at the reception. Free of charge.";
-    return "An absolutely iconic choice. The photos are going to be *chef's kiss*.";
-  })();
-
-  const html = `
-    <p>Congratulations — your future has been <strong>officially, irrevocably sealed</strong> by the ancient and infallible art of M.A.S.H. You may attempt to argue with the results. The results will not care.</p>
-
-    <p>You will be living it up in a ${w(mash)} located in the heart of ${w(city)}. ${homeCommentary}</p>
-
-    <p>Your partner in life, love, chaos, and splitting the WiFi bill will be none other than <strong>${w(marry)}</strong>. Together, you'll cruise the streets of ${w(city)} in ${w(car)}. ${carCommentary}</p>
-
-    <p>Career-wise, the world will know you as a ${w(job)}. ${jobCommentary}</p>
-
-    <p>As for family life — you and ${w(marry)} will raise ${w(kidsStr)} together. Whether that number fills you with joy or mild existential dread is entirely between you and your therapist.</p>
-
-    <p>Your honeymoon? An unforgettable journey to ${w(honeymoon)}. ${honeyCommentary}</p>
-
-    <p>And just when you think life couldn't get any more interesting: <strong>${w(misc)}</strong>. Nobody will see it coming. Especially you. There will be a documentary about it someday.</p>
-
-    <p><strong>Now go live your best life. The stars have spoken, the numbers have decided, and M.A.S.H. never lies. ✨</strong></p>
-  `;
-
-  document.getElementById('destinyStory').innerHTML = html;
 }
 
 function buildResultCards(winners) {
   const grid = document.getElementById('resultsGrid');
   grid.innerHTML = '';
-
-  const display = [
-    { emoji: '🏠', label: 'Home Type',            val: winners.mash },
-    { emoji: '🌆', label: 'City',                 val: winners.city },
-    { emoji: '💕', label: 'Who You\'ll Marry',    val: winners.marry },
-    { emoji: '🚗', label: 'Car',                  val: winners.car },
-    { emoji: '💼', label: 'Job',                  val: winners.job },
-    { emoji: '👶', label: 'Kids',                 val: winners.kids },
-    { emoji: '✈️', label: 'Honeymoon',            val: winners.honeymoon },
-    { emoji: '🎲', label: 'Life Event',           val: winners.misc },
-  ];
-
-  display.forEach(item => {
+  CATEGORIES.forEach(cat => {
+    if (!winners[cat.key]) return;
     const card = document.createElement('div');
     card.className = 'result-card';
     card.innerHTML = `
-      <div class="rc-emoji">${item.emoji}</div>
-      <div class="rc-label">${item.label}</div>
-      <div class="rc-value">${esc(item.val)}</div>
-    `;
+      <div class="result-emoji">${cat.emoji}</div>
+      <div class="result-cat-name">${cat.label.toUpperCase()}</div>
+      <div class="result-value">${winners[cat.key]}</div>`;
     grid.appendChild(card);
   });
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  CONFETTI
-// ─────────────────────────────────────────────────────────────────────────────
-const CONFETTI_COLORS = ['#ff3cac','#ffe135','#39ff14','#00f5ff','#ff6b35','#784ba0','#fff','#ff2d55'];
+function buildDestinyStory(winners) {
+  const parts = [];
 
+  let opening = '✨ The stars have spoken, the spiral has counted, and your destiny is now sealed! ';
+  if (winners.mash) {
+    const homeComments = {
+      'Mansion':   'You will be living large — and we mean <em>large</em> — in a stunning <strong>Mansion</strong>!',
+      'Apartment': 'City life suits you! You will be thriving in a fabulous <strong>Apartment</strong>.',
+      'Shack':     'Listen, a <strong>Shack</strong> can be very cozy. Very rustic. Very... character-building.',
+      'House':     'A beautiful <strong>House</strong> will be your castle, your sanctuary, your vibe.',
+    };
+    opening += (homeComments[winners.mash] || `Your home: <strong>${winners.mash}</strong>.`) + ' ';
+  }
+  parts.push(`<p>${opening}</p>`);
+
+  if (winners.city) {
+    const intros = ['Buckle up buttercup,','Pack your bags,','Plot twist:','The universe has decided:','Hold on to your heart because'];
+    const intro = intros[Math.floor(Math.random() * intros.length)];
+    const exotic = ['Moon','Narnia','Hogwarts','Atlantis','Bikini Bottom','Area 51','Antarctica'].some(x => winners.city.includes(x));
+    parts.push(`<p>${intro} you will be calling <strong>${winners.city}</strong> home sweet home! ${exotic ? 'Truly, you are a pioneer.' : 'Start Googling real estate now.'}</p>`);
+  }
+
+  if (winners.marry) {
+    const lines = [
+      `As for your love life — prepare yourself — you are destined to marry <strong>${winners.marry}</strong>! We hope you have their number.`,
+      `In the department of romance, the cosmos have matched you with <strong>${winners.marry}</strong>. Congratulations, we think!`,
+      `Love is in the air! And apparently that love belongs to <strong>${winners.marry}</strong>. May your WiFi passwords always be shared.`,
+    ];
+    parts.push(`<p>${lines[Math.floor(Math.random() * lines.length)]}</p>`);
+  }
+
+  if (winners.kids) {
+    const kv = winners.kids;
+    let kidLine;
+    if (kv === 'None' || kv.startsWith('None')) {
+      kidLine = `On the topic of children: <strong>${kv}</strong>. More time for you (and your pets, apparently).`;
+    } else if (kv === '47' || kv.includes("sports team") || kv.includes('Too many')) {
+      kidLine = `The kid situation is... a lot. Specifically: <strong>${kv}</strong>. You will definitely need a bigger ${winners.mash || 'home'}.`;
+    } else {
+      kidLine = `The little ones department: you will have <strong>${kv}</strong> kid${kv === '1' ? '' : 's'}. ${parseInt(kv) >= 4 ? 'Respect.' : 'Sweet!'}`;
+    }
+    parts.push(`<p>${kidLine}</p>`);
+  }
+
+  if (winners.car) {
+    const carLines = [
+      `Your daily chariot will be a <strong>${winners.car}</strong>. Arrive in style (or at least arrive).`,
+      `Transportation-wise, you will be rolling around in a <strong>${winners.car}</strong>. Vroom (or squeak).`,
+      `Every morning you will walk out to your <strong>${winners.car}</strong>. We hope it starts.`,
+    ];
+    parts.push(`<p>${carLines[Math.floor(Math.random() * carLines.length)]}</p>`);
+  }
+
+  if (winners.job) {
+    const jobLines = [
+      `To fund all of this fabulousness, your career will be: <strong>${winners.job}</strong>. Update that LinkedIn!`,
+      `Professionally speaking, you are going to be a <strong>${winners.job}</strong>. The world is not ready.`,
+      `Your colleagues will know you as the legendary <strong>${winners.job}</strong>. Business cards incoming.`,
+    ];
+    parts.push(`<p>${jobLines[Math.floor(Math.random() * jobLines.length)]}</p>`);
+  }
+
+  if (winners.honeymoon) {
+    let hExtras = '';
+    if (winners.honeymoon.includes('Chuck E.')) hExtras = '...Okay, but the tokens are unlimited.';
+    else if (winners.honeymoon.includes('Costco')) hExtras = '...Bulk buy your way to romance.';
+    else if (winners.honeymoon.includes('Metaverse')) hExtras = 'Very futuristic of you.';
+    else hExtras = 'Pack your sunscreen and your dancing shoes.';
+    parts.push(`<p>And for your honeymoon? Only the best: <strong>${winners.honeymoon}</strong>! ${hExtras}</p>`);
+  }
+
+  if (winners.misc) {
+    parts.push(`<p>Oh, and one more thing the stars insist you will do: <strong>${winners.misc}</strong>. You heard it here first. ✨</p>`);
+  }
+
+  parts.push(`<p style="font-style:italic;opacity:0.8;">This has been your official M.A.S.H. prophecy. The spiral never lies. 🔮💕</p>`);
+  return parts.join('');
+}
+
+function playAgain() {
+  if (animTimeout) { clearTimeout(animTimeout); animTimeout = null; }
+  allOptions = [];
+  counter = 0;
+  elimIdx = 0;
+  magicNumber = 0;
+  CATEGORIES.forEach(cat => { if (!cat.isMash) cat.options = []; });
+  marryGenders = ['neutral','neutral','neutral','neutral'];
+  goToLanding();
+}
+
+// ===================== SCREEN HELPER =====================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ===================== CONFETTI =====================
 function launchConfetti() {
   const container = document.getElementById('confettiContainer');
   container.innerHTML = '';
-  for (let i = 0; i < 90; i++) {
-    const p = document.createElement('div');
-    p.className = 'confetti-piece';
-    p.style.cssText = `
-      left:${Math.random()*100}%;
-      background:${CONFETTI_COLORS[Math.floor(Math.random()*CONFETTI_COLORS.length)]};
-      width:${6+Math.random()*10}px;
-      height:${8+Math.random()*12}px;
-      border-radius:${Math.random()>0.5?'50%':'2px'};
-      animation-duration:${1.5+Math.random()*2.5}s;
-      animation-delay:${Math.random()*0.8}s;
-      opacity:${0.7+Math.random()*0.3};
+  const colors = ['#FF69B4','#FFB6C1','#DDA0DD','#BA55D3','#87CEEB','#FFE566','#98FFD9','#FF1493'];
+  for (let i = 0; i < 120; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    const size = Math.random() * 10 + 6;
+    piece.style.cssText = `
+      left: ${Math.random() * 100}vw;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      width: ${size}px;
+      height: ${size}px;
+      border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+      animation-duration: ${Math.random() * 2.5 + 1.5}s;
+      animation-delay: ${Math.random() * 1.5}s;
     `;
-    container.appendChild(p);
+    container.appendChild(piece);
   }
-  setTimeout(() => { container.innerHTML = ''; }, 4500);
+  setTimeout(() => { container.innerHTML = ''; }, 5500);
 }
-
-// ─────────────────────────────────────────────────────────────────────────────
-//  PLAY AGAIN
-// ─────────────────────────────────────────────────────────────────────────────
-document.getElementById('againBtn').addEventListener('click', () => {
-  CATEGORIES.forEach(cat => { if (!cat.isMash) cat.options = []; });
-  document.querySelectorAll('#inputGrid input').forEach(i => { i.value = ''; });
-  document.querySelectorAll('#inputGrid .gender-btn').forEach(b => {
-    b.dataset.gender = 'any';
-    b.textContent = '★';
-  });
-  document.getElementById('magicNum').value = '';
-  document.getElementById('subtitle').textContent = '✨ Your Future Has Already Been Written ✨';
-  document.getElementById('mashLegend').style.display = '';
-  [0,1,2,3].forEach(i => {
-    const el = document.getElementById(`ml-${i}`);
-    if (el) el.className = 'ml';
-  });
-  showScreen('inputScreen');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-//  INIT
-// ─────────────────────────────────────────────────────────────────────────────
-buildInputGrid();
 </script>
 </body>
 </html>
