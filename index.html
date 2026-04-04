@@ -3,1506 +3,963 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>M.A.S.H. Fortune Teller ✨</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>im good ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --hot-pink: #FF1493;
-    --dark-pink: #AA0066;
-    --light-pink: #FFF0F7;
-    --mid-pink: #FFB6C1;
-    --bar-start: #FF9DD8;
-    --bar-end: #FF5DAE;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'Nunito', sans-serif;
-    background-color: var(--light-pink);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ctext x='5' y='20' font-size='14' fill='%23FFB6C1' opacity='0.5'%3E%E2%98%85%3C/text%3E%3Ctext x='35' y='45' font-size='10' fill='%23FFB6C1' opacity='0.4'%3E%E2%99%A5%3C/text%3E%3Ctext x='50' y='15' font-size='8' fill='%23FF9DD8' opacity='0.3'%3E%E2%9C%A6%3C/text%3E%3Ctext x='15' y='55' font-size='7' fill='%23DDA0DD' opacity='0.35'%3E%E2%98%85%3C/text%3E%3Ctext x='28' y='28' font-size='6' fill='%23FF69B4' opacity='0.25'%3E%E2%99%A5%3C/text%3E%3C/svg%3E");
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 16px;
-    overflow-x: hidden;
-    position: relative;
-  }
-
-  /* Floating background sparkles */
-  .bg-sparkle {
-    position: fixed;
-    pointer-events: none;
-    font-size: 18px;
-    opacity: 0;
-    animation: floatUp 8s ease-in infinite;
-    z-index: 0;
-  }
-  @keyframes floatUp {
-    0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-    10%  { opacity: 0.6; }
-    90%  { opacity: 0.3; }
-    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-  }
-
-  /* Cursor sparkle trail */
-  .cursor-sparkle {
-    position: fixed;
-    pointer-events: none;
-    font-size: 14px;
-    z-index: 99999;
-    animation: sparkRise 0.9s ease-out forwards;
-  }
-  @keyframes sparkRise {
-    0%   { transform: translateY(0) scale(1); opacity: 1; }
-    100% { transform: translateY(-50px) scale(0); opacity: 0; }
-  }
-
-  /* Marquee ticker */
-  .marquee-bar {
-    width: 100%;
-    max-width: 900px;
-    background: linear-gradient(90deg, #FF9DD8, #FF5DAE, #FF9DD8);
-    color: white;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 9px;
-    overflow: hidden;
-    white-space: nowrap;
-    padding: 6px 0;
-    border-radius: 4px 4px 0 0;
-    position: relative;
-    z-index: 10;
-    box-shadow: 0 2px 8px rgba(255,93,174,0.4);
-  }
-  .marquee-inner {
-    display: inline-block;
-    animation: marqueeScroll 30s linear infinite;
-  }
-  @keyframes marqueeScroll {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  /* Browser chrome */
-  .browser-frame {
-    width: 100%;
-    max-width: 900px;
-    background: #ECE9D8;
-    border: 2px solid #919B8C;
-    border-top: none;
-    box-shadow: 2px 2px 0 #fff inset, -2px -2px 0 #808080 inset, 0 4px 16px rgba(0,0,0,0.18);
-    position: relative;
-    z-index: 5;
-    border-radius: 0 0 4px 4px;
-  }
-  .browser-titlebar {
-    background: linear-gradient(to right, #FF9DD8, #FF5DAE);
-    padding: 5px 8px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    user-select: none;
-  }
-  .browser-title-text {
-    font-family: 'Press Start 2P', monospace;
-    font-size: 9px;
-    color: white;
-    text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .xp-btn {
-    width: 18px; height: 18px;
-    border-radius: 3px;
-    border: 1px solid rgba(0,0,0,0.4);
-    font-size: 10px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: default;
-    font-weight: bold;
-    flex-shrink: 0;
-  }
-  .xp-close  { background: linear-gradient(135deg,#ff7070,#cc0000); color: white; }
-  .xp-min    { background: linear-gradient(135deg,#ffe07a,#ccaa00); color: #333; }
-  .xp-max    { background: linear-gradient(135deg,#70ff70,#00aa00); color: #333; }
-  .browser-toolbar {
-    background: linear-gradient(to bottom, #f5f0f5, #e8ddf0);
-    padding: 4px 8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    border-bottom: 2px solid #919B8C;
-  }
-  .browser-nav-btn {
-    background: linear-gradient(to bottom, #FFE4F5, #FFB6DA);
-    border: 1px solid #FF9DD8;
-    border-radius: 3px;
-    padding: 2px 8px;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 7px;
-    color: var(--dark-pink);
-    cursor: default;
-    white-space: nowrap;
-  }
-  .address-bar {
-    flex: 1;
-    background: white;
-    border: 2px inset #999;
-    padding: 2px 6px;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 8px;
-    color: #333;
-    border-radius: 2px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .browser-body {
-    background: var(--light-pink);
-    padding: 20px;
-    min-height: 500px;
-  }
-
-  /* MASH title */
-  .mash-h1 {
-    font-family: 'Fredoka One', cursive;
-    font-size: clamp(3rem, 10vw, 5.5rem);
-    text-align: center;
-    margin-bottom: 4px;
-    line-height: 1;
-    letter-spacing: 4px;
-  }
-  .ml {
-    display: inline-block;
-    background: linear-gradient(90deg, #ff0080, #ff6600, #ffff00, #00ff80, #0080ff, #8000ff, #ff0080);
-    background-size: 300% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: holoBounce 0.8s ease infinite alternate, holoShift 3s linear infinite;
-  }
-  @keyframes holoBounce {
-    0%   { transform: translateY(0) scale(1); }
-    100% { transform: translateY(-8px) scale(1.05); }
-  }
-  @keyframes holoShift {
-    0%   { background-position: 0% center; }
-    100% { background-position: 300% center; }
-  }
-  .ml.ml-eliminated {
-    background: none;
-    -webkit-text-fill-color: #ccc;
-    color: #ccc;
-    text-decoration: line-through;
-    opacity: 0.4;
-    animation: none;
-  }
-  .ml.ml-winner {
-    background: linear-gradient(90deg, #00ff88, #39ff14, #00ff88);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: holoBounce 0.3s ease infinite alternate, holoShift 1s linear infinite;
-    filter: drop-shadow(0 0 8px #00ff88);
-  }
-  .ml.ml-current {
-    background: none;
-    -webkit-text-fill-color: white;
-    color: white;
-    animation: brightPulse 0.5s ease infinite alternate;
-    text-shadow: 0 0 10px #fff, 0 0 20px #FF1493;
-  }
-  @keyframes brightPulse {
-    0%   { filter: brightness(1) drop-shadow(0 0 6px white); }
-    100% { filter: brightness(1.4) drop-shadow(0 0 16px white); }
-  }
-  .md {
-    font-family: 'Fredoka One', cursive;
-    font-size: clamp(3rem, 10vw, 5.5rem);
-    color: var(--hot-pink);
-    -webkit-text-fill-color: var(--hot-pink);
-  }
-  .mash-legend {
-    text-align: center;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1rem;
-    color: var(--dark-pink);
-    opacity: 0.8;
-    margin-bottom: 2px;
-  }
-  .subtitle {
-    text-align: center;
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.9rem;
-    color: var(--dark-pink);
-    margin-bottom: 16px;
-    font-style: italic;
-  }
-
-  /* Screens */
-  .screen { display: none; }
-  .screen.active { display: block; }
-
-  /* XP Window cards */
-  .xp-window {
-    background: white;
-    border: 2px solid #DDA0DD;
-    border-radius: 6px 6px 4px 4px;
-    box-shadow: 2px 2px 0 rgba(255,255,255,0.8) inset, -1px -1px 0 rgba(0,0,0,0.1) inset, 0 4px 12px rgba(255,105,180,0.2);
-    overflow: hidden;
-    margin-bottom: 12px;
-  }
-  .xp-titlebar {
-    background: linear-gradient(to right, #FF9DD8, #FF5DAE);
-    padding: 4px 8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .xp-titlebar-text {
-    font-family: 'Press Start 2P', monospace;
-    font-size: 8px;
-    color: white;
-    text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
-    flex: 1;
-  }
-  .xp-btns { display: flex; gap: 3px; }
-  .xp-btns .xp-btn { width: 14px; height: 14px; font-size: 8px; }
-  .xp-body {
-    padding: 12px;
-    background: linear-gradient(135deg, #fff 0%, #FFF5FB 100%);
-  }
-
-  /* Buttons */
-  .btn {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 800;
-    font-size: 0.95rem;
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.1s, box-shadow 0.1s;
-    position: relative;
-    letter-spacing: 0.5px;
-  }
-  .btn:hover  { transform: translateY(-2px); }
-  .btn:active { transform: translateY(1px); }
-  .btn-pink {
-    background: linear-gradient(to bottom, #FF85C2, #FF1493);
-    color: white;
-    box-shadow: 0 4px 0 #AA0066, 2px 2px 0 rgba(255,255,255,0.4) inset, -1px -1px 0 rgba(0,0,0,0.2) inset;
-    text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
-  }
-  .btn-pink:hover  { box-shadow: 0 6px 0 #AA0066, 2px 2px 0 rgba(255,255,255,0.4) inset; }
-  .btn-pink:active { box-shadow: 0 1px 0 #AA0066, 2px 2px 0 rgba(255,255,255,0.4) inset; }
-  .btn-lavender {
-    background: linear-gradient(to bottom, #DDA0DD, #BA55D3);
-    color: white;
-    box-shadow: 0 4px 0 #7B2C8B, 2px 2px 0 rgba(255,255,255,0.4) inset;
-    text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
-  }
-  .btn-mint {
-    background: linear-gradient(to bottom, #A0FFD6, #39D98A);
-    color: #006644;
-    box-shadow: 0 4px 0 #006644, 2px 2px 0 rgba(255,255,255,0.5) inset;
-  }
-  .btn-yellow {
-    background: linear-gradient(to bottom, #FFE566, #FFB300);
-    color: #664400;
-    box-shadow: 0 4px 0 #996600, 2px 2px 0 rgba(255,255,255,0.5) inset;
-    font-size: 1.1rem;
-    padding: 12px 28px;
-  }
-  .btn-yellow:hover  { box-shadow: 0 6px 0 #996600, 2px 2px 0 rgba(255,255,255,0.5) inset; }
-  .btn-yellow:active { box-shadow: 0 1px 0 #996600, 2px 2px 0 rgba(255,255,255,0.5) inset; }
-  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none !important; }
-  .btn-sm { padding: 4px 10px; font-size: 0.8rem; border-radius: 6px; }
-  .dice-btn {
-    background: linear-gradient(to bottom, #FFE4F5, #FFB6DA);
-    border: 2px solid #FF9DD8;
-    border-radius: 6px;
-    width: 32px; height: 32px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    font-size: 16px;
-    transition: transform 0.1s;
-    flex-shrink: 0;
-  }
-  .dice-btn:hover { transform: rotate(20deg) scale(1.1); }
-
-  /* Landing screen */
-  #landingScreen h2 {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.8rem;
-    color: var(--hot-pink);
-    text-align: center;
-    margin-bottom: 16px;
-    text-shadow: 2px 2px 0 rgba(255,20,147,0.2);
-  }
-  .mash-badge-card {
-    background: linear-gradient(135deg, #FFFDE7, #FFF9C4);
-    border: 3px solid #FFD700;
-    border-radius: 10px;
-    padding: 12px 16px;
-    text-align: center;
-    margin-bottom: 16px;
-    box-shadow: 0 0 12px rgba(255,215,0,0.4), 2px 2px 0 rgba(255,255,255,0.8) inset;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    color: #886600;
-  }
-  .category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-  .cat-card {
-    background: white;
-    border: 3px solid #DDA0DD;
-    border-radius: 10px;
-    padding: 14px 10px;
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.15s, border-color 0.15s, background 0.15s;
-    position: relative;
-    user-select: none;
-    box-shadow: 2px 2px 0 rgba(255,255,255,0.8) inset;
-  }
-  .cat-card:hover { transform: translateY(-3px); }
-  .cat-card.selected {
-    border-color: var(--hot-pink);
-    background: linear-gradient(135deg, #FFF0F7, #FFE4F5);
-    box-shadow: 0 0 10px rgba(255,20,147,0.2), 2px 2px 0 rgba(255,255,255,0.8) inset;
-  }
-  .cat-card.deselected {
-    border-color: #ccc;
-    background: #f5f5f5;
-    opacity: 0.7;
-    filter: grayscale(0.4);
-  }
-  .cat-check {
-    position: absolute;
-    top: 6px; right: 8px;
-    font-size: 16px;
-    color: var(--hot-pink);
-    display: none;
-  }
-  .cat-card.selected .cat-check { display: block; }
-  .cat-emoji { font-size: 2rem; margin-bottom: 4px; }
-  .cat-name {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-    font-size: 0.85rem;
-    color: var(--dark-pink);
-  }
-  @keyframes shakeCard {
-    0%,100% { transform: translateX(0); }
-    20%      { transform: translateX(-6px); }
-    40%      { transform: translateX(6px); }
-    60%      { transform: translateX(-4px); }
-    80%      { transform: translateX(4px); }
-  }
-  .shake { animation: shakeCard 0.4s ease; }
-  .selected-counter {
-    text-align: center;
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.85rem;
-    color: var(--dark-pink);
-    margin-bottom: 8px;
-    font-weight: 600;
-  }
-  .min-tooltip {
-    display: none;
-    font-size: 0.75rem;
-    color: #cc4400;
-    text-align: center;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-  .play-btn-wrap { text-align: center; margin-top: 10px; }
-
-  /* Input screen */
-  .back-link {
-    display: inline-block;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-    color: var(--dark-pink);
-    cursor: pointer;
-    margin-bottom: 16px;
-    font-size: 0.9rem;
-    text-decoration: underline;
-  }
-  .back-link:hover { color: var(--hot-pink); }
-  .input-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-  .input-row input[type="text"] {
-    flex: 1;
-    padding: 8px 12px;
-    border: 2px solid #FFB6DA;
-    border-radius: 8px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.9rem;
-    background: #FFF5FB;
-    color: #333;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .input-row input[type="text"]:focus { border-color: var(--hot-pink); }
-  .gender-btn {
-    background: linear-gradient(to bottom, #E8D5FF, #C9A0FF);
-    border: 2px solid #BA55D3;
-    border-radius: 6px;
-    padding: 0 8px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #6A0DAD;
-    transition: background 0.2s;
-    white-space: nowrap;
-    height: 32px;
-    display: flex; align-items: center;
-    flex-shrink: 0;
-  }
-  .gender-btn:hover { background: linear-gradient(to bottom, #D5B8FF, #B07FFF); }
-  .magic-section {
-    margin: 20px 0;
-    text-align: center;
-  }
-  .magic-input-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .magic-input-row input[type="number"] {
-    width: 90px;
-    padding: 8px;
-    border: 2px solid #DDA0DD;
-    border-radius: 8px;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.5rem;
-    text-align: center;
-    color: var(--dark-pink);
-    background: white;
-    outline: none;
-  }
-  .reveal-btn-wrap { text-align: center; margin-top: 16px; }
-
-  /* Elim screen */
-  #elimScreen .magic-num-display {
-    font-family: 'Fredoka One', cursive;
-    font-size: 4rem;
-    color: #FFB300;
-    text-align: center;
-    text-shadow: 3px 3px 0 #996600, 0 0 20px rgba(255,200,0,0.5);
-    margin-bottom: 6px;
-  }
-  .elim-status {
-    text-align: center;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    color: var(--dark-pink);
-    margin-bottom: 20px;
-    min-height: 24px;
-  }
-  .elim-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  .elim-cat-card {
-    background: white;
-    border: 2px solid #DDA0DD;
-    border-radius: 8px;
-    padding: 10px;
-    position: relative;
-    overflow: hidden;
-  }
-  .elim-cat-title {
-    font-family: 'Press Start 2P', monospace;
-    font-size: 7px;
-    color: white;
-    background: linear-gradient(to right, #FF9DD8, #FF5DAE);
-    margin: -10px -10px 8px -10px;
-    padding: 5px 8px;
-    border-radius: 6px 6px 0 0;
-  }
-  .elim-option {
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.85rem;
-    color: #333;
-    padding: 4px 6px;
-    border-radius: 4px;
-    margin-bottom: 3px;
-    transition: all 0.3s;
-  }
-  .elim-option.current-highlight {
-    background: rgba(255,20,147,0.15);
-    border-left: 3px solid var(--hot-pink);
-    font-weight: 700;
-    color: var(--dark-pink);
-  }
-  .elim-option.eliminated {
-    text-decoration: line-through;
-    color: #bbb;
-    opacity: 0.5;
-  }
-  .elim-option.winner {
-    background: linear-gradient(135deg, #E8FFE8, #C8FFC8);
-    border-left: 3px solid #00cc44;
-    font-weight: 700;
-    color: #006622;
-  }
-  .elim-btn-wrap { text-align: center; }
-
-  /* Results screen */
-  #resultsScreen h2 {
-    font-family: 'Fredoka One', cursive;
-    font-size: 2rem;
-    color: var(--dark-pink);
-    text-align: center;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 0 rgba(170,0,102,0.2);
-  }
-  .destiny-story {
-    background: linear-gradient(135deg, #FFF0F7, #F0E6FF);
-    border: 2px solid #DDA0DD;
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin-bottom: 20px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 1rem;
-    color: #330033;
-    line-height: 1.7;
-    box-shadow: 0 0 20px rgba(221,160,221,0.3);
-  }
-  .destiny-story p { margin-bottom: 10px; }
-  .destiny-story p:last-child { margin-bottom: 0; }
-  .results-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  .result-card {
-    background: white;
-    border: 3px solid var(--hot-pink);
-    border-radius: 10px;
-    padding: 14px;
-    text-align: center;
-    box-shadow: 0 0 14px rgba(255,20,147,0.2), 2px 2px 0 rgba(255,255,255,0.8) inset;
-  }
-  .result-emoji { font-size: 1.8rem; margin-bottom: 4px; }
-  .result-cat-name {
-    font-family: 'Press Start 2P', monospace;
-    font-size: 7px;
-    color: var(--dark-pink);
-    margin-bottom: 8px;
-    opacity: 0.8;
-  }
-  .result-value {
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.2rem;
-    color: var(--dark-pink);
-  }
-  .play-again-wrap { text-align: center; }
-
-  /* Footer */
-  .retro-footer {
-    width: 100%;
-    max-width: 900px;
-    background: linear-gradient(to right, #FF9DD8, #FF5DAE);
-    padding: 10px 16px;
-    text-align: center;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 8px;
-    color: white;
-    border-radius: 0 0 6px 6px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 12px rgba(255,93,174,0.3);
-    line-height: 1.8;
-  }
-  .visitor-counter {
-    display: inline-block;
-    background: black;
-    color: #00ff00;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 10px;
-    padding: 3px 8px;
-    border-radius: 3px;
-    margin-top: 6px;
-    letter-spacing: 2px;
-    box-shadow: 0 0 8px rgba(0,255,0,0.4);
-  }
-
-  /* Confetti */
-  #confettiContainer {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 1000;
-    overflow: hidden;
-  }
-  .confetti-piece {
-    position: absolute;
-    top: -20px;
-    animation: confettiFall linear forwards;
-  }
-  @keyframes confettiFall {
-    0%   { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
-    100% { transform: translateY(110vh) rotate(720deg) scale(0.5); opacity: 0; }
-  }
-
-  /* Responsive */
-  @media (max-width: 600px) {
-    .category-grid { grid-template-columns: repeat(2, 1fr); }
-    .mash-h1 { font-size: 2.8rem; }
-    .md { font-size: 2.8rem; }
-    .elim-grid { grid-template-columns: 1fr; }
-    .results-grid { grid-template-columns: repeat(2, 1fr); }
-    .browser-nav-btn { display: none; }
-    .browser-nav-btn:last-child { display: block; }
-  }
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --mint:#A8E6CF;--mint-dark:#2ECC89;--mint-deep:#1aab6d;
+  --mint-light:#F0FFF4;--mint-bg:#E8F8F0;
+  --pink:#FEC5BB;--pink-light:#FFF0ED;
+  --lavender:#DDA0DD;--lav-light:#F8F0FF;
+  --cream:#FFFEF7;--white:#FFFFFF;
+  --text:#2D3748;--text-mid:#4A5568;--text-light:#718096;
+  --shadow:0 4px 20px rgba(46,204,137,0.15);
+  --shadow-lg:0 8px 32px rgba(46,204,137,0.2);
+  --radius:16px;--radius-sm:10px;--radius-full:50px;
+}
+body{font-family:'Nunito',sans-serif;background:var(--mint-light);color:var(--text);min-height:100vh;overflow-x:hidden}
+#root{max-width:430px;margin:0 auto;min-height:100vh;background:var(--mint-light);position:relative}
+.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+.card-pink{background:linear-gradient(135deg,#fff5f5,#fff)}
+.card-lavender{background:linear-gradient(135deg,#faf5ff,#fff)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 24px;border-radius:var(--radius-full);border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;transition:all .2s;text-decoration:none}
+.btn-mint{background:var(--mint-dark);color:#fff}
+.btn-mint:hover{background:var(--mint-deep);transform:translateY(-1px)}
+.btn-outline{background:transparent;border:2px solid var(--mint-dark);color:var(--mint-dark)}
+.btn-outline:hover{background:var(--mint-light)}
+.btn-pink{background:var(--pink);color:var(--text)}
+.btn-ghost{background:rgba(168,230,207,0.2);color:var(--mint-deep)}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-full{width:100%}
+input,textarea{width:100%;border:2px solid var(--mint);border-radius:var(--radius-sm);padding:12px;font-family:'Nunito',sans-serif;font-size:14px;color:var(--text);background:var(--white);outline:none;transition:border .2s}
+input:focus,textarea:focus{border-color:var(--mint-dark)}
+.page{padding:20px 16px 90px;min-height:100vh}
+.page-title{font-size:24px;font-weight:900;color:var(--text);margin-bottom:4px}
+.page-sub{font-size:14px;color:var(--text-light);margin-bottom:20px}
+.section-title{font-size:16px;font-weight:800;color:var(--text);margin-bottom:12px}
+.tag{display:inline-flex;align-items:center;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700}
+.divider{height:1px;background:var(--mint);opacity:.3;margin:16px 0}
+/* Header */
+.header{background:var(--white);padding:16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.06);position:sticky;top:0;z-index:100}
+.header-logo{font-family:'Pacifico',cursive;font-size:22px;color:var(--mint-dark)}
+.header-user{display:flex;align-items:center;gap:8px}
+.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--mint),var(--mint-dark));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px}
+/* Bottom Nav */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--white);border-top:1px solid rgba(168,230,207,.4);display:flex;z-index:200;padding:6px 0 10px}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:6px 0;border:none;background:none;font-family:'Nunito',sans-serif;transition:all .2s}
+.nav-item .nav-icon{font-size:20px;line-height:1}
+.nav-item .nav-label{font-size:10px;font-weight:700;color:var(--text-light)}
+.nav-item.active .nav-label{color:var(--mint-dark)}
+/* Auth */
+.auth-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:linear-gradient(160deg,#e8f8f0 0%,#f8f0ff 100%)}
+.auth-logo{font-family:'Pacifico',cursive;font-size:42px;color:var(--mint-dark);margin-bottom:4px}
+.auth-tagline{font-size:15px;color:var(--text-light);margin-bottom:32px;text-align:center}
+.auth-card{background:var(--white);border-radius:20px;box-shadow:var(--shadow-lg);padding:28px;width:100%;max-width:360px}
+.auth-title{font-size:20px;font-weight:900;margin-bottom:20px;color:var(--text)}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:13px;font-weight:700;color:var(--text-mid);margin-bottom:6px}
+.auth-switch{text-align:center;margin-top:16px;font-size:13px;color:var(--text-light)}
+.auth-switch span{color:var(--mint-dark);cursor:pointer;font-weight:700}
+.error-msg{background:#fff5f5;color:#e53e3e;border-radius:8px;padding:10px;font-size:13px;margin-bottom:12px}
+/* Mood */
+.mood-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mood-btn{padding:12px 8px;border-radius:14px;border:2px solid transparent;background:var(--mint-light);cursor:pointer;text-align:center;transition:all .2s;font-family:'Nunito',sans-serif}
+.mood-btn:hover{transform:scale(1.05);border-color:var(--mint)}
+.mood-btn.selected{border-color:var(--mint-dark);background:rgba(46,204,137,.1)}
+.mood-emoji{font-size:28px;display:block}
+.mood-label{font-size:11px;font-weight:700;color:var(--text-mid);margin-top:4px}
+/* Calendar */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-header{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px}
+.cal-day-name{text-align:center;font-size:11px;font-weight:700;color:var(--text-light);padding:4px}
+.cal-cell{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--text-mid);background:transparent;position:relative}
+.cal-cell.has-mood{cursor:pointer}
+.cal-cell.today{background:var(--mint-light);color:var(--mint-dark);font-weight:900}
+.cal-cell.empty{opacity:0}
+.mood-dot{position:absolute;bottom:1px;right:1px;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px}
+/* Journal */
+.cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.cat-card{padding:16px;border-radius:14px;border:2px solid transparent;cursor:pointer;transition:all .2s;text-align:center}
+.cat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.cat-card.selected{border-color:var(--mint-dark)}
+.cat-emoji{font-size:28px;display:block;margin-bottom:6px}
+.cat-name{font-size:13px;font-weight:800;color:var(--text)}
+/* Tabs */
+.tabs{display:flex;background:var(--mint-light);border-radius:var(--radius-full);padding:4px;margin-bottom:20px}
+.tab{flex:1;padding:10px;border-radius:var(--radius-full);border:none;background:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;color:var(--text-light);transition:all .2s}
+.tab.active{background:var(--white);color:var(--mint-dark);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+/* Affirmation card */
+.affirmation-card{background:linear-gradient(135deg,#e8f8f0,#f0fff4);border-radius:20px;padding:28px;text-align:center;margin-bottom:20px;border:1px solid rgba(168,230,207,.3)}
+.affirmation-text{font-size:18px;font-weight:700;color:var(--text);line-height:1.6;font-style:italic;margin-bottom:16px}
+.quote-card{background:linear-gradient(135deg,#faf5ff,#fff);border-radius:16px;padding:24px;margin-bottom:12px;border-left:4px solid var(--lavender)}
+.quote-text{font-size:16px;font-weight:600;color:var(--text);line-height:1.6;font-style:italic;margin-bottom:8px}
+.quote-author{font-size:13px;color:var(--text-light);font-weight:700}
+/* Playlist */
+.playlist-card{border-radius:16px;padding:20px;margin-bottom:14px;border:1px solid rgba(0,0,0,.06)}
+.playlist-mood{font-size:18px;font-weight:900;margin-bottom:4px}
+.playlist-desc{font-size:13px;color:var(--text-mid);margin-bottom:12px}
+.song-list{list-style:none;margin-bottom:14px}
+.song-list li{font-size:13px;color:var(--text-mid);padding:4px 0;border-bottom:1px dashed rgba(0,0,0,.08)}
+.song-list li:last-child{border:none}
+.song-list li::before{content:"♪ ";color:var(--mint-dark)}
+/* Dopamine */
+.dopamine-cat{margin-bottom:20px}
+.dopamine-cat-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:10px}
+.activity-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:var(--mint-light);margin-bottom:6px;cursor:pointer;transition:background .2s}
+.activity-item:hover{background:rgba(168,230,207,.4)}
+.activity-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--mint-dark);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.activity-check.checked{background:var(--mint-dark)}
+.activity-text{font-size:14px;color:var(--text-mid);font-weight:600}
+/* Entries */
+.entry-item{background:var(--white);border-radius:12px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);cursor:pointer}
+.entry-date{font-size:12px;color:var(--text-light);margin-bottom:4px}
+.entry-cat{font-size:12px;font-weight:700;color:var(--mint-dark);margin-bottom:6px}
+.entry-preview{font-size:13px;color:var(--text-mid);line-height:1.5}
+/* About */
+.about-section{margin-bottom:24px}
+.about-section h3{font-size:16px;font-weight:900;color:var(--text);margin-bottom:10px}
+.tip-item{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}
+.tip-num{width:24px;height:24px;border-radius:50%;background:var(--mint);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--mint-deep);flex-shrink:0}
+/* Spinner */
+.spinner{width:40px;height:40px;border:3px solid var(--mint);border-top-color:var(--mint-dark);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.center{display:flex;align-items:center;justify-content:center;min-height:100vh}
+/* Quick cards on home */
+.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+.quick-card{padding:16px;border-radius:14px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;gap:4px}
+.quick-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.quick-icon{font-size:24px}
+.quick-name{font-size:13px;font-weight:800;color:var(--text)}
+.quick-desc{font-size:11px;color:var(--text-light)}
+.greeting{font-family:'Pacifico',cursive;font-size:26px;color:var(--mint-dark);margin-bottom:4px}
+.add-input-row{display:flex;gap:8px;margin-top:8px}
+.add-input-row input{flex:1}
 </style>
 </head>
 <body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+const {useState,useEffect,useRef,useCallback}=React;
 
-<!-- Confetti (outside browser frame, position:fixed) -->
-<div id="confettiContainer"></div>
-
-<!-- Floating background sparkle elements -->
-<div class="bg-sparkle" style="left:5%; animation-delay:0s;   animation-duration:9s;">✨</div>
-<div class="bg-sparkle" style="left:12%;animation-delay:1.5s; animation-duration:11s;">★</div>
-<div class="bg-sparkle" style="left:22%;animation-delay:3s;   animation-duration:8s;">♥</div>
-<div class="bg-sparkle" style="left:35%;animation-delay:0.8s; animation-duration:12s;">✦</div>
-<div class="bg-sparkle" style="left:50%;animation-delay:2.2s; animation-duration:10s;">✿</div>
-<div class="bg-sparkle" style="left:63%;animation-delay:4s;   animation-duration:9s;">★</div>
-<div class="bg-sparkle" style="left:75%;animation-delay:1s;   animation-duration:13s;">✨</div>
-<div class="bg-sparkle" style="left:85%;animation-delay:3.5s; animation-duration:7s;">♥</div>
-<div class="bg-sparkle" style="left:92%;animation-delay:2s;   animation-duration:11s;">✦</div>
-
-<!-- Marquee ticker -->
-<div class="marquee-bar">
-  <div class="marquee-inner">
-    &nbsp;&nbsp;✨ welcome to M.A.S.H. fortune teller ✨ your destiny awaits ✨ powered by the stars ✨ best viewed in Internet Explorer 6.0 ✨ made with Paint.exe and ♥ ✨&nbsp;&nbsp;&nbsp;&nbsp;✨ welcome to M.A.S.H. fortune teller ✨ your destiny awaits ✨ powered by the stars ✨ best viewed in Internet Explorer 6.0 ✨ made with Paint.exe and ♥ ✨&nbsp;&nbsp;
-  </div>
-</div>
-
-<!-- Browser frame -->
-<div class="browser-frame">
-  <div class="browser-titlebar">
-    <div class="xp-btn xp-close">✕</div>
-    <div class="xp-btn xp-min">−</div>
-    <div class="xp-btn xp-max">□</div>
-    <div class="browser-title-text">✨ M.A.S.H. Fortune Teller ✨ — Microsoft Internet Explorer</div>
-  </div>
-  <div class="browser-toolbar">
-    <div class="browser-nav-btn">◀ Back</div>
-    <div class="browser-nav-btn">Forward ▶</div>
-    <div class="browser-nav-btn">⟳ Refresh</div>
-    <div class="address-bar">http://www.mash-fortune.geocities.com/destiny/index.html</div>
-    <div class="browser-nav-btn">Go ▶</div>
-  </div>
-  <div class="browser-body">
-
-    <!-- MASH Title (always visible) -->
-    <h1 class="mash-h1">
-      <span class="ml" id="ml-0">M</span><span class="md">.</span><span class="ml" id="ml-1">A</span><span class="md">.</span><span class="ml" id="ml-2">S</span><span class="md">.</span><span class="ml" id="ml-3">H</span><span class="md">.</span>
-    </h1>
-    <p class="mash-legend" id="mashLegend">Mansion · Apartment · Shack · House</p>
-    <p class="subtitle" id="subtitle">✨ Your Future Has Already Been Written ✨</p>
-
-    <!-- SCREEN 0: LANDING (default active) -->
-    <div class="screen active" id="landingScreen">
-      <h2>~*~ pick your categories ~*~</h2>
-
-      <div class="mash-badge-card">
-        🔒 <strong>M.A.S.H.</strong> (Mansion · Apartment · Shack · House) — Always Included!
-      </div>
-
-      <div class="category-grid" id="categoryGrid">
-        <!-- filled by JS -->
-      </div>
-
-      <div class="selected-counter" id="selectedCounter">7 / 7 selected</div>
-      <div class="min-tooltip" id="minTooltip">Need at least 3!</div>
-
-      <div class="play-btn-wrap">
-        <button class="btn btn-pink" id="playBtn" onclick="goToInput()" style="font-size:1.1rem;padding:14px 36px;">
-          💖 LET'S PLAY! 💖
-        </button>
-      </div>
-    </div>
-
-    <!-- SCREEN 1: INPUT -->
-    <div class="screen" id="inputScreen">
-      <span class="back-link" onclick="goToLanding()">← change categories</span>
-      <div id="inputGrid">
-        <!-- filled by JS -->
-      </div>
-
-      <!-- Magic Number card -->
-      <div class="magic-section xp-window" style="padding:0;background:none;">
-        <div class="xp-titlebar">
-          <div class="xp-titlebar-text">🌀 Magic Number</div>
-          <div class="xp-btns">
-            <div class="xp-btn xp-close">✕</div>
-            <div class="xp-btn xp-min">−</div>
-            <div class="xp-btn xp-max">□</div>
-          </div>
-        </div>
-        <div class="xp-body" style="text-align:center;">
-          <div style="font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--dark-pink);margin-bottom:10px;">Choose your magic number (3–20)</div>
-          <div class="magic-input-row">
-            <input type="number" id="magicInput" min="3" max="20" placeholder="?">
-            <button class="btn btn-lavender btn-sm" onclick="pickMagicNumber()">🌀 Pick for me!</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="reveal-btn-wrap">
-        <button class="btn btn-yellow" onclick="startElim()">✨ REVEAL MY FUTURE ✨</button>
-      </div>
-    </div>
-
-    <!-- SCREEN 2: ELIMINATION -->
-    <div class="screen" id="elimScreen">
-      <div class="magic-num-display" id="elimMagicNum">?</div>
-      <div class="elim-status" id="elimStatus">Counting begins...</div>
-      <div class="elim-grid" id="elimGrid">
-        <!-- filled by JS -->
-      </div>
-      <div class="elim-btn-wrap">
-        <button class="btn btn-lavender" onclick="skipToResults()">⏩ Skip to results</button>
-      </div>
-    </div>
-
-    <!-- SCREEN 3: RESULTS -->
-    <div class="screen" id="resultsScreen">
-      <h2>🔮 Your Destiny Is Sealed! 🔮</h2>
-      <div class="destiny-story" id="destinyStory"></div>
-      <div class="results-grid" id="resultsGrid"></div>
-      <div class="play-again-wrap">
-        <button class="btn btn-pink" onclick="playAgain()" style="font-size:1.1rem;padding:14px 36px;">🔄 Play Again!</button>
-      </div>
-    </div>
-
-  </div><!-- /browser-body -->
-</div><!-- /browser-frame -->
-
-<!-- Footer -->
-<div class="retro-footer">
-  ✨ Best viewed in 800×600 ✨ Made with ♥ and Paint.exe ✨<br>
-  © 2003 mash-fortune.geocities.com — All rights reserved to the stars<br>
-  Visitors: <span class="visitor-counter" id="visitorCounter">000000</span>
-</div>
-
-<script>
-// ===================== DATA =====================
-const CATEGORIES = [
-  { key: 'mash',      label: 'Home Type',             emoji: '🏠', isMash: true,  options: ['Mansion','Apartment','Shack','House'] },
-  { key: 'city',      label: "City You'll Live In",   emoji: '🌆', isMash: false, options: [] },
-  { key: 'marry',     label: "Who You'll Marry",      emoji: '💕', isMash: false, options: [] },
-  { key: 'car',       label: "Car You'll Drive",      emoji: '🚗', isMash: false, options: [] },
-  { key: 'job',       label: 'Your Job',               emoji: '💼', isMash: false, options: [] },
-  { key: 'kids',      label: 'Number of Kids',         emoji: '👶', isMash: false, options: [] },
-  { key: 'honeymoon', label: 'Honeymoon Destination',  emoji: '✈️', isMash: false, options: [] },
-  { key: 'misc',      label: 'Misc. Life Event',       emoji: '🎲', isMash: false, options: [] },
+// ===== DATA =====
+const DAILY_AFFIRMATIONS=[
+"I am healing at my own pace, and that's perfectly okay.",
+"My worth is not defined by who stayed or who left.",
+"I deserve love that doesn't require me to shrink myself.",
+"Every ending is a new beginning in disguise.",
+"I am becoming the person I needed when I was hurting.",
+"My heart is resilient and capable of loving again.",
+"I choose myself every single day.",
+"I am not what happened to me — I am what I choose to become.",
+"Healing is not linear and I am patient with myself.",
+"I release what no longer serves my highest good.",
+"I am magnetic, powerful, and worthy of great love.",
+"My energy is my currency — I spend it wisely.",
+"I trust the timing of my life.",
+"I am whole, complete, and enough exactly as I am.",
+"The love I give to others, I now give to myself.",
+"I am not waiting to be chosen — I am the prize.",
+"My future is bright and full of people who truly see me.",
+"I outgrow people and situations — that's growth, not loss.",
+"I am building a life I'm genuinely excited about.",
+"Peace is my priority. Drama has no place in my story."
+];
+const PAGE_AFFIRMATIONS=[
+"I don't need anyone's validation to feel worthy.",
+"I am allowed to outgrow people who no longer fit my life.",
+"Being single is not a problem to be solved — it's a season to enjoy.",
+"The right relationships will feel effortless, not exhausting.",
+"My standards are not too high — they're just mine.",
+"I attract what I put out: love, peace, and positivity.",
+"I am the main character of my own life story.",
+"My independence is something to be celebrated, not apologized for.",
+"I decide what I deserve, and I decide it's everything.",
+"Every day I am getting stronger, softer, and more myself.",
+"I let go of the need to control what isn't mine to control.",
+"My past experiences have made me wiser, not broken.",
+"I am learning to love the journey, not just the destination.",
+"I am deeply deserving of peace, joy, and genuine love.",
+"There is so much beauty in the life I am building.",
+"I no longer chase what doesn't choose me back.",
+"My healing is a gift I give to my future self.",
+"I am proud of how far I've come, even when I can't see it.",
+"The best version of me is still becoming.",
+"I am enough — today, tomorrow, and always."
+];
+const QUOTES=[
+{text:"She remembered who she was and the game changed.",author:"Lalah Delia"},
+{text:"You didn't lose him. You lost the version of yourself that accepted less than you deserve.",author:"Unknown"},
+{text:"Not every chapter needs a happy ending. Some chapters just need to end.",author:"Unknown"},
+{text:"Your new life is going to cost you your old one.",author:"Unknown"},
+{text:"The most powerful thing you can do after a breakup is focus on yourself so hard that you forget he exists.",author:"Unknown"},
+{text:"Healing doesn't mean the damage never existed. It means the damage no longer controls your life.",author:"Akshay Dubey"},
+{text:"Some things break your heart but fix your vision.",author:"Unknown"},
+{text:"The right one won't make you question your worth.",author:"Unknown"},
+{text:"Fall in love with taking care of yourself.",author:"Unknown"},
+{text:"You owe yourself the love that you freely give to others.",author:"Unknown"},
+{text:"She was never crazy. She was passionate about things that didn't deserve her passion.",author:"R.H. Sin"},
+{text:"The most important relationship is the one you have with yourself.",author:"Diane Von Furstenberg"},
+{text:"You yourself, as much as anybody in the entire universe, deserve your love and affection.",author:"Buddha"},
+{text:"Cry a river, build a bridge, and get over it.",author:"Unknown"},
+{text:"Plot twist: the person you needed to find yourself again was you.",author:"Unknown"}
+];
+const JOURNAL_CATS=[
+{id:"healing",name:"Healing Journey",emoji:"🌱",color:"#E8F8F0",prompts:["What does healing feel like in my body right now?","What am I learning about myself through this pain?","Three things I've done recently that were just for me:","What would I tell my heartbroken self from 6 months ago?","How have I grown since this relationship ended?","What patterns am I ready to break?"]},
+{id:"selflove",name:"Self-Love",emoji:"💕",color:"#FFF0F5",prompts:["What do I love most about myself today?","List 10 things your body does amazingly for you:","How can I be gentler with myself this week?","What compliment do I need to hear right now? Write it yourself!","What makes me uniquely, wonderfully me?","If my best friend described me, what would she say?"]},
+{id:"gratitude",name:"Gratitude",emoji:"✨",color:"#FFFBEA",prompts:["What am I grateful for that this relationship taught me?","Name 5 people who love and support me:","What small moments of joy have I noticed recently?","What freedoms do I have now that I appreciate?","What beautiful things happened today, even if small?","What is something about my life right now that future-me will be grateful for?"]},
+{id:"release",name:"Release & Vent",emoji:"🔥",color:"#FFF3F0",prompts:["Write a letter you'll never send. Say everything.","What feelings have I been avoiding that need attention?","What am I still angry about? Give yourself permission to feel it.","What did I put up with that I should have walked away from sooner?","What do I need to stop carrying that isn't mine to hold?","What conversations do I wish I had?"]},
+{id:"future",name:"Future Dreams",emoji:"🌟",color:"#F5F0FF",prompts:["Describe your dream life in 2 years:","What kind of partner do I truly deserve? Be specific.","What adventures am I going to have as a single person?","What goals am I going to crush now that I have more energy?","What does my glow-up look like?","Write a letter from your future thriving self:"]},
+{id:"discovery",name:"Self-Discovery",emoji:"🔍",color:"#F0F8FF",prompts:["What did I compromise about myself in this relationship?","What are my non-negotiables in any relationship going forward?","What parts of myself am I rediscovering?","What did I stop doing that made me happy? How can I start again?","Who am I outside of that relationship?","What do I actually need vs what I thought I needed?"]},
+{id:"lessons",name:"Lessons Learned",emoji:"📚",color:"#F0FFF8",prompts:["What red flags did I ignore? What will I look for next time?","What did this relationship show me about my patterns?","What would I do differently? No shame, just growth!","What did I learn about what I need to feel loved?","How did this relationship help me grow?","What boundaries am I setting from now on?"]},
+{id:"growth",name:"Growth & Goals",emoji:"🌈",color:"#FFF0FA",prompts:["What habits am I building that future me will thank me for?","One thing I'm going to do this week to invest in myself:","What skills or hobbies am I going to develop?","How am I going to show up differently for myself?","What does my ideal morning routine look like?","What does the best version of me look like in 6 months?"]}
+];
+const PLAYLISTS=[
+{mood:"😭 Cry It Out",desc:"For when you need to ugly cry and feel everything",color:"#EEF2FF",btnColor:"#6C83D8",spotifyUrl:"https://open.spotify.com/playlist/37i9dQZF1DX3YSRoSdA634",songs:["drivers license — Olivia Rodrigo","Someone Like You — Adele","White Flag — Joseph","The Night Will Always Win — James Bay"]},
+{mood:"😤 Mad Era",desc:"Channel that rage into pure power, bestie",color:"#FFF0F0",btnColor:"#E05555",spotifyUrl:"https://open.spotify.com/playlist/37i9dQZF1DWU4lunDP0X0F",songs:["good 4 u — Olivia Rodrigo","IDGAF — Dua Lipa","You Oughta Know — Alanis Morissette","Forget You — CeeLo Green"]},
+{mood:"🌱 Healing Slowly",desc:"Gentle, hopeful sounds for the in-between days",color:"#F0FFF4",btnColor:"#2ECC89",spotifyUrl:"https://open.spotify.com/playlist/37i9dQZF1DWZqd5JICZI0u",songs:["Bloom — The Paper Kites","Better Place — Rachel Platten","Rise Up — Andra Day","Dog Days Are Over — Florence + Machine"]},
+{mood:"✨ Glow Up Season",desc:"You're back and you're THAT girl, no debate",color:"#FFFBEA",btnColor:"#E6AC00",spotifyUrl:"https://open.spotify.com/playlist/37i9dQZF1DX4JAvHpjipBk",songs:["Flowers — Miley Cyrus","Break My Soul — Beyoncé","Thank U, Next — Ariana Grande","Confident — Demi Lovato"]},
+{mood:"🌙 2AM Thoughts",desc:"For the late night spiral, we don't judge",color:"#F5F0FF",btnColor:"#9B7FD4",spotifyUrl:"https://open.spotify.com/playlist/37i9dQZF1DXcCnTAt8CfNe",songs:["Exile — Taylor Swift ft. Bon Iver","Liability — Lorde","Skinny Love — Bon Iver","Ghost — Indila"]}
+];
+const DOPAMINE_DEFAULTS={
+"Self-Care 🛁":["Take a long shower with fave products","Do a full skincare routine","Paint your nails a cute color","Put on a face mask","Moisturize from head to toe"],
+"Move Your Body 🏃‍♀️":["Go for a walk outside","Dance to your favorite song","20-min yoga flow on YouTube","Stretch for 10 minutes","Workout to spite him"],
+"Feed Your Soul 📖":["Read a chapter of your book","Watch a comfort show episode","Journal for 10 minutes","Call your bestie","Listen to a podcast"],
+"Treat Yourself 🧁":["Make your favorite meal","Order your favorite food","Get a coffee from your fave spot","Buy yourself flowers","Make a fancy drink at home"],
+"Get Creative 🎨":["Rearrange your room","Try a new recipe","Make a new playlist","Doodle or draw","Take photos outside"],
+"Connect 💜":["Text someone you miss","Plan a girls night","Say yes to the next social invite","FaceTime family","Make plans for something to look forward to"]
+};
+const MOOD_OPTIONS=[
+{id:"rockbottom",emoji:"💀",label:"rock bottom",color:"#8B9DC3"},
+{id:"devastated",emoji:"😭",label:"devastated",color:"#9B89B6"},
+{id:"sad",emoji:"😔",label:"sad",color:"#87CEEB"},
+{id:"meh",emoji:"😐",label:"meh",color:"#F0E68C"},
+{id:"okay",emoji:"🙂",label:"okay",color:"#90EE90"},
+{id:"thriving",emoji:"✨",label:"thriving",color:"#FFD700"}
 ];
 
-const PLACEHOLDERS = {
-  city:      ['e.g. New York City','e.g. Tokyo','e.g. The Moon','e.g. Bikini Bottom'],
-  marry:     ['e.g. Chris Hemsworth','e.g. Taylor Swift','e.g. Your Crush','e.g. A Mystery Person'],
-  car:       ['e.g. Lamborghini',"e.g. Mom's Minivan",'e.g. Rusty Bicycle','e.g. Shopping Cart'],
-  job:       ['e.g. Astronaut','e.g. TikTok Influencer','e.g. Professional Napper','e.g. Evil Overlord'],
-  kids:      ['e.g. 0','e.g. 2','e.g. 5','e.g. 47'],
-  honeymoon: ['e.g. Maldives','e.g. Paris','e.g. The Metaverse','e.g. Chuck E. Cheese'],
-  misc:      ['e.g. Win the lottery','e.g. Start a cult','e.g. Go viral','e.g. Become mayor'],
+// ===== STORAGE UTILS =====
+const getUsers=()=>JSON.parse(localStorage.getItem('imgood_users')||'{}');
+const saveUsers=u=>localStorage.setItem('imgood_users',JSON.stringify(u));
+const getSession=()=>localStorage.getItem('imgood_session');
+const setSession=u=>localStorage.setItem('imgood_session',u);
+const clearSession=()=>localStorage.removeItem('imgood_session');
+const getUserData=(u,key,def)=>{
+  const all=JSON.parse(localStorage.getItem('imgood_data_'+u.toLowerCase())||'{}');
+  return key?all[key]??def:all;
 };
-
-const RANDOM_POOLS = {
-  city: [
-    'New York City, USA','Los Angeles, USA','Chicago, USA','Miami, USA','New Orleans, USA',
-    'Nashville, USA','Austin, USA','San Francisco, USA','Seattle, USA','Denver, USA',
-    'Portland, USA','Savannah, USA','Asheville, USA','Charleston, USA','Sedona, USA',
-    'New Haven, USA','Detroit, USA','Minneapolis, USA','Salt Lake City, USA','Honolulu, USA',
-    'Toronto, Canada','Vancouver, Canada','Montreal, Canada','Quebec City, Canada',
-    'Mexico City, Mexico','Cancún, Mexico','Oaxaca, Mexico',
-    'London, UK','Paris, France','Rome, Italy','Barcelona, Spain','Madrid, Spain',
-    'Amsterdam, Netherlands','Berlin, Germany','Vienna, Austria','Prague, Czech Republic',
-    'Budapest, Hungary','Lisbon, Portugal','Athens, Greece','Santorini, Greece',
-    'Dublin, Ireland','Edinburgh, Scotland','Copenhagen, Denmark','Stockholm, Sweden',
-    'Oslo, Norway','Reykjavik, Iceland','Zurich, Switzerland','Florence, Italy',
-    'Venice, Italy','Dubrovnik, Croatia','Porto, Portugal','Seville, Spain',
-    'Tokyo, Japan','Kyoto, Japan','Osaka, Japan','Seoul, South Korea','Beijing, China',
-    'Shanghai, China','Hong Kong','Singapore','Bangkok, Thailand','Bali, Indonesia',
-    'Hanoi, Vietnam','Ho Chi Minh City, Vietnam','Chiang Mai, Thailand','Mumbai, India',
-    'Jaipur, India','Kathmandu, Nepal','Colombo, Sri Lanka','Taipei, Taiwan',
-    'Kuala Lumpur, Malaysia','Manila, Philippines','Ulaanbaatar, Mongolia',
-    'Dubai, UAE','Abu Dhabi, UAE','Marrakech, Morocco','Cape Town, South Africa',
-    'Nairobi, Kenya','Cairo, Egypt','Zanzibar, Tanzania','Accra, Ghana',
-    'Buenos Aires, Argentina','Rio de Janeiro, Brazil','São Paulo, Brazil',
-    'Cartagena, Colombia','Medellín, Colombia','Lima, Peru','Cusco, Peru',
-    'Santiago, Chile','Montevideo, Uruguay','Havana, Cuba','San Juan, Puerto Rico',
-    'Sydney, Australia','Melbourne, Australia','Auckland, New Zealand',
-    'Queenstown, New Zealand','Fiji',
-    'The Moon','Bikini Bottom','Narnia','Hogwarts','Middle Earth','Area 51',
-    'A Van Down by the River','Atlantis','The Matrix','Antarctica',
-  ],
-  car: [
-    'Lamborghini Huracán','Ferrari 488 Spider','Bugatti Chiron','Rolls-Royce Phantom',
-    'Bentley Continental GT','Aston Martin DB11','McLaren 720S','Porsche 911 Turbo S',
-    'Mercedes-AMG GT','BMW M4 Competition','Audi R8','Maserati GranTurismo',
-    'Jaguar F-Type','Lotus Emira','Pagani Huayra','Koenigsegg Agera',
-    'Tesla Model S Plaid','Tesla Cybertruck','Rivian R1T','Lucid Air Grand Touring',
-    'BMW iX','Porsche Taycan','Mercedes EQS','Audi e-tron GT',
-    '1999 Honda Civic (with spoiler)','Toyota Camry (beige)','Jeep Wrangler',
-    "Mom's Minivan","Dad's Pickup Truck",'Subaru Outback (with kayak on top)',
-    'Ford Bronco','Chevy Silverado','Ram 1500','Toyota Tacoma',
-    'Volkswagen Golf GTI','Mini Cooper S','Fiat 500','Smart Car',
-    'Kia Soul','Honda Element','PT Cruiser (unironically)','Pontiac Aztek',
-    'DeLorean DMC-12','1967 Ford Mustang','1969 Chevrolet Camaro','VW Beetle (classic)',
-    'Jeep Cherokee (1994)','Ford Pinto','AMC Gremlin',
-    'Vespa Scooter','Moped','Electric Scooter','Vintage Bicycle','Fixie Bike',
-    'Mountain Bike','E-Bike','Harley-Davidson Motorcycle','Sidecar Motorcycle',
-    'Golf Cart','Riding Lawnmower','Segway','Skateboard (very fast)','Rollerblades',
-    'Horse and Carriage','Rickshaw','Canoe (on dry land)','School Bus (converted to RV)',
-    'Ice Cream Truck','Batmobile','Mystery Machine','Flintstones Car',
-  ],
-  job: [
-    'Astronaut','Surgeon','Fighter Pilot','Marine Biologist','Forensic Scientist',
-    'Archaeologist','Architect','Civil Engineer','Diplomat','Judge',
-    'Professor','Research Scientist','Pharmacist','Veterinarian','Geologist',
-    'Novelist','Screenwriter','Film Director','Musician','Stand-Up Comedian',
-    'Graphic Designer','Fashion Designer','Interior Designer','Tattoo Artist',
-    'Photographer','Podcast Host','Muralist','Video Game Developer','Animator',
-    'Voiceover Artist','Playwright','Choreographer',
-    'TikTok Influencer','YouTuber','Twitch Streamer','App Developer',
-    'AI Prompt Engineer','Crypto Trader','NFT Artist (somehow profitable)','SEO Wizard',
-    'UX Designer','Data Scientist','Cybersecurity Expert','Drone Operator',
-    'Michelin-Star Chef','Food Critic','Sommelier','Competitive BBQ Pitmaster',
-    'Barista (world champion)','Chocolatier','Cheese Sommelier',
-    'Professional Surfer','Mountain Guide','Wildlife Photographer','Park Ranger',
-    'Deep Sea Diver','Storm Chaser','Antarctic Researcher',
-    'Professional Napper','Royal Food Taster','Dog Whisperer','Dragon Tamer',
-    'Underwater Basket Weaver','Cryptid Researcher','Time Traveler','CEO of Vibes',
-    'Professional Cuddler','Ethical Hacker','Professional Line-Stander',
-    'Submarine Sandwich Artist','Mattress Tester','Luxury Hotel Inspector',
-    'Professional Bridesmaid','Odor Judge (yes, this is real)','Snake Milker',
-    'Professional Forager','Escape Room Designer','Treehouse Builder',
-  ],
-  kids: [
-    'None','None (just a very spoiled dog)','None (just 12 cats)','None (and thriving)',
-    '1','2','3','4','5','6','7','8','10','12',
-    "A sports team's worth",'Too many to count','47',
-  ],
-  honeymoon: [
-    'The Maldives','Bali, Indonesia','Paris, France','Santorini, Greece',
-    'Amalfi Coast, Italy','Tuscany, Italy','Kyoto, Japan','Maui, Hawaii',
-    'Bora Bora, French Polynesia','Seychelles','Fiji','Tulum, Mexico',
-    'Queenstown, New Zealand','Safari in Kenya','The Swiss Alps',
-    'Dubrovnik, Croatia','Banff, Canada','Patagonia, Argentina',
-    'Iceland (Northern Lights tour)','The Galápagos Islands','Costa Rica',
-    'Las Vegas','New Orleans','Nashville','A Disney Cruise',
-    'Overwater Bungalow (anywhere)','A Mediterranean Cruise',
-    'Trans-Siberian Railway','A Nile River Cruise',
-    'The Moon','International Space Station','Narnia','Hogwarts','Middle Earth',
-    'The Metaverse','Costco','Chuck E. Cheese','Area 51',
-    'A Cruise to Nowhere','The Shire','Atlantis (resort OR the myth)',
-  ],
-  misc: [
-    'Complete an Ironman Triathlon','Run a Marathon (all 26.2 miles)','Climb Mt. Everest',
-    'Skydive over the Grand Canyon','Surf a 30-foot wave','Compete in the Olympics',
-    'Complete a Spartan Race','Hike the Appalachian Trail','Summit Kilimanjaro',
-    'Swim the English Channel','Cycle across the country','Compete in a Ninja Warrior course',
-    'Run the Boston Marathon','Do a polar plunge in Antarctica','Learn to wingsuit fly',
-    'Own a boat','Charter a yacht for a summer','Learn to sail around the world',
-    "Get a pilot's license","Buy a vintage motorcycle and ride Route 66",
-    'Drive across the country with no GPS','Own a lake house',
-    'Write and publish a novel','Record an album','Learn to play 3 instruments',
-    'Speak 4 languages fluently','Earn a black belt in martial arts',
-    'Master oil painting','Learn glassblowing','Write a screenplay that gets made',
-    'Host your own cooking show','Design and build your own home',
-    'Get a PhD just for fun','Learn to code and build an app',
-    'Start a successful charity','Build a school in another country',
-    'Mentor 100 young professionals','Host a massive block party that becomes an annual tradition',
-    'Organize a community garden','Volunteer on every continent',
-    'Get a star on the Hollywood Walk of Fame','Win a Grammy','Appear on a magazine cover',
-    'Give a TED Talk','Be named to a Forbes list','Win a Pulitzer Prize',
-    'Become a local legend','Have a street named after you',
-    'Own a vineyard','Start a hot sauce company','Open a bookstore/café',
-    'Buy a castle in Europe','Adopt a retired racehorse',
-    'Throw the most epic birthday party anyone has ever seen',
-    'Have a cameo in a blockbuster film','Win a cooking competition on TV',
-    'Discover a new hiking trail and name it after yourself',
-    'Get featured in a documentary','Collect a rare piece of art',
-    'Brew your own award-winning beer','Open a food truck','Invent something useful',
-    'Plant a forest (1,000+ trees)','Win a world record',
-  ],
-  marry_male: [
-    'Chris Hemsworth','Ryan Reynolds','Brad Pitt','Leonardo DiCaprio','George Clooney',
-    'Tom Hanks','Denzel Washington','Will Smith','Keanu Reeves','Morgan Freeman',
-    'Johnny Depp','Robert Downey Jr.','Hugh Jackman','Matt Damon','Ben Affleck',
-    'Bradley Cooper','Tom Cruise','Liam Neeson','Jude Law','Orlando Bloom',
-    'Timothée Chalamet','Tom Holland','Zac Efron','Ansel Elgort','Dylan O\'Brien',
-    'Noah Centineo','Cole Sprouse','KJ Apa','Charles Melton','Finn Wittrock',
-    'Glen Powell','Jacob Elordi','Austin Butler','Barry Keoghan','Paul Mescal',
-    'Dwayne Johnson','Idris Elba','Michael B. Jordan','Ryan Gosling','Pedro Pascal',
-    'Oscar Isaac','Sebastian Stan','Anthony Mackie','Jon Hamm','Chris Pine',
-    'Chris Evans','Chris Pratt','Jeremy Renner','Armie Hammer','Garrett Hedlund',
-    'Harry Styles','Shawn Mendes','Zayn Malik','Drake','Bad Bunny',
-    'Post Malone','Ed Sheeran','Bruno Mars','John Legend','Justin Timberlake',
-    'The Weeknd','Frank Ocean','Usher','Justin Bieber','Niall Horan',
-    'LeBron James','Stephen Curry','Novak Djokovic','Rafael Nadal','Roger Federer',
-    'Cristiano Ronaldo','Lionel Messi','Patrick Mahomes','Aaron Rodgers','Tom Brady',
-    'Paul Rudd','Bill Murray (in his prime)','a very charming stranger',
-  ],
-  marry_female: [
-    'Beyoncé','Rihanna','Jennifer Lopez','Angelina Jolie','Sandra Bullock',
-    'Meryl Streep (icon energy)','Cate Blanchett','Julia Roberts','Halle Berry',
-    'Salma Hayek','Cameron Diaz','Drew Barrymore','Reese Witherspoon','Nicole Kidman',
-    'Charlize Theron','Penélope Cruz','Eva Longoria','Sofia Vergara',
-    'Taylor Swift','Zendaya','Selena Gomez','Ariana Grande','Olivia Rodrigo',
-    'Billie Eilish','Sabrina Carpenter','Dua Lipa','Lizzo','Normani',
-    'Camila Cabello','Doja Cat','SZA','Lana Del Rey','Gracie Abrams',
-    'Jennifer Lawrence','Margot Robbie','Emma Stone','Scarlett Johansson','Gal Gadot',
-    'Megan Fox','Ana de Armas','Florence Pugh','Anya Taylor-Joy','Sydney Sweeney',
-    'Rachel McAdams','Natalie Portman','Keira Knightley','Emma Watson','Lupita Nyong\'o',
-    'Viola Davis','Taraji P. Henson','Kerry Washington','Priyanka Chopra','Deepika Padukone',
-    'Millie Bobby Brown','Jenna Ortega','Hailee Steinfeld','Alexandra Daddario',
-    'Emilia Clarke','Sophie Turner','Maisie Williams','Elizabeth Olsen',
-    'Kaley Cuoco','Mindy Kaling','Tina Fey','Amy Poehler','Sandra Oh',
-    'Serena Williams','Simone Biles','Alex Morgan','Megan Rapinoe',
-    'Naomi Osaka','Coco Gauff','Gabby Thomas',"Sha'Carri Richardson",
-    'Dolly Parton (living legend)','Oprah (yes)','Michelle Obama (aspirational)',
-  ],
+const setUserData=(u,key,val)=>{
+  const all=getUserData(u);
+  all[key]=val;
+  localStorage.setItem('imgood_data_'+u.toLowerCase(),JSON.stringify(all));
 };
+const toDate=()=>new Date().toISOString().split('T')[0];
 
-// ===================== STATE =====================
-let selectedCategoryKeys = new Set(['city','marry','car','job','kids','honeymoon','misc']);
-let magicNumber = 0;
-let allOptions = [];
-let counter = 0;
-let animTimeout = null;
-let elimIdx = 0;
-let marryGenders = ['neutral','neutral','neutral','neutral'];
-
-// ===================== INIT =====================
-document.addEventListener('DOMContentLoaded', () => {
-  // Visitor counter
-  document.getElementById('visitorCounter').textContent =
-    String(Math.floor(Math.random() * 45000) + 5000).padStart(6,'0');
-
-  // Custom cursor: random color star SVG
-  const cursorColors = ['#FF69B4','#FF1493','#DA70D6','#BA55D3','#FF85C2','#DDA0DD','#87CEEB'];
-  const cc = cursorColors[Math.floor(Math.random() * cursorColors.length)];
-  const encodedColor = encodeURIComponent(cc);
-  const starSvg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolygon points='12%2C2 15%2C9 22%2C9 16.5%2C14 18.5%2C21 12%2C17 5.5%2C21 7.5%2C14 2%2C9 9%2C9' fill='${encodedColor}' stroke='white' stroke-width='1'/%3E%3C/svg%3E`;
-  document.documentElement.style.cursor = `url("${starSvg}") 12 12, auto`;
-
-  // Sparkle trail (throttled ~80ms)
-  let lastSparkle = 0;
-  const sparkChars = ['✦','★','✧','♥','✿','❋'];
-  const sparkColors = ['#FF69B4','#FF1493','#DA70D6','#BA55D3','#FF85C2','#DDA0DD','#87CEEB','#FFB6C1'];
-  document.addEventListener('mousemove', (e) => {
-    const now = Date.now();
-    if (now - lastSparkle < 80) return;
-    lastSparkle = now;
-    const div = document.createElement('div');
-    div.className = 'cursor-sparkle';
-    div.textContent = sparkChars[Math.floor(Math.random() * sparkChars.length)];
-    div.style.color = sparkColors[Math.floor(Math.random() * sparkColors.length)];
-    div.style.left = (e.clientX - 8) + 'px';
-    div.style.top  = (e.clientY - 8) + 'px';
-    document.body.appendChild(div);
-    setTimeout(() => div.remove(), 900);
-  });
-
-  buildCategoryGrid();
-});
-
-// ===================== LANDING SCREEN =====================
-function buildCategoryGrid() {
-  const grid = document.getElementById('categoryGrid');
-  grid.innerHTML = '';
-  CATEGORIES.filter(c => !c.isMash).forEach(cat => {
-    const card = document.createElement('div');
-    const isSel = selectedCategoryKeys.has(cat.key);
-    card.className = 'cat-card ' + (isSel ? 'selected' : 'deselected');
-    card.id = 'catCard_' + cat.key;
-    card.innerHTML = `
-      <span class="cat-check">✓</span>
-      <div class="cat-emoji">${cat.emoji}</div>
-      <div class="cat-name">${cat.label}</div>`;
-    card.addEventListener('click', () => toggleCategory(cat.key));
-    grid.appendChild(card);
-  });
-  updateCounter();
-}
-
-function toggleCategory(key) {
-  const card = document.getElementById('catCard_' + key);
-  if (selectedCategoryKeys.has(key)) {
-    if (selectedCategoryKeys.size <= 3) {
-      card.classList.remove('shake');
-      void card.offsetWidth; // reflow to restart animation
-      card.classList.add('shake');
-      const tooltip = document.getElementById('minTooltip');
-      tooltip.style.display = 'block';
-      setTimeout(() => { tooltip.style.display = 'none'; }, 2000);
-      return;
+// ===== AUTH SCREEN =====
+function AuthScreen({onLogin}){
+  const [mode,setMode]=useState('signin');
+  const [form,setForm]=useState({username:'',password:'',confirm:''});
+  const [err,setErr]=useState('');
+  const set=k=>e=>setForm(f=>({...f,[k]:e.target.value}));
+  const submit=e=>{
+    e.preventDefault();setErr('');
+    const u=form.username.trim();
+    if(!u||!form.password){setErr('Please fill in all fields.');return;}
+    if(u.length<3){setErr('Username must be at least 3 characters.');return;}
+    if(!/^[a-zA-Z0-9_]+$/.test(u)){setErr('Username can only contain letters, numbers, and underscores.');return;}
+    const users=getUsers();
+    if(mode==='signup'){
+      if(form.password.length<6){setErr('Password must be at least 6 characters.');return;}
+      if(form.password!==form.confirm){setErr('Passwords do not match.');return;}
+      if(users[u.toLowerCase()]){setErr('That username is already taken 💔 Try another!');return;}
+      users[u.toLowerCase()]={username:u,password:form.password,createdAt:Date.now()};
+      saveUsers(users);setSession(u);onLogin(u);
+    } else {
+      const user=users[u.toLowerCase()];
+      if(!user||user.password!==form.password){setErr('Incorrect username or password 😢');return;}
+      setSession(user.username);onLogin(user.username);
     }
-    selectedCategoryKeys.delete(key);
-    card.className = 'cat-card deselected';
-  } else {
-    selectedCategoryKeys.add(key);
-    card.className = 'cat-card selected';
-  }
-  updateCounter();
-}
-
-function updateCounter() {
-  document.getElementById('selectedCounter').textContent =
-    selectedCategoryKeys.size + ' / 7 selected';
-  document.getElementById('playBtn').disabled = selectedCategoryKeys.size < 3;
-}
-
-function goToLanding() {
-  if (animTimeout) { clearTimeout(animTimeout); animTimeout = null; }
-  resetMashTitle();
-  document.getElementById('mashLegend').style.display = '';
-  document.getElementById('subtitle').style.display = '';
-  buildCategoryGrid();
-  showScreen('landingScreen');
-}
-
-function goToInput() {
-  if (selectedCategoryKeys.size < 3) {
-    const btn = document.getElementById('playBtn');
-    btn.classList.remove('shake');
-    void btn.offsetWidth;
-    btn.classList.add('shake');
-    return;
-  }
-  // Reset category options
-  CATEGORIES.forEach(cat => { if (!cat.isMash) cat.options = []; });
-  marryGenders = ['neutral','neutral','neutral','neutral'];
-  buildInputGrid();
-  showScreen('inputScreen');
-}
-
-// ===================== INPUT SCREEN =====================
-function buildInputGrid() {
-  const grid = document.getElementById('inputGrid');
-  grid.innerHTML = '';
-  CATEGORIES.forEach(cat => {
-    if (cat.isMash || !selectedCategoryKeys.has(cat.key)) return;
-    const win = document.createElement('div');
-    win.className = 'xp-window';
-    let rowsHtml = '';
-    for (let i = 0; i < 4; i++) {
-      const ph = (PLACEHOLDERS[cat.key] || [])[i] || '';
-      const genderBtn = cat.key === 'marry'
-        ? `<button class="gender-btn" id="genderBtn_${i}" onclick="cycleGender(${i})" title="Toggle gender for random">★</button>`
-        : '';
-      rowsHtml += `
-        <div class="input-row">
-          <span style="font-family:'Fredoka One',cursive;font-size:1rem;color:var(--dark-pink);min-width:20px;flex-shrink:0;">${i+1}.</span>
-          <input type="text" id="inp_${cat.key}_${i}" placeholder="${ph}" autocomplete="off">
-          ${genderBtn}
-          <button class="dice-btn" onclick="rollDice('${cat.key}',${i})" title="Random!">🎲</button>
-        </div>`;
-    }
-    win.innerHTML = `
-      <div class="xp-titlebar">
-        <div class="xp-titlebar-text">${cat.emoji} ${cat.label}</div>
-        <div class="xp-btns">
-          <div class="xp-btn xp-close">✕</div>
-          <div class="xp-btn xp-min">−</div>
-          <div class="xp-btn xp-max">□</div>
+  };
+  return(
+    <div className="auth-screen">
+      <div className="auth-logo">im good ✨</div>
+      <p className="auth-tagline">your breakup recovery bestie<br/>for the girls in their healing era 🌿</p>
+      <div className="auth-card">
+        <h2 className="auth-title">{mode==='signin'?'welcome back 💚':'join the healing ✨'}</h2>
+        {err&&<div className="error-msg">{err}</div>}
+        <form onSubmit={submit}>
+          <div className="field">
+            <label>username</label>
+            <input value={form.username} onChange={set('username')} placeholder="your unique username" autoCapitalize="none"/>
+          </div>
+          <div className="field">
+            <label>password</label>
+            <input type="password" value={form.password} onChange={set('password')} placeholder="at least 6 characters"/>
+          </div>
+          {mode==='signup'&&<div className="field">
+            <label>confirm password</label>
+            <input type="password" value={form.confirm} onChange={set('confirm')} placeholder="type it again"/>
+          </div>}
+          <button type="submit" className="btn btn-mint btn-full" style={{marginTop:4}}>
+            {mode==='signin'?'sign in 💚':'create account ✨'}
+          </button>
+        </form>
+        <div className="auth-switch">
+          {mode==='signin'?<>don't have an account? <span onClick={()=>{setMode('signup');setErr('');}}>sign up</span></>
+          :<>already have an account? <span onClick={()=>{setMode('signin');setErr('');}}>sign in</span></>}
         </div>
       </div>
-      <div class="xp-body">${rowsHtml}</div>`;
-    grid.appendChild(win);
-  });
-}
-
-function cycleGender(idx) {
-  const states = ['neutral','male','female'];
-  const labels = { neutral:'★', male:'♂', female:'♀' };
-  const cur = marryGenders[idx] || 'neutral';
-  const next = states[(states.indexOf(cur) + 1) % 3];
-  marryGenders[idx] = next;
-  const btn = document.getElementById('genderBtn_' + idx);
-  if (btn) btn.textContent = labels[next];
-}
-
-function getMarryPool(gender) {
-  if (gender === 'male')   return RANDOM_POOLS.marry_male;
-  if (gender === 'female') return RANDOM_POOLS.marry_female;
-  return [...RANDOM_POOLS.marry_male, ...RANDOM_POOLS.marry_female];
-}
-
-function rollDice(key, idx) {
-  const pool = key === 'marry'
-    ? getMarryPool(marryGenders[idx] || 'neutral')
-    : (RANDOM_POOLS[key] || []);
-  if (!pool.length) return;
-  const inp = document.getElementById('inp_' + key + '_' + idx);
-  if (inp) inp.value = pool[Math.floor(Math.random() * pool.length)];
-}
-
-function pickMagicNumber() {
-  document.getElementById('magicInput').value = Math.floor(Math.random() * 18) + 3;
-}
-
-function startElim() {
-  // Collect inputs
-  CATEGORIES.forEach(cat => {
-    if (cat.isMash || !selectedCategoryKeys.has(cat.key)) return;
-    cat.options = [];
-    for (let i = 0; i < 4; i++) {
-      const inp = document.getElementById('inp_' + cat.key + '_' + i);
-      const raw = inp ? inp.value.trim() : '';
-      const fallback = (PLACEHOLDERS[cat.key] || [])[i]
-        ? (PLACEHOLDERS[cat.key][i]).replace(/^e\.g\. /,'')
-        : ('Option ' + (i+1));
-      cat.options.push(raw || fallback);
-    }
-  });
-
-  // Magic number
-  let mn = parseInt(document.getElementById('magicInput').value);
-  if (isNaN(mn) || mn < 3 || mn > 20) mn = Math.floor(Math.random() * 18) + 3;
-  magicNumber = mn;
-  document.getElementById('magicInput').value = mn;
-
-  buildAllOptions();
-  counter = 0;
-  elimIdx = 0;
-
-  document.getElementById('elimMagicNum').textContent = magicNumber;
-  document.getElementById('elimStatus').textContent = 'Counting begins...';
-  renderElimGrid(-1);
-  showScreen('elimScreen');
-  document.getElementById('mashLegend').style.display = '';
-  document.getElementById('subtitle').style.display = '';
-
-  animTimeout = setTimeout(runElimStep, 600);
-}
-
-// ===================== GAME LOGIC =====================
-function buildAllOptions() {
-  allOptions = [];
-  CATEGORIES.forEach((cat, ci) => {
-    if (!cat.isMash && !selectedCategoryKeys.has(cat.key)) return;
-    cat.options.forEach((text, oi) => {
-      allOptions.push({ catIndex: ci, optIndex: oi, text, eliminated: false, winner: false });
-    });
-  });
-}
-
-function getActive() {
-  return allOptions.filter(o => {
-    if (o.eliminated || o.winner) return false;
-    const remaining = allOptions.filter(a =>
-      a.catIndex === o.catIndex && !a.eliminated && !a.winner
-    ).length;
-    return remaining > 1;
-  });
-}
-
-function isDone() {
-  const activeCatIndices = [...new Set(allOptions.map(o => o.catIndex))];
-  return activeCatIndices.length > 0 && activeCatIndices.every(ci =>
-    allOptions.filter(o => o.catIndex === ci && !o.eliminated && !o.winner).length <= 1
+    </div>
   );
 }
 
-function finalizeWinners() {
-  const activeCatIndices = [...new Set(allOptions.map(o => o.catIndex))];
-  activeCatIndices.forEach(ci => {
-    const survivors = allOptions.filter(o => o.catIndex === ci && !o.eliminated && !o.winner);
-    if (survivors.length === 1) survivors[0].winner = true;
-  });
+// ===== HEADER =====
+function Header({username,onLogout,onNav}){
+  return(
+    <div className="header">
+      <div className="header-logo" onClick={()=>onNav('home')} style={{cursor:'pointer'}}>im good ✨</div>
+      <div className="header-user">
+        <div className="avatar">{username.charAt(0).toUpperCase()}</div>
+        <button onClick={onLogout} className="btn btn-ghost btn-sm">logout</button>
+      </div>
+    </div>
+  );
 }
 
-function runElimStep() {
-  if (isDone()) {
-    finalizeWinners();
-    updateMashTitle();
-    setTimeout(showResults, 800);
-    return;
-  }
-
-  const active = getActive();
-  if (active.length === 0) {
-    finalizeWinners();
-    updateMashTitle();
-    setTimeout(showResults, 800);
-    return;
-  }
-
-  const currentTarget = active[elimIdx % active.length];
-  const globalIdx = allOptions.indexOf(currentTarget);
-  renderElimGrid(globalIdx);
-  document.getElementById('elimStatus').textContent =
-    `Counting... ${(elimIdx % magicNumber) + 1} of ${magicNumber}`;
-
-  elimIdx++;
-  counter = elimIdx % Math.max(1, active.length - 1);
-
-  if (elimIdx % magicNumber === 0) {
-    // Eliminate
-    const victim = active[(elimIdx - 1) % active.length];
-    victim.eliminated = true;
-    renderElimGrid(-1);
-    document.getElementById('elimStatus').textContent = `✕ "${victim.text}" is eliminated!`;
-    updateMashTitle();
-    animTimeout = setTimeout(runElimStep, 700);
-  } else {
-    animTimeout = setTimeout(runElimStep, 180);
-  }
+// ===== BOTTOM NAV =====
+function BottomNav({page,onNav}){
+  const items=[
+    {id:'home',icon:'🏠',label:'home'},
+    {id:'history',icon:'📅',label:'history'},
+    {id:'journal',icon:'📓',label:'journal'},
+    {id:'affirmations',icon:'💬',label:'affirm'},
+    {id:'playlists',icon:'🎵',label:'music'},
+    {id:'dopamine',icon:'⚡',label:'dopamine'},
+    {id:'about',icon:'🌸',label:'about'}
+  ];
+  return(
+    <nav className="bottom-nav">
+      {items.map(i=>(
+        <button key={i.id} className={`nav-item${page===i.id?' active':''}`} onClick={()=>onNav(i.id)}>
+          <span className="nav-icon">{i.icon}</span>
+          <span className="nav-label">{i.label}</span>
+        </button>
+      ))}
+    </nav>
+  );
 }
 
-function skipToResults() {
-  if (animTimeout) { clearTimeout(animTimeout); animTimeout = null; }
-  let safety = 0;
-  while (!isDone() && safety < 20000) {
-    const active = getActive();
-    if (!active.length) break;
-    elimIdx++;
-    if (elimIdx % magicNumber === 0) {
-      const victim = active[(elimIdx - 1) % active.length];
-      victim.eliminated = true;
-    }
-    safety++;
-  }
-  finalizeWinners();
-  updateMashTitle();
-  showResults();
+// ===== HOME PAGE =====
+function HomePage({username,onNav}){
+  const today=toDate();
+  const dayOfYear=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/(1000*60*60*24));
+  const affirmation=DAILY_AFFIRMATIONS[dayOfYear%DAILY_AFFIRMATIONS.length];
+  const moods=getUserData(username,'moods',{});
+  const todayMood=moods[today];
+  const [selected,setSelected]=useState(todayMood||null);
+  const [saved,setSaved]=useState(!!todayMood);
+
+  const saveMood=m=>{
+    setSelected(m);setSaved(true);
+    const updated={...moods,[today]:m};
+    setUserData(username,'moods',updated);
+  };
+
+  const quickLinks=[
+    {id:'journal',icon:'📓',name:'journal',desc:'write it out',color:'#E8F8F0'},
+    {id:'affirmations',icon:'💬',name:'affirmations',desc:'fill your cup',color:'#FFF0F5'},
+    {id:'playlists',icon:'🎵',name:'playlists',desc:'feel the music',color:'#FFF3EA'},
+    {id:'dopamine',icon:'⚡',name:'dopamine menu',desc:'feel-good toolkit',color:'#F0F8FF'},
+  ];
+
+  return(
+    <div className="page">
+      <p className="greeting">hey {username} ✨</p>
+      <p style={{fontSize:14,color:'var(--text-light)',marginBottom:20}}>
+        {new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}
+      </p>
+
+      {/* Daily Affirmation */}
+      <div className="affirmation-card">
+        <p style={{fontSize:11,fontWeight:700,color:'var(--mint-dark)',marginBottom:10,letterSpacing:1,textTransform:'uppercase'}}>today's affirmation ✨</p>
+        <p className="affirmation-text">"{affirmation}"</p>
+        <button className="btn btn-mint btn-sm" onClick={()=>onNav('affirmations')}>more affirmations →</button>
+      </div>
+
+      {/* Mood Check-in */}
+      <div className="card" style={{marginBottom:20}}>
+        <p className="section-title">how are you feeling today?</p>
+        {saved&&selected&&(
+          <div style={{background:'var(--mint-light)',borderRadius:10,padding:10,marginBottom:12,fontSize:13,color:'var(--mint-deep)',fontWeight:700,display:'flex',alignItems:'center',gap:6}}>
+            <span style={{fontSize:20}}>{MOOD_OPTIONS.find(m=>m.id===selected)?.emoji}</span>
+            mood logged for today 💚
+          </div>
+        )}
+        <div className="mood-grid">
+          {MOOD_OPTIONS.map(m=>(
+            <button key={m.id} className={`mood-btn${selected===m.id?' selected':''}`} onClick={()=>saveMood(m.id)}>
+              <span className="mood-emoji">{m.emoji}</span>
+              <div className="mood-label">{m.label}</div>
+            </button>
+          ))}
+        </div>
+        {selected&&<p style={{fontSize:12,color:'var(--text-light)',textAlign:'center',marginTop:10}}>
+          tap to change · <span style={{color:'var(--mint-dark)',cursor:'pointer'}} onClick={()=>onNav('history')}>view history →</span>
+        </p>}
+      </div>
+
+      {/* Quick Links */}
+      <p className="section-title">explore ✨</p>
+      <div className="quick-grid">
+        {quickLinks.map(l=>(
+          <div key={l.id} className="quick-card" style={{background:l.color}} onClick={()=>onNav(l.id)}>
+            <span className="quick-icon">{l.icon}</span>
+            <span className="quick-name">{l.name}</span>
+            <span className="quick-desc">{l.desc}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
-// ===================== ELIM GRID =====================
-function renderElimGrid(currentGlobalIdx) {
-  const grid = document.getElementById('elimGrid');
-  grid.innerHTML = '';
-  CATEGORIES.forEach((cat, ci) => {
-    if (cat.isMash) return;
-    if (!selectedCategoryKeys.has(cat.key)) return;
-    const card = document.createElement('div');
-    card.className = 'elim-cat-card';
-    const titleBar = document.createElement('div');
-    titleBar.className = 'elim-cat-title';
-    titleBar.textContent = cat.emoji + ' ' + cat.label;
-    card.appendChild(titleBar);
-    allOptions.filter(o => o.catIndex === ci).forEach(opt => {
-      const gi = allOptions.indexOf(opt);
-      const div = document.createElement('div');
-      div.className = 'elim-option';
-      if (opt.winner) {
-        div.classList.add('winner');
-        div.textContent = '🏆 ' + opt.text;
-      } else if (opt.eliminated) {
-        div.classList.add('eliminated');
-        div.textContent = opt.text;
-      } else if (gi === currentGlobalIdx) {
-        div.classList.add('current-highlight');
-        div.textContent = '👉 ' + opt.text;
-      } else {
-        div.textContent = opt.text;
-      }
-      card.appendChild(div);
+// ===== MOOD HISTORY PAGE =====
+function MoodHistoryPage({username}){
+  const today=new Date();
+  const [viewDate,setViewDate]=useState({year:today.getFullYear(),month:today.getMonth()});
+  const moods=getUserData(username,'moods',{});
+
+  const daysInMonth=(y,m)=>new Date(y,m+1,0).getDate();
+  const firstDay=(y,m)=>new Date(y,m,1).getDay();
+
+  const {year,month}=viewDate;
+  const days=daysInMonth(year,month);
+  const startDay=firstDay(year,month);
+  const monthName=new Date(year,month,1).toLocaleDateString('en-US',{month:'long',year:'numeric'});
+
+  const prev=()=>setViewDate(v=>v.month===0?{year:v.year-1,month:11}:{...v,month:v.month-1});
+  const next=()=>setViewDate(v=>v.month===11?{year:v.year+1,month:0}:{...v,month:v.month+1});
+
+  const todayStr=toDate();
+  const cells=[];
+  for(let i=0;i<startDay;i++) cells.push(null);
+  for(let d=1;d<=days;d++) cells.push(d);
+
+  return(
+    <div className="page">
+      <p className="page-title">mood history 📅</p>
+      <p className="page-sub">track your healing journey</p>
+
+      <div className="card" style={{marginBottom:20}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16}}>
+          <button className="btn btn-ghost btn-sm" onClick={prev}>← prev</button>
+          <span style={{fontWeight:800,fontSize:15}}>{monthName}</span>
+          <button className="btn btn-ghost btn-sm" onClick={next}>next →</button>
+        </div>
+        <div className="cal-header">
+          {['S','M','T','W','T','F','S'].map((d,i)=><div key={i} className="cal-day-name">{d}</div>)}
+        </div>
+        <div className="cal-grid">
+          {cells.map((day,i)=>{
+            if(!day) return <div key={i} className="cal-cell empty"/>;
+            const dateStr=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+            const moodId=moods[dateStr];
+            const moodData=moodId?MOOD_OPTIONS.find(m=>m.id===moodId):null;
+            const isToday=dateStr===todayStr;
+            return(
+              <div key={i} className={`cal-cell${moodData?' has-mood':''}${isToday?' today':''}`}>
+                {day}
+                {moodData&&(
+                  <div className="mood-dot" style={{background:moodData.color}} title={moodData.label}>
+                    {moodData.emoji}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Legend */}
+      <div className="card">
+        <p className="section-title">mood legend</p>
+        <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
+          {MOOD_OPTIONS.map(m=>(
+            <div key={m.id} style={{display:'flex',alignItems:'center',gap:4,background:m.color+'33',borderRadius:20,padding:'4px 10px'}}>
+              <span style={{fontSize:16}}>{m.emoji}</span>
+              <span style={{fontSize:12,fontWeight:700,color:'var(--text-mid)'}}>{m.label}</span>
+            </div>
+          ))}
+        </div>
+        <div className="divider"/>
+        <p style={{fontSize:13,color:'var(--text-light)',textAlign:'center'}}>
+          {Object.keys(moods).length} mood{Object.keys(moods).length!==1?'s':''} tracked total 💚
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ===== JOURNAL PAGE =====
+function JournalPage({username}){
+  const [view,setView]=useState('cats'); // cats | write | entries
+  const [selCat,setSelCat]=useState(null);
+  const [promptIdx,setPromptIdx]=useState(0);
+  const [text,setText]=useState('');
+  const [saved,setSaved]=useState(false);
+  const entries=getUserData(username,'journal',[]);
+
+  const openCat=cat=>{setSelCat(cat);setPromptIdx(0);setText('');setSaved(false);setView('write');};
+
+  const save=()=>{
+    if(!text.trim()) return;
+    const entry={id:Date.now(),cat:selCat.id,catName:selCat.name,catEmoji:selCat.emoji,prompt:selCat.prompts[promptIdx],text:text.trim(),date:new Date().toISOString()};
+    const updated=[entry,...entries];
+    setUserData(username,'journal',updated);
+    setSaved(true);
+  };
+
+  const nextPrompt=()=>{
+    setPromptIdx(i=>(i+1)%selCat.prompts.length);
+    setSaved(false);
+  };
+
+  if(view==='entries'){
+    const allEntries=getUserData(username,'journal',[]);
+    return(
+      <div className="page">
+        <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:20}}>
+          <button className="btn btn-ghost btn-sm" onClick={()=>setView('cats')}>← back</button>
+          <div>
+            <p className="page-title">my entries 📖</p>
+          </div>
+        </div>
+        {allEntries.length===0?
+          <div className="card" style={{textAlign:'center',padding:40}}>
+            <p style={{fontSize:32,marginBottom:12}}>📝</p>
+            <p style={{fontSize:15,fontWeight:700,color:'var(--text-mid)'}}>no entries yet</p>
+            <p style={{fontSize:13,color:'var(--text-light)',marginTop:4}}>start writing to see your journey unfold</p>
+          </div>
+        :allEntries.map(e=>(
+          <JournalEntry key={e.id} entry={e}/>
+        ))}
+      </div>
+    );
+  }
+
+  if(view==='write'&&selCat){
+    return(
+      <div className="page">
+        <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:16}}>
+          <button className="btn btn-ghost btn-sm" onClick={()=>setView('cats')}>← back</button>
+          <span style={{fontSize:22}}>{selCat.emoji}</span>
+          <p className="page-title" style={{fontSize:18}}>{selCat.name}</p>
+        </div>
+        <div className="card" style={{marginBottom:16}}>
+          <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:8,marginBottom:12}}>
+            <p style={{fontSize:15,fontWeight:700,color:'var(--text)',lineHeight:1.5,flex:1}}>💭 {selCat.prompts[promptIdx]}</p>
+          </div>
+          <button className="btn btn-ghost btn-sm" onClick={nextPrompt}>try another prompt →</button>
+        </div>
+        <textarea value={text} onChange={e=>{setText(e.target.value);setSaved(false);}}
+          placeholder="write freely here... this is your safe space 💕"
+          style={{minHeight:220,resize:'vertical',marginBottom:12}}/>
+        {saved?
+          <div style={{background:'var(--mint-light)',borderRadius:10,padding:12,textAlign:'center',fontSize:14,fontWeight:700,color:'var(--mint-deep)'}}>
+            saved! 💚 your words matter.
+          </div>
+        :<button className="btn btn-mint btn-full" onClick={save} disabled={!text.trim()}>
+          save entry 💚
+        </button>}
+      </div>
+    );
+  }
+
+  return(
+    <div className="page">
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:4}}>
+        <p className="page-title">journal 📓</p>
+        <button className="btn btn-ghost btn-sm" onClick={()=>setView('entries')}>my entries →</button>
+      </div>
+      <p className="page-sub">pick a category to start writing</p>
+      <div className="cat-grid">
+        {JOURNAL_CATS.map(cat=>(
+          <div key={cat.id} className="cat-card" style={{background:cat.color}} onClick={()=>openCat(cat)}>
+            <span className="cat-emoji">{cat.emoji}</span>
+            <span className="cat-name">{cat.name}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function JournalEntry({entry}){
+  const [open,setOpen]=useState(false);
+  const d=new Date(entry.date);
+  const dateStr=d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  return(
+    <div className="entry-item" onClick={()=>setOpen(o=>!o)}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+        <span className="entry-cat">{entry.catEmoji} {entry.catName}</span>
+        <span className="entry-date">{dateStr}</span>
+      </div>
+      <p className="entry-preview" style={{fontStyle:'italic',color:'var(--text-light)',fontSize:12,marginBottom:4}}>
+        "{entry.prompt}"
+      </p>
+      {open?<p style={{fontSize:14,color:'var(--text)',lineHeight:1.7,marginTop:8,whiteSpace:'pre-wrap'}}>{entry.text}</p>
+      :<p className="entry-preview">{entry.text.slice(0,120)}{entry.text.length>120?'...':''}</p>}
+    </div>
+  );
+}
+
+// ===== AFFIRMATIONS PAGE =====
+function AffirmationsPage(){
+  const [tab,setTab]=useState('affirmations');
+  const [affIdx,setAffIdx]=useState(0);
+  const [quoteIdx,setQuoteIdx]=useState(0);
+
+  const shuffle=arr=>arr[Math.floor(Math.random()*arr.length)];
+  const shuffleAff=()=>setAffIdx(Math.floor(Math.random()*PAGE_AFFIRMATIONS.length));
+  const shuffleQuote=()=>setQuoteIdx(Math.floor(Math.random()*QUOTES.length));
+
+  return(
+    <div className="page">
+      <p className="page-title">affirmations 💬</p>
+      <p className="page-sub">words that heal & empower</p>
+      <div className="tabs">
+        <button className={`tab${tab==='affirmations'?' active':''}`} onClick={()=>setTab('affirmations')}>Affirmations 💚</button>
+        <button className={`tab${tab==='quotes'?' active':''}`} onClick={()=>setTab('quotes')}>Quotes 💜</button>
+      </div>
+
+      {tab==='affirmations'?(
+        <>
+          <div className="affirmation-card" style={{minHeight:160,display:'flex',flexDirection:'column',justifyContent:'center'}}>
+            <p style={{fontSize:11,fontWeight:700,color:'var(--mint-dark)',marginBottom:14,letterSpacing:1,textTransform:'uppercase'}}>affirmation {affIdx+1} of {PAGE_AFFIRMATIONS.length}</p>
+            <p className="affirmation-text">"{PAGE_AFFIRMATIONS[affIdx]}"</p>
+          </div>
+          <div style={{display:'flex',gap:10,marginBottom:20}}>
+            <button className="btn btn-outline btn-sm" style={{flex:1}}
+              onClick={()=>setAffIdx(i=>i===0?PAGE_AFFIRMATIONS.length-1:i-1)}>← prev</button>
+            <button className="btn btn-mint btn-sm" style={{flex:1}} onClick={shuffleAff}>shuffle ✨</button>
+            <button className="btn btn-outline btn-sm" style={{flex:1}}
+              onClick={()=>setAffIdx(i=>(i+1)%PAGE_AFFIRMATIONS.length)}>next →</button>
+          </div>
+          <p className="section-title">all affirmations</p>
+          {PAGE_AFFIRMATIONS.map((a,i)=>(
+            <div key={i} className="card" style={{marginBottom:10,padding:'14px 18px',cursor:'pointer',background:i===affIdx?'var(--mint-light)':'var(--white)',border:i===affIdx?'2px solid var(--mint-dark)':'2px solid transparent'}}
+              onClick={()=>setAffIdx(i)}>
+              <p style={{fontSize:14,fontWeight:600,color:'var(--text)',lineHeight:1.6,fontStyle:'italic'}}>"{a}"</p>
+            </div>
+          ))}
+        </>
+      ):(
+        <>
+          <div className="quote-card" style={{marginBottom:16,padding:28}}>
+            <p style={{fontSize:11,fontWeight:700,color:'var(--lavender)',marginBottom:12,letterSpacing:1,textTransform:'uppercase'}}>quote {quoteIdx+1} of {QUOTES.length}</p>
+            <p className="quote-text" style={{fontSize:17}}>"{QUOTES[quoteIdx].text}"</p>
+            <p className="quote-author">— {QUOTES[quoteIdx].author}</p>
+          </div>
+          <div style={{display:'flex',gap:10,marginBottom:20}}>
+            <button className="btn btn-outline btn-sm" style={{flex:1}}
+              onClick={()=>setQuoteIdx(i=>i===0?QUOTES.length-1:i-1)}>← prev</button>
+            <button className="btn btn-sm" style={{flex:1,background:'var(--lavender)',color:'var(--text)'}} onClick={shuffleQuote}>shuffle 💜</button>
+            <button className="btn btn-outline btn-sm" style={{flex:1}}
+              onClick={()=>setQuoteIdx(i=>(i+1)%QUOTES.length)}>next →</button>
+          </div>
+          <p className="section-title">all quotes</p>
+          {QUOTES.map((q,i)=>(
+            <div key={i} className="quote-card" style={{cursor:'pointer',border:i===quoteIdx?'2px solid var(--lavender)':'2px solid transparent'}}
+              onClick={()=>setQuoteIdx(i)}>
+              <p className="quote-text">"{q.text}"</p>
+              <p className="quote-author">— {q.author}</p>
+            </div>
+          ))}
+        </>
+      )}
+    </div>
+  );
+}
+
+// ===== PLAYLISTS PAGE =====
+function PlaylistsPage(){
+  return(
+    <div className="page">
+      <p className="page-title">playlists 🎵</p>
+      <p className="page-sub">music for every part of your healing</p>
+      {PLAYLISTS.map((pl,i)=>(
+        <div key={i} className="playlist-card" style={{background:pl.color}}>
+          <p className="playlist-mood">{pl.mood}</p>
+          <p className="playlist-desc">{pl.desc}</p>
+          <ul className="song-list">
+            {pl.songs.map((s,j)=><li key={j}>{s}</li>)}
+          </ul>
+          <a href={pl.spotifyUrl} target="_blank" rel="noopener noreferrer"
+            className="btn btn-sm" style={{background:pl.btnColor,color:'#fff',textDecoration:'none'}}>
+            🎵 open in spotify
+          </a>
+        </div>
+      ))}
+      <div className="card" style={{textAlign:'center',padding:20,marginTop:4}}>
+        <p style={{fontSize:13,color:'var(--text-light)',lineHeight:1.7}}>
+          💡 <strong>tip:</strong> match your playlist to your mood — it's okay to sit with sad songs sometimes.
+          Feeling your feelings is part of healing. 💚
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ===== DOPAMINE MENU PAGE =====
+function DopamineMenuPage({username}){
+  const canvasRef=useRef(null);
+  const initMenu=()=>{
+    const m={};
+    Object.entries(DOPAMINE_DEFAULTS).forEach(([cat,items])=>{
+      m[cat]=items.map(text=>({text,checked:false,custom:false}));
     });
-    grid.appendChild(card);
+    return m;
+  };
+  const [menu,setMenu]=useState(()=>{
+    const saved=getUserData(username,'dopamineMenu',null);
+    if(saved) return saved;
+    const m=initMenu();
+    setUserData(username,'dopamineMenu',m);
+    return m;
   });
-}
+  const [addText,setAddText]=useState({});
 
-// ===================== MASH TITLE =====================
-function updateMashTitle() {
-  const mashCat = CATEGORIES.find(c => c.isMash);
-  const ci = CATEGORIES.indexOf(mashCat);
-  allOptions.filter(o => o.catIndex === ci).forEach((opt, i) => {
-    const el = document.getElementById('ml-' + i);
-    if (!el) return;
-    el.className = 'ml';
-    if (opt.winner)    el.classList.add('ml-winner');
-    else if (opt.eliminated) el.classList.add('ml-eliminated');
-  });
-}
+  const toggle=(cat,idx)=>{
+    const updated={...menu,[cat]:menu[cat].map((item,i)=>i===idx?{...item,checked:!item.checked}:item)};
+    setMenu(updated);setUserData(username,'dopamineMenu',updated);
+  };
+  const deleteItem=(cat,idx)=>{
+    const updated={...menu,[cat]:menu[cat].filter((_,i)=>i!==idx)};
+    setMenu(updated);setUserData(username,'dopamineMenu',updated);
+  };
+  const addItem=cat=>{
+    const t=(addText[cat]||'').trim();
+    if(!t) return;
+    const updated={...menu,[cat]:[...menu[cat],{text:t,checked:false,custom:true}]};
+    setMenu(updated);setUserData(username,'dopamineMenu',updated);
+    setAddText(a=>({...a,[cat]:''}));
+  };
 
-function resetMashTitle() {
-  for (let i = 0; i < 4; i++) {
-    const el = document.getElementById('ml-' + i);
-    if (el) el.className = 'ml';
-  }
-}
+  const downloadCanvas=()=>{
+    const canvas=document.createElement('canvas');
+    canvas.width=800;canvas.height=1100;
+    const ctx=canvas.getContext('2d');
+    // Background gradient
+    const grad=ctx.createLinearGradient(0,0,800,1100);
+    grad.addColorStop(0,'#E8F8F0');grad.addColorStop(1,'#F8F0FF');
+    ctx.fillStyle=grad;ctx.fillRect(0,0,800,1100);
 
-// ===================== RESULTS =====================
-function showResults() {
-  finalizeWinners();
-  const winners = {};
-  CATEGORIES.forEach((cat, ci) => {
-    const w = allOptions.find(o => o.catIndex === ci && o.winner);
-    if (w) winners[cat.key] = w.text;
-  });
-  document.getElementById('destinyStory').innerHTML = buildDestinyStory(winners);
-  buildResultCards(winners);
-  showScreen('resultsScreen');
-  document.getElementById('mashLegend').style.display = 'none';
-  document.getElementById('subtitle').style.display = 'none';
-  launchConfetti();
-}
+    // Decorative top bar
+    ctx.fillStyle='#2ECC89';ctx.fillRect(0,0,800,8);
 
-function buildResultCards(winners) {
-  const grid = document.getElementById('resultsGrid');
-  grid.innerHTML = '';
-  CATEGORIES.forEach(cat => {
-    if (!winners[cat.key]) return;
-    const card = document.createElement('div');
-    card.className = 'result-card';
-    card.innerHTML = `
-      <div class="result-emoji">${cat.emoji}</div>
-      <div class="result-cat-name">${cat.label.toUpperCase()}</div>
-      <div class="result-value">${winners[cat.key]}</div>`;
-    grid.appendChild(card);
-  });
-}
+    // Title
+    ctx.fillStyle='#2ECC89';ctx.font='bold 36px Georgia, serif';
+    ctx.textAlign='center';ctx.fillText('my dopamine menu ⚡',400,60);
 
-function buildDestinyStory(winners) {
-  const parts = [];
+    // Username & date
+    ctx.fillStyle='#718096';ctx.font='18px Arial';
+    ctx.fillText('@'+username+' · '+new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}),400,90);
 
-  let opening = '✨ The stars have spoken, the spiral has counted, and your destiny is now sealed! ';
-  if (winners.mash) {
-    const homeComments = {
-      'Mansion':   'You will be living large — and we mean <em>large</em> — in a stunning <strong>Mansion</strong>!',
-      'Apartment': 'City life suits you! You will be thriving in a fabulous <strong>Apartment</strong>.',
-      'Shack':     'Listen, a <strong>Shack</strong> can be very cozy. Very rustic. Very... character-building.',
-      'House':     'A beautiful <strong>House</strong> will be your castle, your sanctuary, your vibe.',
-    };
-    opening += (homeComments[winners.mash] || `Your home: <strong>${winners.mash}</strong>.`) + ' ';
-  }
-  parts.push(`<p>${opening}</p>`);
+    ctx.fillStyle='#A8E6CF';ctx.fillRect(50,108,700,2);
 
-  if (winners.city) {
-    const intros = ['Buckle up buttercup,','Pack your bags,','Plot twist:','The universe has decided:','Hold on to your heart because'];
-    const intro = intros[Math.floor(Math.random() * intros.length)];
-    const exotic = ['Moon','Narnia','Hogwarts','Atlantis','Bikini Bottom','Area 51','Antarctica'].some(x => winners.city.includes(x));
-    parts.push(`<p>${intro} you will be calling <strong>${winners.city}</strong> home sweet home! ${exotic ? 'Truly, you are a pioneer.' : 'Start Googling real estate now.'}</p>`);
-  }
+    let y=140;
+    const checkedAll=[];
+    Object.entries(menu).forEach(([cat,items])=>{
+      const checked=items.filter(i=>i.checked);
+      if(checked.length>0) checkedAll.push({cat,items:checked});
+    });
 
-  if (winners.marry) {
-    const lines = [
-      `As for your love life — prepare yourself — you are destined to marry <strong>${winners.marry}</strong>! We hope you have their number.`,
-      `In the department of romance, the cosmos have matched you with <strong>${winners.marry}</strong>. Congratulations, we think!`,
-      `Love is in the air! And apparently that love belongs to <strong>${winners.marry}</strong>. May your WiFi passwords always be shared.`,
-    ];
-    parts.push(`<p>${lines[Math.floor(Math.random() * lines.length)]}</p>`);
-  }
-
-  if (winners.kids) {
-    const kv = winners.kids;
-    let kidLine;
-    if (kv === 'None' || kv.startsWith('None')) {
-      kidLine = `On the topic of children: <strong>${kv}</strong>. More time for you (and your pets, apparently).`;
-    } else if (kv === '47' || kv.includes("sports team") || kv.includes('Too many')) {
-      kidLine = `The kid situation is... a lot. Specifically: <strong>${kv}</strong>. You will definitely need a bigger ${winners.mash || 'home'}.`;
-    } else {
-      kidLine = `The little ones department: you will have <strong>${kv}</strong> kid${kv === '1' ? '' : 's'}. ${parseInt(kv) >= 4 ? 'Respect.' : 'Sweet!'}`;
+    if(checkedAll.length===0){
+      // Show all items if none checked
+      Object.entries(menu).forEach(([cat,items])=>{
+        checkedAll.push({cat,items});
+      });
     }
-    parts.push(`<p>${kidLine}</p>`);
-  }
 
-  if (winners.car) {
-    const carLines = [
-      `Your daily chariot will be a <strong>${winners.car}</strong>. Arrive in style (or at least arrive).`,
-      `Transportation-wise, you will be rolling around in a <strong>${winners.car}</strong>. Vroom (or squeak).`,
-      `Every morning you will walk out to your <strong>${winners.car}</strong>. We hope it starts.`,
-    ];
-    parts.push(`<p>${carLines[Math.floor(Math.random() * carLines.length)]}</p>`);
-  }
+    checkedAll.forEach(({cat,items})=>{
+      if(y>1020) return;
+      ctx.fillStyle='#2ECC89';ctx.font='bold 20px Arial';
+      ctx.textAlign='left';ctx.fillText(cat,60,y);y+=32;
+      items.slice(0,6).forEach(item=>{
+        if(y>1040) return;
+        ctx.fillStyle='#4A5568';ctx.font='16px Arial';
+        ctx.fillText('✓  '+item.text,80,y);y+=26;
+      });
+      y+=14;
+    });
 
-  if (winners.job) {
-    const jobLines = [
-      `To fund all of this fabulousness, your career will be: <strong>${winners.job}</strong>. Update that LinkedIn!`,
-      `Professionally speaking, you are going to be a <strong>${winners.job}</strong>. The world is not ready.`,
-      `Your colleagues will know you as the legendary <strong>${winners.job}</strong>. Business cards incoming.`,
-    ];
-    parts.push(`<p>${jobLines[Math.floor(Math.random() * jobLines.length)]}</p>`);
-  }
+    // Footer
+    ctx.fillStyle='#A8E6CF';ctx.fillRect(50,1060,700,2);
+    ctx.fillStyle='#2ECC89';ctx.font='bold 18px Georgia';
+    ctx.textAlign='center';ctx.fillText('im good ✨  — your healing era starts now',400,1090);
 
-  if (winners.honeymoon) {
-    let hExtras = '';
-    if (winners.honeymoon.includes('Chuck E.')) hExtras = '...Okay, but the tokens are unlimited.';
-    else if (winners.honeymoon.includes('Costco')) hExtras = '...Bulk buy your way to romance.';
-    else if (winners.honeymoon.includes('Metaverse')) hExtras = 'Very futuristic of you.';
-    else hExtras = 'Pack your sunscreen and your dancing shoes.';
-    parts.push(`<p>And for your honeymoon? Only the best: <strong>${winners.honeymoon}</strong>! ${hExtras}</p>`);
-  }
+    const link=document.createElement('a');
+    link.download='my-dopamine-menu.png';
+    link.href=canvas.toDataURL('image/png');
+    link.click();
+  };
 
-  if (winners.misc) {
-    parts.push(`<p>Oh, and one more thing the stars insist you will do: <strong>${winners.misc}</strong>. You heard it here first. ✨</p>`);
-  }
+  const checkedCount=Object.values(menu).flat().filter(i=>i.checked).length;
 
-  parts.push(`<p style="font-style:italic;opacity:0.8;">This has been your official M.A.S.H. prophecy. The spiral never lies. 🔮💕</p>`);
-  return parts.join('');
+  return(
+    <div className="page">
+      <p className="page-title">dopamine menu ⚡</p>
+      <p className="page-sub">build your personalized feel-good toolkit</p>
+      <div className="card" style={{marginBottom:16,background:'linear-gradient(135deg,#e8f8f0,#f0fff4)',border:'1px solid rgba(168,230,207,.3)'}}>
+        <p style={{fontSize:14,color:'var(--text-mid)',lineHeight:1.6,marginBottom:12}}>
+          ✅ check off what feels good today · ✏️ add your own · 💾 download your menu
+        </p>
+        <div style={{display:'flex',gap:10,alignItems:'center',flexWrap:'wrap'}}>
+          <button className="btn btn-mint" onClick={downloadCanvas}>
+            💾 download my menu
+          </button>
+          {checkedCount>0&&<span style={{fontSize:13,color:'var(--mint-deep)',fontWeight:700}}>
+            {checkedCount} item{checkedCount!==1?'s':''} selected ✨
+          </span>}
+        </div>
+      </div>
+
+      {Object.entries(menu).map(([cat,items])=>(
+        <div key={cat} className="dopamine-cat">
+          <p className="dopamine-cat-title">{cat}</p>
+          {items.map((item,idx)=>(
+            <div key={idx} style={{display:'flex',alignItems:'center',gap:8,marginBottom:6}}>
+              <div className={`activity-item${item.checked?' ':' '}`}
+                style={{flex:1,background:item.checked?'rgba(46,204,137,.15)':'var(--mint-light)',border:item.checked?'1.5px solid var(--mint-dark)':'1.5px solid transparent'}}
+                onClick={()=>toggle(cat,idx)}>
+                <div className={`activity-check${item.checked?' checked':''}`}>
+                  {item.checked&&<span style={{color:'#fff',fontSize:12}}>✓</span>}
+                </div>
+                <span className="activity-text" style={{textDecoration:item.checked?'line-through':'none',color:item.checked?'var(--mint-dark)':'var(--text-mid)'}}>{item.text}</span>
+              </div>
+              {item.custom&&<button onClick={()=>deleteItem(cat,idx)} style={{background:'none',border:'none',cursor:'pointer',fontSize:16,color:'#ccc',padding:'4px'}}>✕</button>}
+            </div>
+          ))}
+          <div className="add-input-row">
+            <input value={addText[cat]||''} onChange={e=>setAddText(a=>({...a,[cat]:e.target.value}))}
+              onKeyDown={e=>e.key==='Enter'&&addItem(cat)}
+              placeholder="add your own activity..."
+              style={{fontSize:13,padding:'8px 12px'}}/>
+            <button className="btn btn-mint btn-sm" onClick={()=>addItem(cat)}>add</button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }
 
-function playAgain() {
-  if (animTimeout) { clearTimeout(animTimeout); animTimeout = null; }
-  allOptions = [];
-  counter = 0;
-  elimIdx = 0;
-  magicNumber = 0;
-  CATEGORIES.forEach(cat => { if (!cat.isMash) cat.options = []; });
-  marryGenders = ['neutral','neutral','neutral','neutral'];
-  goToLanding();
+// ===== ABOUT PAGE =====
+function AboutPage(){
+  return(
+    <div className="page">
+      <div style={{textAlign:'center',marginBottom:28}}>
+        <p style={{fontFamily:'Pacifico, cursive',fontSize:36,color:'var(--mint-dark)',marginBottom:6}}>im good ✨</p>
+        <p style={{fontSize:16,color:'var(--text-mid)',fontWeight:700}}>for the girls in their healing era 🌿</p>
+      </div>
+
+      <div className="card about-section">
+        <h3>our mission 💚</h3>
+        <p style={{fontSize:14,color:'var(--text-mid)',lineHeight:1.8}}>
+          <em>im good</em> was built for every girl who has ever had to pretend she was fine when she wasn't.
+          This is your safe space — no judgment, no timelines, no pressure. Healing isn't linear,
+          and this app is here for every step of your journey: the ugly cries, the angry days,
+          the hopeful moments, and the days where you genuinely feel like yourself again. 💕
+        </p>
+      </div>
+
+      <div className="card about-section">
+        <h3>how to use this app 🌱</h3>
+        {[
+          ["Check in daily","Use the mood tracker on the home page every day — even just one tap. Watching your mood history change over time is genuinely healing."],
+          ["Journal it out","Pick a category that speaks to where you are. Write messy, write honestly. No one sees this but you."],
+          ["Read your affirmations","On hard days, go to the affirmations page and read until one lands. Screenshot the ones that hit."],
+          ["Use the dopamine menu","When you don't know what to do with yourself, open your menu. Pick one thing. Just one."],
+          ["Play the right music","Your playlist matches your mood. It's okay to cry to sad songs — and it's okay to bop to the glow-up playlist before you're fully healed."],
+          ["Be patient with yourself","This app can't rush your healing. But it can remind you that you're doing it, even on the days it doesn't feel like it."]
+        ].map(([title,desc],i)=>(
+          <div key={i} className="tip-item">
+            <div className="tip-num">{i+1}</div>
+            <div>
+              <p style={{fontSize:14,fontWeight:800,color:'var(--text)',marginBottom:2}}>{title}</p>
+              <p style={{fontSize:13,color:'var(--text-light)',lineHeight:1.6}}>{desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="card about-section" style={{background:'linear-gradient(135deg,#e8f8f0,#f0fff4)',border:'1px solid rgba(168,230,207,.3)'}}>
+        <h3>remember 🌟</h3>
+        {[
+          "You are not behind. There is no timeline for healing.",
+          "Every person who has ever healed thought they couldn't. You can.",
+          "The fact that you're here, taking care of yourself, is already enough."
+        ].map((text,i)=>(
+          <p key={i} style={{fontSize:14,color:'var(--text)',lineHeight:1.7,marginBottom:10,paddingLeft:12,borderLeft:'3px solid var(--mint-dark)',fontWeight:600}}>
+            {text}
+          </p>
+        ))}
+      </div>
+
+      <div style={{textAlign:'center',padding:'20px 0',color:'var(--text-light)',fontSize:12}}>
+        <p>made with 💚 for girls who are healing</p>
+        <p style={{marginTop:4}}>im good · v1.0.0</p>
+      </div>
+    </div>
+  );
 }
 
-// ===================== SCREEN HELPER =====================
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+// ===== MAIN APP =====
+function App(){
+  const [user,setUser]=useState(null);
+  const [loading,setLoading]=useState(true);
+  const [page,setPage]=useState('home');
+
+  useEffect(()=>{
+    const session=getSession();
+    if(session){
+      const users=getUsers();
+      if(users[session.toLowerCase()]) setUser(users[session.toLowerCase()].username||session);
+    }
+    setLoading(false);
+  },[]);
+
+  const handleLogin=u=>{setUser(u);setPage('home');};
+  const handleLogout=()=>{clearSession();setUser(null);setPage('home');};
+
+  if(loading) return <div className="center"><div className="spinner"/></div>;
+  if(!user) return <AuthScreen onLogin={handleLogin}/>;
+
+  const pages={
+    home:<HomePage username={user} onNav={setPage}/>,
+    history:<MoodHistoryPage username={user}/>,
+    journal:<JournalPage username={user}/>,
+    affirmations:<AffirmationsPage/>,
+    playlists:<PlaylistsPage/>,
+    dopamine:<DopamineMenuPage username={user}/>,
+    about:<AboutPage/>
+  };
+
+  return(
+    <div>
+      <Header username={user} onLogout={handleLogout} onNav={setPage}/>
+      <div style={{flex:1}}>
+        {pages[page]||pages.home}
+      </div>
+      <BottomNav page={page} onNav={setPage}/>
+    </div>
+  );
 }
 
-// ===================== CONFETTI =====================
-function launchConfetti() {
-  const container = document.getElementById('confettiContainer');
-  container.innerHTML = '';
-  const colors = ['#FF69B4','#FFB6C1','#DDA0DD','#BA55D3','#87CEEB','#FFE566','#98FFD9','#FF1493'];
-  for (let i = 0; i < 120; i++) {
-    const piece = document.createElement('div');
-    piece.className = 'confetti-piece';
-    const size = Math.random() * 10 + 6;
-    piece.style.cssText = `
-      left: ${Math.random() * 100}vw;
-      background: ${colors[Math.floor(Math.random() * colors.length)]};
-      width: ${size}px;
-      height: ${size}px;
-      border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
-      animation-duration: ${Math.random() * 2.5 + 1.5}s;
-      animation-delay: ${Math.random() * 1.5}s;
-    `;
-    container.appendChild(piece);
-  }
-  setTimeout(() => { container.innerHTML = ''; }, 5500);
-}
+const root=ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App/>);
 </script>
 </body>
 </html>
