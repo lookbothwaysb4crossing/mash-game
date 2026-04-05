@@ -10,956 +10,401 @@
 :root{
   --mint:#A8E6CF;--mint-dark:#2ECC89;--mint-deep:#1aab6d;
   --mint-light:#F0FFF4;--mint-bg:#E8F8F0;
-  --pink:#FEC5BB;--pink-light:#FFF0ED;
-  --lavender:#DDA0DD;--lav-light:#F8F0FF;
-  --cream:#FFFEF7;--white:#FFFFFF;
+  --pink:#FEC5BB;--lavender:#DDA0DD;
+  --white:#fff;--cream:#fffef7;
   --text:#2D3748;--text-mid:#4A5568;--text-light:#718096;
-  --shadow:0 4px 20px rgba(46,204,137,0.15);
-  --shadow-lg:0 8px 32px rgba(46,204,137,0.2);
-  --radius:16px;--radius-sm:10px;--radius-full:50px;
+  --shadow:0 4px 20px rgba(46,204,137,.15);
+  --shadow-lg:0 8px 32px rgba(46,204,137,.2);
+  --r:16px;--rf:50px;
 }
-body{font-family:'Nunito',sans-serif;background:var(--mint-light);color:var(--text);min-height:100vh;overflow-x:hidden}
-#root{max-width:430px;margin:0 auto;min-height:100vh;background:var(--mint-light);position:relative}
-.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
-.card-pink{background:linear-gradient(135deg,#fff5f5,#fff)}
-.card-lavender{background:linear-gradient(135deg,#faf5ff,#fff)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 24px;border-radius:var(--radius-full);border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;transition:all .2s;text-decoration:none}
-.btn-mint{background:var(--mint-dark);color:#fff}
-.btn-mint:hover{background:var(--mint-deep);transform:translateY(-1px)}
+body{font-family:"Nunito",sans-serif;background:var(--mint-light);color:var(--text);min-height:100vh}
+#app{max-width:430px;margin:0 auto;min-height:100vh;background:var(--mint-light);position:relative}
+.card{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);padding:20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 24px;border-radius:var(--rf);border:none;cursor:pointer;font-family:"Nunito",sans-serif;font-weight:700;font-size:14px;transition:all .2s;text-decoration:none}
+.btn-mint{background:var(--mint-dark);color:#fff}.btn-mint:hover{background:var(--mint-deep)}
 .btn-outline{background:transparent;border:2px solid var(--mint-dark);color:var(--mint-dark)}
-.btn-outline:hover{background:var(--mint-light)}
-.btn-pink{background:var(--pink);color:var(--text)}
-.btn-ghost{background:rgba(168,230,207,0.2);color:var(--mint-deep)}
-.btn-sm{padding:8px 16px;font-size:13px}
-.btn-full{width:100%}
-input,textarea{width:100%;border:2px solid var(--mint);border-radius:var(--radius-sm);padding:12px;font-family:'Nunito',sans-serif;font-size:14px;color:var(--text);background:var(--white);outline:none;transition:border .2s}
+.btn-ghost{background:rgba(168,230,207,.25);color:var(--mint-deep)}
+.btn-sm{padding:8px 16px;font-size:13px}.btn-full{width:100%}
+input,textarea{width:100%;border:2px solid var(--mint);border-radius:10px;padding:12px;font-family:"Nunito",sans-serif;font-size:14px;color:var(--text);background:var(--white);outline:none;transition:border .2s}
 input:focus,textarea:focus{border-color:var(--mint-dark)}
 .page{padding:20px 16px 90px;min-height:100vh}
-.page-title{font-size:24px;font-weight:900;color:var(--text);margin-bottom:4px}
+.page-title{font-size:24px;font-weight:900;margin-bottom:4px}
 .page-sub{font-size:14px;color:var(--text-light);margin-bottom:20px}
-.section-title{font-size:16px;font-weight:800;color:var(--text);margin-bottom:12px}
-.tag{display:inline-flex;align-items:center;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700}
-.divider{height:1px;background:var(--mint);opacity:.3;margin:16px 0}
+.sec-title{font-size:16px;font-weight:800;margin-bottom:12px}
 /* Header */
-.header{background:var(--white);padding:16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.06);position:sticky;top:0;z-index:100}
-.header-logo{font-family:'Pacifico',cursive;font-size:22px;color:var(--mint-dark)}
-.header-user{display:flex;align-items:center;gap:8px}
-.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--mint),var(--mint-dark));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px}
-/* Bottom Nav */
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--white);border-top:1px solid rgba(168,230,207,.4);display:flex;z-index:200;padding:6px 0 10px}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:6px 0;border:none;background:none;font-family:'Nunito',sans-serif;transition:all .2s}
-.nav-item .nav-icon{font-size:20px;line-height:1}
-.nav-item .nav-label{font-size:10px;font-weight:700;color:var(--text-light)}
+.header{background:var(--white);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.06);position:sticky;top:0;z-index:100}
+.logo{font-family:"Pacifico",cursive;font-size:22px;color:var(--mint-dark);cursor:pointer}
+.avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--mint),var(--mint-dark));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:13px}
+.header-right{display:flex;align-items:center;gap:8px}
+/* Nav */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--white);border-top:1px solid rgba(168,230,207,.4);display:flex;z-index:200;padding:6px 0 10px}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:6px 0;border:none;background:none;font-family:"Nunito",sans-serif;transition:all .2s}
+.nav-icon{font-size:19px;line-height:1}
+.nav-label{font-size:10px;font-weight:700;color:var(--text-light)}
 .nav-item.active .nav-label{color:var(--mint-dark)}
 /* Auth */
-.auth-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:linear-gradient(160deg,#e8f8f0 0%,#f8f0ff 100%)}
-.auth-logo{font-family:'Pacifico',cursive;font-size:42px;color:var(--mint-dark);margin-bottom:4px}
+.auth-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:linear-gradient(160deg,#e8f8f0,#f8f0ff)}
+.auth-logo{font-family:"Pacifico",cursive;font-size:42px;color:var(--mint-dark);margin-bottom:4px}
 .auth-tagline{font-size:15px;color:var(--text-light);margin-bottom:32px;text-align:center}
 .auth-card{background:var(--white);border-radius:20px;box-shadow:var(--shadow-lg);padding:28px;width:100%;max-width:360px}
-.auth-title{font-size:20px;font-weight:900;margin-bottom:20px;color:var(--text)}
-.field{margin-bottom:16px}
-.field label{display:block;font-size:13px;font-weight:700;color:var(--text-mid);margin-bottom:6px}
+.auth-title{font-size:20px;font-weight:900;margin-bottom:20px}
+.field{margin-bottom:16px}.field label{display:block;font-size:13px;font-weight:700;color:var(--text-mid);margin-bottom:6px}
+.err{background:#fff5f5;color:#e53e3e;border-radius:8px;padding:10px;font-size:13px;margin-bottom:12px}
 .auth-switch{text-align:center;margin-top:16px;font-size:13px;color:var(--text-light)}
 .auth-switch span{color:var(--mint-dark);cursor:pointer;font-weight:700}
-.error-msg{background:#fff5f5;color:#e53e3e;border-radius:8px;padding:10px;font-size:13px;margin-bottom:12px}
-/* Mood */
-.mood-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.mood-btn{padding:12px 8px;border-radius:14px;border:2px solid transparent;background:var(--mint-light);cursor:pointer;text-align:center;transition:all .2s;font-family:'Nunito',sans-serif}
-.mood-btn:hover{transform:scale(1.05);border-color:var(--mint)}
-.mood-btn.selected{border-color:var(--mint-dark);background:rgba(46,204,137,.1)}
-.mood-emoji{font-size:28px;display:block}
-.mood-label{font-size:11px;font-weight:700;color:var(--text-mid);margin-top:4px}
+/* Home */
+.greeting{font-family:"Pacifico",cursive;font-size:26px;color:var(--mint-dark);margin-bottom:4px}
+.aff-card{background:linear-gradient(135deg,#e8f8f0,#f0fff4);border-radius:20px;padding:24px;margin-bottom:20px;border:1px solid rgba(168,230,207,.3)}
+.aff-text{font-size:17px;font-weight:700;color:var(--text);line-height:1.6;font-style:italic;margin-bottom:14px}
+.mood-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+.mood-btn{padding:12px 6px;border-radius:14px;border:2px solid transparent;background:var(--mint-light);cursor:pointer;text-align:center;transition:all .2s;font-family:"Nunito",sans-serif}
+.mood-btn:hover{border-color:var(--mint);transform:scale(1.04)}
+.mood-btn.sel{border-color:var(--mint-dark);background:rgba(46,204,137,.1)}
+.mood-emoji{font-size:26px;display:block}.mood-label{font-size:11px;font-weight:700;color:var(--text-mid);margin-top:3px}
+.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:8px}
+.quick-card{padding:16px;border-radius:14px;cursor:pointer;transition:all .2s}
+.quick-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.quick-icon{font-size:24px}.quick-name{font-size:13px;font-weight:800;margin-top:4px}.quick-desc{font-size:11px;color:var(--text-light);margin-top:2px}
 /* Calendar */
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.cal-header{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px}
-.cal-day-name{text-align:center;font-size:11px;font-weight:700;color:var(--text-light);padding:4px}
-.cal-cell{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--text-mid);background:transparent;position:relative}
-.cal-cell.has-mood{cursor:pointer}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-dname{text-align:center;font-size:11px;font-weight:700;color:var(--text-light);padding:4px}
+.cal-cell{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--text-mid);position:relative;flex-direction:column;gap:1px}
 .cal-cell.today{background:var(--mint-light);color:var(--mint-dark);font-weight:900}
-.cal-cell.empty{opacity:0}
-.mood-dot{position:absolute;bottom:1px;right:1px;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px}
+.mdot{font-size:11px;line-height:1}
+/* Tabs */
+.tabs{display:flex;background:var(--mint-light);border-radius:var(--rf);padding:4px;margin-bottom:20px}
+.tab{flex:1;padding:10px;border-radius:var(--rf);border:none;background:none;font-family:"Nunito",sans-serif;font-size:14px;font-weight:700;cursor:pointer;color:var(--text-light);transition:all .2s}
+.tab.active{background:var(--white);color:var(--mint-dark);box-shadow:0 2px 8px rgba(0,0,0,.08)}
 /* Journal */
 .cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.cat-card{padding:16px;border-radius:14px;border:2px solid transparent;cursor:pointer;transition:all .2s;text-align:center}
+.cat-card{padding:16px;border-radius:14px;cursor:pointer;transition:all .2s;text-align:center;border:2px solid transparent}
 .cat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
-.cat-card.selected{border-color:var(--mint-dark)}
-.cat-emoji{font-size:28px;display:block;margin-bottom:6px}
-.cat-name{font-size:13px;font-weight:800;color:var(--text)}
-/* Tabs */
-.tabs{display:flex;background:var(--mint-light);border-radius:var(--radius-full);padding:4px;margin-bottom:20px}
-.tab{flex:1;padding:10px;border-radius:var(--radius-full);border:none;background:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;color:var(--text-light);transition:all .2s}
-.tab.active{background:var(--white);color:var(--mint-dark);box-shadow:0 2px 8px rgba(0,0,0,.08)}
-/* Affirmation card */
-.affirmation-card{background:linear-gradient(135deg,#e8f8f0,#f0fff4);border-radius:20px;padding:28px;text-align:center;margin-bottom:20px;border:1px solid rgba(168,230,207,.3)}
-.affirmation-text{font-size:18px;font-weight:700;color:var(--text);line-height:1.6;font-style:italic;margin-bottom:16px}
-.quote-card{background:linear-gradient(135deg,#faf5ff,#fff);border-radius:16px;padding:24px;margin-bottom:12px;border-left:4px solid var(--lavender)}
-.quote-text{font-size:16px;font-weight:600;color:var(--text);line-height:1.6;font-style:italic;margin-bottom:8px}
+.cat-emoji{font-size:28px;display:block;margin-bottom:6px}.cat-name{font-size:13px;font-weight:800}
+/* Affirmations */
+.big-card{background:linear-gradient(135deg,#e8f8f0,#f0fff4);border-radius:20px;padding:28px;text-align:center;margin-bottom:16px;border:1px solid rgba(168,230,207,.3);min-height:160px;display:flex;flex-direction:column;justify-content:center}
+.big-text{font-size:17px;font-weight:700;color:var(--text);line-height:1.7;font-style:italic;margin-bottom:14px}
+.quote-card{background:linear-gradient(135deg,#faf5ff,#fff);border-radius:16px;padding:20px;margin-bottom:12px;border-left:4px solid var(--lavender)}
+.quote-text{font-size:15px;font-weight:600;color:var(--text);line-height:1.6;font-style:italic;margin-bottom:8px}
 .quote-author{font-size:13px;color:var(--text-light);font-weight:700}
 /* Playlist */
-.playlist-card{border-radius:16px;padding:20px;margin-bottom:14px;border:1px solid rgba(0,0,0,.06)}
-.playlist-mood{font-size:18px;font-weight:900;margin-bottom:4px}
-.playlist-desc{font-size:13px;color:var(--text-mid);margin-bottom:12px}
+.pl-card{border-radius:16px;padding:20px;margin-bottom:14px;border:1px solid rgba(0,0,0,.06)}
+.pl-mood{font-size:18px;font-weight:900;margin-bottom:4px}.pl-desc{font-size:13px;color:var(--text-mid);margin-bottom:12px}
 .song-list{list-style:none;margin-bottom:14px}
 .song-list li{font-size:13px;color:var(--text-mid);padding:4px 0;border-bottom:1px dashed rgba(0,0,0,.08)}
-.song-list li:last-child{border:none}
-.song-list li::before{content:"♪ ";color:var(--mint-dark)}
+.song-list li:last-child{border:none}.song-list li::before{content:"♪ ";color:var(--mint-dark)}
 /* Dopamine */
-.dopamine-cat{margin-bottom:20px}
-.dopamine-cat-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:10px}
-.activity-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:var(--mint-light);margin-bottom:6px;cursor:pointer;transition:background .2s}
-.activity-item:hover{background:rgba(168,230,207,.4)}
-.activity-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--mint-dark);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
-.activity-check.checked{background:var(--mint-dark)}
-.activity-text{font-size:14px;color:var(--text-mid);font-weight:600}
+.dop-cat{margin-bottom:20px}
+.dop-cat-title{font-size:15px;font-weight:800;margin-bottom:10px}
+.act-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;background:var(--mint-light);margin-bottom:6px;cursor:pointer;transition:background .2s;border:1.5px solid transparent}
+.act-item.checked{background:rgba(46,204,137,.12);border-color:var(--mint-dark)}
+.act-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--mint-dark);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:11px;color:#fff}
+.act-check.on{background:var(--mint-dark)}
+.act-text{font-size:14px;font-weight:600;color:var(--text-mid);flex:1}
+.act-text.done{text-decoration:line-through;color:var(--mint-dark)}
+.add-row{display:flex;gap:8px;margin-top:8px}
+.add-row input{flex:1;padding:8px 12px;font-size:13px}
 /* Entries */
 .entry-item{background:var(--white);border-radius:12px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);cursor:pointer}
-.entry-date{font-size:12px;color:var(--text-light);margin-bottom:4px}
-.entry-cat{font-size:12px;font-weight:700;color:var(--mint-dark);margin-bottom:6px}
-.entry-preview{font-size:13px;color:var(--text-mid);line-height:1.5}
+.entry-meta{display:flex;justify-content:space-between;margin-bottom:4px}
+.entry-cat{font-size:12px;font-weight:700;color:var(--mint-dark)}
+.entry-date{font-size:12px;color:var(--text-light)}
+.entry-prompt{font-size:12px;color:var(--text-light);font-style:italic;margin-bottom:6px}
+.entry-text{font-size:13px;color:var(--text-mid);line-height:1.6}
 /* About */
-.about-section{margin-bottom:24px}
-.about-section h3{font-size:16px;font-weight:900;color:var(--text);margin-bottom:10px}
-.tip-item{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}
-.tip-num{width:24px;height:24px;border-radius:50%;background:var(--mint);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--mint-deep);flex-shrink:0}
-/* Spinner */
-.spinner{width:40px;height:40px;border:3px solid var(--mint);border-top-color:var(--mint-dark);border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.center{display:flex;align-items:center;justify-content:center;min-height:100vh}
-/* Quick cards on home */
-.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
-.quick-card{padding:16px;border-radius:14px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;gap:4px}
-.quick-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
-.quick-icon{font-size:24px}
-.quick-name{font-size:13px;font-weight:800;color:var(--text)}
-.quick-desc{font-size:11px;color:var(--text-light)}
-.greeting{font-family:'Pacifico',cursive;font-size:26px;color:var(--mint-dark);margin-bottom:4px}
-.add-input-row{display:flex;gap:8px;margin-top:8px}
-.add-input-row input{flex:1}
+.tip-item{display:flex;gap:10px;margin-bottom:12px;align-items:flex-start}
+.tip-num{width:24px;height:24px;border-radius:50%;background:var(--mint);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--mint-deep);flex-shrink:0;margin-top:1px}
+.remember-item{font-size:14px;color:var(--text);line-height:1.7;margin-bottom:10px;padding-left:12px;border-left:3px solid var(--mint-dark);font-weight:600}
+.divider{height:1px;background:var(--mint);opacity:.3;margin:16px 0}
+.badge{background:var(--mint-light);color:var(--mint-deep);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;display:inline-block}
+.info-box{background:rgba(168,230,207,.2);border-radius:12px;padding:14px;font-size:13px;color:var(--text-mid);line-height:1.7}
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
-<script type="text/babel">
-const {useState,useEffect,useRef,useCallback}=React;
-
+<div id="app"></div>
+<script>
 // ===== DATA =====
-const DAILY_AFFIRMATIONS=[
-"I am healing at my own pace, and that's perfectly okay.",
-"My worth is not defined by who stayed or who left.",
-"I deserve love that doesn't require me to shrink myself.",
-"Every ending is a new beginning in disguise.",
-"I am becoming the person I needed when I was hurting.",
-"My heart is resilient and capable of loving again.",
-"I choose myself every single day.",
-"I am not what happened to me — I am what I choose to become.",
-"Healing is not linear and I am patient with myself.",
-"I release what no longer serves my highest good.",
-"I am magnetic, powerful, and worthy of great love.",
-"My energy is my currency — I spend it wisely.",
-"I trust the timing of my life.",
-"I am whole, complete, and enough exactly as I am.",
-"The love I give to others, I now give to myself.",
-"I am not waiting to be chosen — I am the prize.",
-"My future is bright and full of people who truly see me.",
-"I outgrow people and situations — that's growth, not loss.",
-"I am building a life I'm genuinely excited about.",
-"Peace is my priority. Drama has no place in my story."
-];
-const PAGE_AFFIRMATIONS=[
-"I don't need anyone's validation to feel worthy.",
-"I am allowed to outgrow people who no longer fit my life.",
-"Being single is not a problem to be solved — it's a season to enjoy.",
-"The right relationships will feel effortless, not exhausting.",
-"My standards are not too high — they're just mine.",
-"I attract what I put out: love, peace, and positivity.",
-"I am the main character of my own life story.",
-"My independence is something to be celebrated, not apologized for.",
-"I decide what I deserve, and I decide it's everything.",
-"Every day I am getting stronger, softer, and more myself.",
-"I let go of the need to control what isn't mine to control.",
-"My past experiences have made me wiser, not broken.",
-"I am learning to love the journey, not just the destination.",
-"I am deeply deserving of peace, joy, and genuine love.",
-"There is so much beauty in the life I am building.",
-"I no longer chase what doesn't choose me back.",
-"My healing is a gift I give to my future self.",
-"I am proud of how far I've come, even when I can't see it.",
-"The best version of me is still becoming.",
-"I am enough — today, tomorrow, and always."
-];
-const QUOTES=[
-{text:"She remembered who she was and the game changed.",author:"Lalah Delia"},
-{text:"You didn't lose him. You lost the version of yourself that accepted less than you deserve.",author:"Unknown"},
-{text:"Not every chapter needs a happy ending. Some chapters just need to end.",author:"Unknown"},
-{text:"Your new life is going to cost you your old one.",author:"Unknown"},
-{text:"The most powerful thing you can do after a breakup is focus on yourself so hard that you forget he exists.",author:"Unknown"},
-{text:"Healing doesn't mean the damage never existed. It means the damage no longer controls your life.",author:"Akshay Dubey"},
-{text:"Some things break your heart but fix your vision.",author:"Unknown"},
-{text:"The right one won't make you question your worth.",author:"Unknown"},
-{text:"Fall in love with taking care of yourself.",author:"Unknown"},
-{text:"You owe yourself the love that you freely give to others.",author:"Unknown"},
-{text:"She was never crazy. She was passionate about things that didn't deserve her passion.",author:"R.H. Sin"},
-{text:"The most important relationship is the one you have with yourself.",author:"Diane Von Furstenberg"},
-{text:"You yourself, as much as anybody in the entire universe, deserve your love and affection.",author:"Buddha"},
-{text:"Cry a river, build a bridge, and get over it.",author:"Unknown"},
-{text:"Plot twist: the person you needed to find yourself again was you.",author:"Unknown"}
-];
-const JOURNAL_CATS=[
-{id:"healing",name:"Healing Journey",emoji:"🌱",color:"#E8F8F0",prompts:["What does healing feel like in my body right now?","What am I learning about myself through this pain?","Three things I've done recently that were just for me:","What would I tell my heartbroken self from 6 months ago?","How have I grown since this relationship ended?","What patterns am I ready to break?"]},
-{id:"selflove",name:"Self-Love",emoji:"💕",color:"#FFF0F5",prompts:["What do I love most about myself today?","List 10 things your body does amazingly for you:","How can I be gentler with myself this week?","What compliment do I need to hear right now? Write it yourself!","What makes me uniquely, wonderfully me?","If my best friend described me, what would she say?"]},
-{id:"gratitude",name:"Gratitude",emoji:"✨",color:"#FFFBEA",prompts:["What am I grateful for that this relationship taught me?","Name 5 people who love and support me:","What small moments of joy have I noticed recently?","What freedoms do I have now that I appreciate?","What beautiful things happened today, even if small?","What is something about my life right now that future-me will be grateful for?"]},
-{id:"release",name:"Release & Vent",emoji:"🔥",color:"#FFF3F0",prompts:["Write a letter you'll never send. Say everything.","What feelings have I been avoiding that need attention?","What am I still angry about? Give yourself permission to feel it.","What did I put up with that I should have walked away from sooner?","What do I need to stop carrying that isn't mine to hold?","What conversations do I wish I had?"]},
-{id:"future",name:"Future Dreams",emoji:"🌟",color:"#F5F0FF",prompts:["Describe your dream life in 2 years:","What kind of partner do I truly deserve? Be specific.","What adventures am I going to have as a single person?","What goals am I going to crush now that I have more energy?","What does my glow-up look like?","Write a letter from your future thriving self:"]},
-{id:"discovery",name:"Self-Discovery",emoji:"🔍",color:"#F0F8FF",prompts:["What did I compromise about myself in this relationship?","What are my non-negotiables in any relationship going forward?","What parts of myself am I rediscovering?","What did I stop doing that made me happy? How can I start again?","Who am I outside of that relationship?","What do I actually need vs what I thought I needed?"]},
-{id:"lessons",name:"Lessons Learned",emoji:"📚",color:"#F0FFF8",prompts:["What red flags did I ignore? What will I look for next time?","What did this relationship show me about my patterns?","What would I do differently? No shame, just growth!","What did I learn about what I need to feel loved?","How did this relationship help me grow?","What boundaries am I setting from now on?"]},
-{id:"growth",name:"Growth & Goals",emoji:"🌈",color:"#FFF0FA",prompts:["What habits am I building that future me will thank me for?","One thing I'm going to do this week to invest in myself:","What skills or hobbies am I going to develop?","How am I going to show up differently for myself?","What does my ideal morning routine look like?","What does the best version of me look like in 6 months?"]}
-];
-const PLAYLISTS=[
-{mood:"😭 Cry It Out",desc:"For when you need to ugly cry and feel everything",color:"#EEF2FF",btnColor:"#6C83D8",spotifyUrl:"https://open.spotify.com/playlist/37i9dQZF1DX3YSRoSdA634",songs:["drivers license — Olivia Rodrigo","Someone Like You — Adele","White Flag — Joseph","The Night Will Always Win — James Bay"]},
-{mood:"😤 Mad Era",desc:"Channel that rage into pure power, bestie",color:"#FFF0F0",btnColor:"#E05555",spotifyUrl:"https://open.spotify.com/playlist/37i9dQZF1DWU4lunDP0X0F",songs:["good 4 u — Olivia Rodrigo","IDGAF — Dua Lipa","You Oughta Know — Alanis Morissette","Forget You — CeeLo Green"]},
-{mood:"🌱 Healing Slowly",desc:"Gentle, hopeful sounds for the in-between days",color:"#F0FFF4",btnColor:"#2ECC89",spotifyUrl:"https://open.spotify.com/playlist/37i9dQZF1DWZqd5JICZI0u",songs:["Bloom — The Paper Kites","Better Place — Rachel Platten","Rise Up — Andra Day","Dog Days Are Over — Florence + Machine"]},
-{mood:"✨ Glow Up Season",desc:"You're back and you're THAT girl, no debate",color:"#FFFBEA",btnColor:"#E6AC00",spotifyUrl:"https://open.spotify.com/playlist/37i9dQZF1DX4JAvHpjipBk",songs:["Flowers — Miley Cyrus","Break My Soul — Beyoncé","Thank U, Next — Ariana Grande","Confident — Demi Lovato"]},
-{mood:"🌙 2AM Thoughts",desc:"For the late night spiral, we don't judge",color:"#F5F0FF",btnColor:"#9B7FD4",spotifyUrl:"https://open.spotify.com/playlist/37i9dQZF1DXcCnTAt8CfNe",songs:["Exile — Taylor Swift ft. Bon Iver","Liability — Lorde","Skinny Love — Bon Iver","Ghost — Indila"]}
-];
-const DOPAMINE_DEFAULTS={
-"Self-Care 🛁":["Take a long shower with fave products","Do a full skincare routine","Paint your nails a cute color","Put on a face mask","Moisturize from head to toe"],
-"Move Your Body 🏃‍♀️":["Go for a walk outside","Dance to your favorite song","20-min yoga flow on YouTube","Stretch for 10 minutes","Workout to spite him"],
-"Feed Your Soul 📖":["Read a chapter of your book","Watch a comfort show episode","Journal for 10 minutes","Call your bestie","Listen to a podcast"],
-"Treat Yourself 🧁":["Make your favorite meal","Order your favorite food","Get a coffee from your fave spot","Buy yourself flowers","Make a fancy drink at home"],
-"Get Creative 🎨":["Rearrange your room","Try a new recipe","Make a new playlist","Doodle or draw","Take photos outside"],
-"Connect 💜":["Text someone you miss","Plan a girls night","Say yes to the next social invite","FaceTime family","Make plans for something to look forward to"]
-};
-const MOOD_OPTIONS=[
-{id:"rockbottom",emoji:"💀",label:"rock bottom",color:"#8B9DC3"},
-{id:"devastated",emoji:"😭",label:"devastated",color:"#9B89B6"},
-{id:"sad",emoji:"😔",label:"sad",color:"#87CEEB"},
-{id:"meh",emoji:"😐",label:"meh",color:"#F0E68C"},
-{id:"okay",emoji:"🙂",label:"okay",color:"#90EE90"},
-{id:"thriving",emoji:"✨",label:"thriving",color:"#FFD700"}
-];
+var DAILY_AFFS=["I am healing at my own pace, and that's perfectly okay.","My worth is not defined by who stayed or who left.","I deserve love that doesn't require me to shrink myself.","Every ending is a new beginning in disguise.","I am becoming the person I needed when I was hurting.","My heart is resilient and capable of loving again.","I choose myself every single day.","I am not what happened to me — I am what I choose to become.","Healing is not linear and I am patient with myself.","I release what no longer serves my highest good.","I am magnetic, powerful, and worthy of great love.","My energy is my currency — I spend it wisely.","I trust the timing of my life.","I am whole, complete, and enough exactly as I am.","The love I give to others, I now give to myself.","I am not waiting to be chosen — I am the prize.","My future is bright and full of people who truly see me.","I outgrow people and situations — that's growth, not loss.","I am building a life I'm genuinely excited about.","Peace is my priority. Drama has no place in my story."];
+var PAGE_AFFS=["I don't need anyone's validation to feel worthy.","I am allowed to outgrow people who no longer fit my life.","Being single is not a problem to be solved — it's a season to enjoy.","The right relationships will feel effortless, not exhausting.","My standards are not too high — they're just mine.","I attract what I put out: love, peace, and positivity.","I am the main character of my own life story.","My independence is something to be celebrated, not apologized for.","I decide what I deserve, and I decide it's everything.","Every day I am getting stronger, softer, and more myself.","I let go of the need to control what isn't mine to control.","My past experiences have made me wiser, not broken.","I am learning to love the journey, not just the destination.","I am deeply deserving of peace, joy, and genuine love.","There is so much beauty in the life I am building.","I no longer chase what doesn't choose me back.","My healing is a gift I give to my future self.","I am proud of how far I've come, even when I can't see it.","The best version of me is still becoming.","I am enough — today, tomorrow, and always."];
+var QUOTES=[{t:"She remembered who she was and the game changed.",a:"Lalah Delia"},{t:"You didn't lose him. You lost the version of yourself that accepted less than you deserve.",a:"Unknown"},{t:"Not every chapter needs a happy ending. Some chapters just need to end.",a:"Unknown"},{t:"Your new life is going to cost you your old one.",a:"Unknown"},{t:"The most powerful thing you can do after a breakup is focus on yourself so hard that you forget he exists.",a:"Unknown"},{t:"Healing doesn't mean the damage never existed. It means the damage no longer controls your life.",a:"Akshay Dubey"},{t:"Some things break your heart but fix your vision.",a:"Unknown"},{t:"The right one won't make you question your worth.",a:"Unknown"},{t:"Fall in love with taking care of yourself.",a:"Unknown"},{t:"You owe yourself the love that you freely give to others.",a:"Unknown"},{t:"She was never crazy. She was passionate about things that didn't deserve her passion.",a:"R.H. Sin"},{t:"The most important relationship is the one you have with yourself.",a:"Diane Von Furstenberg"},{t:"You yourself, as much as anybody in the entire universe, deserve your love and affection.",a:"Buddha"},{t:"Cry a river, build a bridge, and get over it.",a:"Unknown"},{t:"Plot twist: the person you needed to find yourself again was you.",a:"Unknown"}];
+var JCATS=[{id:"healing",name:"Healing Journey",emoji:"🌱",color:"#E8F8F0",prompts:["What does healing feel like in my body right now?","What am I learning about myself through this pain?","Three things I've done recently that were just for me:","What would I tell my heartbroken self from 6 months ago?","How have I grown since this relationship ended?","What patterns am I ready to break?"]},{id:"selflove",name:"Self-Love",emoji:"💕",color:"#FFF0F5",prompts:["What do I love most about myself today?","List 10 things your body does amazingly for you:","How can I be gentler with myself this week?","What compliment do I need to hear right now? Write it yourself!","What makes me uniquely, wonderfully me?","If my best friend described me, what would she say?"]},{id:"gratitude",name:"Gratitude",emoji:"✨",color:"#FFFBEA",prompts:["What am I grateful for that this relationship taught me?","Name 5 people who love and support me:","What small moments of joy have I noticed recently?","What freedoms do I have now that I appreciate?","What beautiful things happened today, even if small?","What is something about my life right now that future-me will be grateful for?"]},{id:"release",name:"Release & Vent",emoji:"🔥",color:"#FFF3F0",prompts:["Write a letter you'll never send. Say everything.","What feelings have I been avoiding that need attention?","What am I still angry about? Give yourself permission to feel it.","What did I put up with that I should have walked away from sooner?","What do I need to stop carrying that isn't mine to hold?","What conversations do I wish I had?"]},{id:"future",name:"Future Dreams",emoji:"🌟",color:"#F5F0FF",prompts:["Describe your dream life in 2 years:","What kind of partner do I truly deserve? Be specific.","What adventures am I going to have as a single person?","What goals am I going to crush now that I have more energy?","What does my glow-up look like?","Write a letter from your future thriving self:"]},{id:"discovery",name:"Self-Discovery",emoji:"🔍",color:"#F0F8FF",prompts:["What did I compromise about myself in this relationship?","What are my non-negotiables in any relationship going forward?","What parts of myself am I rediscovering?","What did I stop doing that made me happy? How can I start again?","Who am I outside of that relationship?","What do I actually need vs what I thought I needed?"]},{id:"lessons",name:"Lessons Learned",emoji:"📚",color:"#F0FFF8",prompts:["What red flags did I ignore? What will I look for next time?","What did this relationship show me about my patterns?","What would I do differently? No shame, just growth!","What did I learn about what I need to feel loved?","How did this relationship help me grow?","What boundaries am I setting from now on?"]},{id:"growth",name:"Growth & Goals",emoji:"🌈",color:"#FFF0FA",prompts:["What habits am I building that future me will thank me for?","One thing I'm going to do this week to invest in myself:","What skills or hobbies am I going to develop?","How am I going to show up differently for myself?","What does my ideal morning routine look like?","What does the best version of me look like in 6 months?"]}];
+var PLAYLISTS=[{mood:"😭 Cry It Out",desc:"For when you need to ugly cry and feel everything",color:"#EEF2FF",btn:"#6C83D8",url:"https://open.spotify.com/playlist/37i9dQZF1DX3YSRoSdA634",songs:["drivers license — Olivia Rodrigo","Someone Like You — Adele","White Flag — Joseph","The Night Will Always Win — James Bay"]},{mood:"😤 Mad Era",desc:"Channel that rage into pure power, bestie",color:"#FFF0F0",btn:"#E05555",url:"https://open.spotify.com/playlist/37i9dQZF1DWU4lunDP0X0F",songs:["good 4 u — Olivia Rodrigo","IDGAF — Dua Lipa","You Oughta Know — Alanis Morissette","Forget You — CeeLo Green"]},{mood:"🌱 Healing Slowly",desc:"Gentle, hopeful sounds for the in-between days",color:"#F0FFF4",btn:"#2ECC89",url:"https://open.spotify.com/playlist/37i9dQZF1DWZqd5JICZI0u",songs:["Bloom — The Paper Kites","Better Place — Rachel Platten","Rise Up — Andra Day","Dog Days Are Over — Florence + Machine"]},{mood:"✨ Glow Up Season",desc:"You're back and you're THAT girl, no debate",color:"#FFFBEA",btn:"#E6AC00",url:"https://open.spotify.com/playlist/37i9dQZF1DX4JAvHpjipBk",songs:["Flowers — Miley Cyrus","Break My Soul — Beyoncé","Thank U, Next — Ariana Grande","Confident — Demi Lovato"]},{mood:"🌙 2AM Thoughts",desc:"For the late night spiral, we don't judge",color:"#F5F0FF",btn:"#9B7FD4",url:"https://open.spotify.com/playlist/37i9dQZF1DXcCnTAt8CfNe",songs:["Exile — Taylor Swift ft. Bon Iver","Liability — Lorde","Skinny Love — Bon Iver","Ghost — Indila"]}];
+var DOP_DEFAULTS={"Self-Care 🛁":["Take a long shower with fave products","Do a full skincare routine","Paint your nails a cute color","Put on a face mask","Moisturize from head to toe"],"Move Your Body 🏃‍♀️":["Go for a walk outside","Dance to your favorite song","20-min yoga flow","Stretch for 10 minutes","Workout to spite him"],"Feed Your Soul 📖":["Read a chapter of your book","Watch a comfort show episode","Journal for 10 minutes","Call your bestie","Listen to a podcast"],"Treat Yourself 🧁":["Make your favorite meal","Order your favorite food","Get a coffee from your fave spot","Buy yourself flowers","Make a fancy drink at home"],"Get Creative 🎨":["Rearrange your room","Try a new recipe","Make a new playlist","Doodle or draw","Take photos outside"],"Connect 💜":["Text someone you miss","Plan a girls night","Say yes to the next social invite","FaceTime family","Make plans for something to look forward to"]};
+var MOODS=[{id:"rockbottom",e:"💀",label:"rock bottom",color:"#8B9DC3"},{id:"devastated",e:"😭",label:"devastated",color:"#9B89B6"},{id:"sad",e:"😔",label:"sad",color:"#87CEEB"},{id:"meh",e:"😐",label:"meh",color:"#F0E68C"},{id:"okay",e:"🙂",label:"okay",color:"#90EE90"},{id:"thriving",e:"✨",label:"thriving",color:"#FFD700"}];
+// ===== STATE =====
+var state={page:'home',user:null,affIdx:0,quoteIdx:0,jView:'cats',jCat:null,jPromptIdx:0,jText:'',affTab:'affirmations',calYear:new Date().getFullYear(),calMonth:new Date().getMonth(),dopMenu:null,expandedEntry:null};
 
-// ===== STORAGE UTILS =====
-const getUsers=()=>JSON.parse(localStorage.getItem('imgood_users')||'{}');
-const saveUsers=u=>localStorage.setItem('imgood_users',JSON.stringify(u));
-const getSession=()=>localStorage.getItem('imgood_session');
-const setSession=u=>localStorage.setItem('imgood_session',u);
-const clearSession=()=>localStorage.removeItem('imgood_session');
-const getUserData=(u,key,def)=>{
-  const all=JSON.parse(localStorage.getItem('imgood_data_'+u.toLowerCase())||'{}');
-  return key?all[key]??def:all;
-};
-const setUserData=(u,key,val)=>{
-  const all=getUserData(u);
-  all[key]=val;
-  localStorage.setItem('imgood_data_'+u.toLowerCase(),JSON.stringify(all));
-};
-const toDate=()=>new Date().toISOString().split('T')[0];
+// ===== STORAGE =====
+function getUsers(){return JSON.parse(localStorage.getItem('ig_users')||'{}')}
+function saveUsers(u){localStorage.setItem('ig_users',JSON.stringify(u))}
+function getSession(){return localStorage.getItem('ig_session')}
+function setSession(u){localStorage.setItem('ig_session',u)}
+function clearSession(){localStorage.removeItem('ig_session')}
+function ud(key,def){var d=JSON.parse(localStorage.getItem('ig_d_'+state.user.toLowerCase())||'{}');return key?(d[key]!==undefined?d[key]:def):d}
+function sus(key,val){var d=JSON.parse(localStorage.getItem('ig_d_'+state.user.toLowerCase())||'{}');d[key]=val;localStorage.setItem('ig_d_'+state.user.toLowerCase(),JSON.stringify(d))}
+function today(){return new Date().toISOString().split('T')[0]}
 
-// ===== AUTH SCREEN =====
-function AuthScreen({onLogin}){
-  const [mode,setMode]=useState('signin');
-  const [form,setForm]=useState({username:'',password:'',confirm:''});
-  const [err,setErr]=useState('');
-  const set=k=>e=>setForm(f=>({...f,[k]:e.target.value}));
-  const submit=e=>{
-    e.preventDefault();setErr('');
-    const u=form.username.trim();
-    if(!u||!form.password){setErr('Please fill in all fields.');return;}
-    if(u.length<3){setErr('Username must be at least 3 characters.');return;}
-    if(!/^[a-zA-Z0-9_]+$/.test(u)){setErr('Username can only contain letters, numbers, and underscores.');return;}
-    const users=getUsers();
-    if(mode==='signup'){
-      if(form.password.length<6){setErr('Password must be at least 6 characters.');return;}
-      if(form.password!==form.confirm){setErr('Passwords do not match.');return;}
-      if(users[u.toLowerCase()]){setErr('That username is already taken 💔 Try another!');return;}
-      users[u.toLowerCase()]={username:u,password:form.password,createdAt:Date.now()};
-      saveUsers(users);setSession(u);onLogin(u);
+// ===== RENDER ENGINE =====
+function render(){
+  var app=document.getElementById('app');
+  if(!state.user){app.innerHTML=authHTML();bindAuth();return;}
+  app.innerHTML='<div class="header"><div class="logo" onclick="nav(\'home\')">im good ✨</div><div class="header-right"><div class="avatar">'+state.user.charAt(0).toUpperCase()+'</div><button class="btn btn-ghost btn-sm" onclick="logout()">logout</button></div></div><div id="page-content">'+pageHTML()+'</div>'+navHTML();
+  bindPage();
+}
+function nav(p){state.page=p;state.jView='cats';state.jCat=null;state.jText='';render();window.scrollTo(0,0)}
+function logout(){clearSession();state.user=null;render()}
+
+// ===== NAV HTML =====
+function navHTML(){
+  var items=[['home','🏠','home'],['history','📅','history'],['journal','📓','journal'],['affirmations','💬','affirm'],['playlists','🎵','music'],['dopamine','⚡','dopamine'],['about','🌸','about']];
+  return '<nav class="nav">'+items.map(function(i){return '<button class="nav-item'+(state.page===i[0]?' active':'')+'" onclick="nav(\''+i[0]+'\')"><span class="nav-icon">'+i[1]+'</span><span class="nav-label">'+i[2]+'</span></button>'}).join('')+'</nav>';
+}
+
+// ===== AUTH =====
+function authHTML(){
+  return '<div class="auth-screen"><div class="auth-logo">im good ✨</div><p class="auth-tagline">your breakup recovery bestie<br>for the girls in their healing era 🌿</p><div class="auth-card"><h2 class="auth-title" id="auth-title">welcome back 💚</h2><div id="auth-err"></div><div class="field"><label>username</label><input id="au" placeholder="your unique username" autocapitalize="none"></div><div class="field"><label>password</label><input id="ap" type="password" placeholder="your password"></div><div id="confirm-field" style="display:none" class="field"><label>confirm password</label><input id="ac" type="password" placeholder="type it again"></div><button class="btn btn-mint btn-full" id="auth-btn" onclick="doAuth()">sign in 💚</button><div class="auth-switch" id="auth-switch">don\'t have an account? <span onclick="toggleAuth()">sign up</span></div></div></div>';
+}
+var authMode='signin';
+function toggleAuth(){
+  authMode=authMode==='signin'?'signup':'signin';
+  document.getElementById('auth-title').textContent=authMode==='signin'?'welcome back 💚':'join the healing ✨';
+  document.getElementById('auth-btn').textContent=authMode==='signin'?'sign in 💚':'create account ✨';
+  document.getElementById('confirm-field').style.display=authMode==='signup'?'block':'none';
+  document.getElementById('auth-switch').innerHTML=authMode==='signin'?'don\'t have an account? <span onclick="toggleAuth()">sign up</span>':'already have an account? <span onclick="toggleAuth()">sign in</span>';
+  document.getElementById('auth-err').innerHTML='';
+}
+function bindAuth(){document.getElementById('ap').addEventListener('keydown',function(e){if(e.key==='Enter')doAuth()})}
+function doAuth(){
+  var u=(document.getElementById('au').value||'').trim();
+  var p=document.getElementById('ap').value||'';
+  var c=document.getElementById('ac')?document.getElementById('ac').value||'':'';
+  var err='';
+  if(!u||!p){err='Please fill in all fields.'}
+  else if(u.length<3){err='Username must be at least 3 characters.'}
+  else if(!/^[a-zA-Z0-9_]+$/.test(u)){err='Username: letters, numbers, underscores only.'}
+  else{
+    var users=getUsers();
+    if(authMode==='signup'){
+      if(p.length<6)err='Password must be at least 6 characters.';
+      else if(p!==c)err='Passwords do not match.';
+      else if(users[u.toLowerCase()])err='That username is already taken 💔 Try another!';
+      else{users[u.toLowerCase()]={username:u,password:p};saveUsers(users);setSession(u);state.user=u;render();return;}
     } else {
-      const user=users[u.toLowerCase()];
-      if(!user||user.password!==form.password){setErr('Incorrect username or password 😢');return;}
-      setSession(user.username);onLogin(user.username);
+      var usr=users[u.toLowerCase()];
+      if(!usr||usr.password!==p)err='Incorrect username or password 😢';
+      else{setSession(usr.username);state.user=usr.username;render();return;}
     }
-  };
-  return(
-    <div className="auth-screen">
-      <div className="auth-logo">im good ✨</div>
-      <p className="auth-tagline">your breakup recovery bestie<br/>for the girls in their healing era 🌿</p>
-      <div className="auth-card">
-        <h2 className="auth-title">{mode==='signin'?'welcome back 💚':'join the healing ✨'}</h2>
-        {err&&<div className="error-msg">{err}</div>}
-        <form onSubmit={submit}>
-          <div className="field">
-            <label>username</label>
-            <input value={form.username} onChange={set('username')} placeholder="your unique username" autoCapitalize="none"/>
-          </div>
-          <div className="field">
-            <label>password</label>
-            <input type="password" value={form.password} onChange={set('password')} placeholder="at least 6 characters"/>
-          </div>
-          {mode==='signup'&&<div className="field">
-            <label>confirm password</label>
-            <input type="password" value={form.confirm} onChange={set('confirm')} placeholder="type it again"/>
-          </div>}
-          <button type="submit" className="btn btn-mint btn-full" style={{marginTop:4}}>
-            {mode==='signin'?'sign in 💚':'create account ✨'}
-          </button>
-        </form>
-        <div className="auth-switch">
-          {mode==='signin'?<>don't have an account? <span onClick={()=>{setMode('signup');setErr('');}}>sign up</span></>
-          :<>already have an account? <span onClick={()=>{setMode('signin');setErr('');}}>sign in</span></>}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ===== HEADER =====
-function Header({username,onLogout,onNav}){
-  return(
-    <div className="header">
-      <div className="header-logo" onClick={()=>onNav('home')} style={{cursor:'pointer'}}>im good ✨</div>
-      <div className="header-user">
-        <div className="avatar">{username.charAt(0).toUpperCase()}</div>
-        <button onClick={onLogout} className="btn btn-ghost btn-sm">logout</button>
-      </div>
-    </div>
-  );
-}
-
-// ===== BOTTOM NAV =====
-function BottomNav({page,onNav}){
-  const items=[
-    {id:'home',icon:'🏠',label:'home'},
-    {id:'history',icon:'📅',label:'history'},
-    {id:'journal',icon:'📓',label:'journal'},
-    {id:'affirmations',icon:'💬',label:'affirm'},
-    {id:'playlists',icon:'🎵',label:'music'},
-    {id:'dopamine',icon:'⚡',label:'dopamine'},
-    {id:'about',icon:'🌸',label:'about'}
-  ];
-  return(
-    <nav className="bottom-nav">
-      {items.map(i=>(
-        <button key={i.id} className={`nav-item${page===i.id?' active':''}`} onClick={()=>onNav(i.id)}>
-          <span className="nav-icon">{i.icon}</span>
-          <span className="nav-label">{i.label}</span>
-        </button>
-      ))}
-    </nav>
-  );
-}
-
-// ===== HOME PAGE =====
-function HomePage({username,onNav}){
-  const today=toDate();
-  const dayOfYear=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/(1000*60*60*24));
-  const affirmation=DAILY_AFFIRMATIONS[dayOfYear%DAILY_AFFIRMATIONS.length];
-  const moods=getUserData(username,'moods',{});
-  const todayMood=moods[today];
-  const [selected,setSelected]=useState(todayMood||null);
-  const [saved,setSaved]=useState(!!todayMood);
-
-  const saveMood=m=>{
-    setSelected(m);setSaved(true);
-    const updated={...moods,[today]:m};
-    setUserData(username,'moods',updated);
-  };
-
-  const quickLinks=[
-    {id:'journal',icon:'📓',name:'journal',desc:'write it out',color:'#E8F8F0'},
-    {id:'affirmations',icon:'💬',name:'affirmations',desc:'fill your cup',color:'#FFF0F5'},
-    {id:'playlists',icon:'🎵',name:'playlists',desc:'feel the music',color:'#FFF3EA'},
-    {id:'dopamine',icon:'⚡',name:'dopamine menu',desc:'feel-good toolkit',color:'#F0F8FF'},
-  ];
-
-  return(
-    <div className="page">
-      <p className="greeting">hey {username} ✨</p>
-      <p style={{fontSize:14,color:'var(--text-light)',marginBottom:20}}>
-        {new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}
-      </p>
-
-      {/* Daily Affirmation */}
-      <div className="affirmation-card">
-        <p style={{fontSize:11,fontWeight:700,color:'var(--mint-dark)',marginBottom:10,letterSpacing:1,textTransform:'uppercase'}}>today's affirmation ✨</p>
-        <p className="affirmation-text">"{affirmation}"</p>
-        <button className="btn btn-mint btn-sm" onClick={()=>onNav('affirmations')}>more affirmations →</button>
-      </div>
-
-      {/* Mood Check-in */}
-      <div className="card" style={{marginBottom:20}}>
-        <p className="section-title">how are you feeling today?</p>
-        {saved&&selected&&(
-          <div style={{background:'var(--mint-light)',borderRadius:10,padding:10,marginBottom:12,fontSize:13,color:'var(--mint-deep)',fontWeight:700,display:'flex',alignItems:'center',gap:6}}>
-            <span style={{fontSize:20}}>{MOOD_OPTIONS.find(m=>m.id===selected)?.emoji}</span>
-            mood logged for today 💚
-          </div>
-        )}
-        <div className="mood-grid">
-          {MOOD_OPTIONS.map(m=>(
-            <button key={m.id} className={`mood-btn${selected===m.id?' selected':''}`} onClick={()=>saveMood(m.id)}>
-              <span className="mood-emoji">{m.emoji}</span>
-              <div className="mood-label">{m.label}</div>
-            </button>
-          ))}
-        </div>
-        {selected&&<p style={{fontSize:12,color:'var(--text-light)',textAlign:'center',marginTop:10}}>
-          tap to change · <span style={{color:'var(--mint-dark)',cursor:'pointer'}} onClick={()=>onNav('history')}>view history →</span>
-        </p>}
-      </div>
-
-      {/* Quick Links */}
-      <p className="section-title">explore ✨</p>
-      <div className="quick-grid">
-        {quickLinks.map(l=>(
-          <div key={l.id} className="quick-card" style={{background:l.color}} onClick={()=>onNav(l.id)}>
-            <span className="quick-icon">{l.icon}</span>
-            <span className="quick-name">{l.name}</span>
-            <span className="quick-desc">{l.desc}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ===== MOOD HISTORY PAGE =====
-function MoodHistoryPage({username}){
-  const today=new Date();
-  const [viewDate,setViewDate]=useState({year:today.getFullYear(),month:today.getMonth()});
-  const moods=getUserData(username,'moods',{});
-
-  const daysInMonth=(y,m)=>new Date(y,m+1,0).getDate();
-  const firstDay=(y,m)=>new Date(y,m,1).getDay();
-
-  const {year,month}=viewDate;
-  const days=daysInMonth(year,month);
-  const startDay=firstDay(year,month);
-  const monthName=new Date(year,month,1).toLocaleDateString('en-US',{month:'long',year:'numeric'});
-
-  const prev=()=>setViewDate(v=>v.month===0?{year:v.year-1,month:11}:{...v,month:v.month-1});
-  const next=()=>setViewDate(v=>v.month===11?{year:v.year+1,month:0}:{...v,month:v.month+1});
-
-  const todayStr=toDate();
-  const cells=[];
-  for(let i=0;i<startDay;i++) cells.push(null);
-  for(let d=1;d<=days;d++) cells.push(d);
-
-  return(
-    <div className="page">
-      <p className="page-title">mood history 📅</p>
-      <p className="page-sub">track your healing journey</p>
-
-      <div className="card" style={{marginBottom:20}}>
-        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16}}>
-          <button className="btn btn-ghost btn-sm" onClick={prev}>← prev</button>
-          <span style={{fontWeight:800,fontSize:15}}>{monthName}</span>
-          <button className="btn btn-ghost btn-sm" onClick={next}>next →</button>
-        </div>
-        <div className="cal-header">
-          {['S','M','T','W','T','F','S'].map((d,i)=><div key={i} className="cal-day-name">{d}</div>)}
-        </div>
-        <div className="cal-grid">
-          {cells.map((day,i)=>{
-            if(!day) return <div key={i} className="cal-cell empty"/>;
-            const dateStr=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-            const moodId=moods[dateStr];
-            const moodData=moodId?MOOD_OPTIONS.find(m=>m.id===moodId):null;
-            const isToday=dateStr===todayStr;
-            return(
-              <div key={i} className={`cal-cell${moodData?' has-mood':''}${isToday?' today':''}`}>
-                {day}
-                {moodData&&(
-                  <div className="mood-dot" style={{background:moodData.color}} title={moodData.label}>
-                    {moodData.emoji}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Legend */}
-      <div className="card">
-        <p className="section-title">mood legend</p>
-        <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
-          {MOOD_OPTIONS.map(m=>(
-            <div key={m.id} style={{display:'flex',alignItems:'center',gap:4,background:m.color+'33',borderRadius:20,padding:'4px 10px'}}>
-              <span style={{fontSize:16}}>{m.emoji}</span>
-              <span style={{fontSize:12,fontWeight:700,color:'var(--text-mid)'}}>{m.label}</span>
-            </div>
-          ))}
-        </div>
-        <div className="divider"/>
-        <p style={{fontSize:13,color:'var(--text-light)',textAlign:'center'}}>
-          {Object.keys(moods).length} mood{Object.keys(moods).length!==1?'s':''} tracked total 💚
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// ===== JOURNAL PAGE =====
-function JournalPage({username}){
-  const [view,setView]=useState('cats'); // cats | write | entries
-  const [selCat,setSelCat]=useState(null);
-  const [promptIdx,setPromptIdx]=useState(0);
-  const [text,setText]=useState('');
-  const [saved,setSaved]=useState(false);
-  const entries=getUserData(username,'journal',[]);
-
-  const openCat=cat=>{setSelCat(cat);setPromptIdx(0);setText('');setSaved(false);setView('write');};
-
-  const save=()=>{
-    if(!text.trim()) return;
-    const entry={id:Date.now(),cat:selCat.id,catName:selCat.name,catEmoji:selCat.emoji,prompt:selCat.prompts[promptIdx],text:text.trim(),date:new Date().toISOString()};
-    const updated=[entry,...entries];
-    setUserData(username,'journal',updated);
-    setSaved(true);
-  };
-
-  const nextPrompt=()=>{
-    setPromptIdx(i=>(i+1)%selCat.prompts.length);
-    setSaved(false);
-  };
-
-  if(view==='entries'){
-    const allEntries=getUserData(username,'journal',[]);
-    return(
-      <div className="page">
-        <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:20}}>
-          <button className="btn btn-ghost btn-sm" onClick={()=>setView('cats')}>← back</button>
-          <div>
-            <p className="page-title">my entries 📖</p>
-          </div>
-        </div>
-        {allEntries.length===0?
-          <div className="card" style={{textAlign:'center',padding:40}}>
-            <p style={{fontSize:32,marginBottom:12}}>📝</p>
-            <p style={{fontSize:15,fontWeight:700,color:'var(--text-mid)'}}>no entries yet</p>
-            <p style={{fontSize:13,color:'var(--text-light)',marginTop:4}}>start writing to see your journey unfold</p>
-          </div>
-        :allEntries.map(e=>(
-          <JournalEntry key={e.id} entry={e}/>
-        ))}
-      </div>
-    );
   }
+  document.getElementById('auth-err').innerHTML='<div class="err">'+err+'</div>';
+}
+// ===== PAGE ROUTER =====
+function pageHTML(){
+  if(state.page==='home')return homeHTML();
+  if(state.page==='history')return historyHTML();
+  if(state.page==='journal')return journalHTML();
+  if(state.page==='affirmations')return affirmationsHTML();
+  if(state.page==='playlists')return playlistsHTML();
+  if(state.page==='dopamine')return dopamineHTML();
+  if(state.page==='about')return aboutHTML();
+  return homeHTML();
+}
+function bindPage(){
+  if(state.page==='journal')bindJournal();
+  if(state.page==='dopamine')bindDopamine();
+}
 
-  if(view==='write'&&selCat){
-    return(
-      <div className="page">
-        <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:16}}>
-          <button className="btn btn-ghost btn-sm" onClick={()=>setView('cats')}>← back</button>
-          <span style={{fontSize:22}}>{selCat.emoji}</span>
-          <p className="page-title" style={{fontSize:18}}>{selCat.name}</p>
-        </div>
-        <div className="card" style={{marginBottom:16}}>
-          <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:8,marginBottom:12}}>
-            <p style={{fontSize:15,fontWeight:700,color:'var(--text)',lineHeight:1.5,flex:1}}>💭 {selCat.prompts[promptIdx]}</p>
-          </div>
-          <button className="btn btn-ghost btn-sm" onClick={nextPrompt}>try another prompt →</button>
-        </div>
-        <textarea value={text} onChange={e=>{setText(e.target.value);setSaved(false);}}
-          placeholder="write freely here... this is your safe space 💕"
-          style={{minHeight:220,resize:'vertical',marginBottom:12}}/>
-        {saved?
-          <div style={{background:'var(--mint-light)',borderRadius:10,padding:12,textAlign:'center',fontSize:14,fontWeight:700,color:'var(--mint-deep)'}}>
-            saved! 💚 your words matter.
-          </div>
-        :<button className="btn btn-mint btn-full" onClick={save} disabled={!text.trim()}>
-          save entry 💚
-        </button>}
-      </div>
-    );
+// ===== HOME =====
+function homeHTML(){
+  var doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/(864e5));
+  var aff=DAILY_AFFS[doy%DAILY_AFFS.length];
+  var moods=ud('moods',{});var tm=moods[today()];
+  var moodSaved=tm?'<div style="background:var(--mint-light);border-radius:10px;padding:10px;margin-bottom:12px;font-size:13px;color:var(--mint-deep);font-weight:700;display:flex;align-items:center;gap:6px"><span style="font-size:20px">'+MOODS.find(function(m){return m.id===tm}).e+'</span> mood logged for today 💚</div>':'';
+  var moodBtns=MOODS.map(function(m){return '<button class="mood-btn'+(tm===m.id?' sel':'')+'" onclick="saveMood(\''+m.id+'\')"><span class="mood-emoji">'+m.e+'</span><div class="mood-label">'+m.label+'</div></button>'}).join('');
+  var qs=[['journal','📓','journal','write it out','#E8F8F0'],['affirmations','💬','affirmations','fill your cup','#FFF0F5'],['playlists','🎵','playlists','feel the music','#FFF3EA'],['dopamine','⚡','dopamine menu','feel-good toolkit','#F0F8FF']];
+  var quickCards=qs.map(function(q){return '<div class="quick-card" style="background:'+q[4]+'" onclick="nav(\''+q[0]+'\')"><div class="quick-icon">'+q[1]+'</div><div class="quick-name">'+q[2]+'</div><div class="quick-desc">'+q[3]+'</div></div>'}).join('');
+  var dateStr=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  return '<div class="page"><p class="greeting">hey '+esc(state.user)+' ✨</p><p style="font-size:14px;color:var(--text-light);margin-bottom:20px">'+dateStr+'</p><div class="aff-card"><p style="font-size:11px;font-weight:700;color:var(--mint-dark);margin-bottom:10px;letter-spacing:1px;text-transform:uppercase">today\'s affirmation ✨</p><p class="aff-text">"'+esc(aff)+'"</p><button class="btn btn-mint btn-sm" onclick="nav(\'affirmations\')">more affirmations →</button></div><div class="card" style="margin-bottom:20px"><p class="sec-title">how are you feeling today?</p>'+moodSaved+'<div class="mood-grid">'+moodBtns+'</div>'+(tm?'<p style="font-size:12px;color:var(--text-light);text-align:center;margin-top:8px">tap to change · <span style="color:var(--mint-dark);cursor:pointer" onclick="nav(\'history\')">view history →</span></p>':'')+'</div><p class="sec-title">explore ✨</p><div class="quick-grid">'+quickCards+'</div></div>';
+}
+function saveMood(id){var moods=ud('moods',{});moods[today()]=id;sus('moods',moods);render()}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+// ===== HISTORY =====
+function historyHTML(){
+  var moods=ud('moods',{});
+  var y=state.calYear,m=state.calMonth;
+  var days=new Date(y,m+1,0).getDate();
+  var start=new Date(y,m,1).getDay();
+  var mn=new Date(y,m,1).toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  var td=today();
+  var cells='';
+  for(var i=0;i<start;i++)cells+='<div class="cal-cell"></div>';
+  for(var d=1;d<=days;d++){
+    var ds=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    var mid=moods[ds];var mo=mid?MOODS.find(function(x){return x.id===mid}):null;
+    cells+='<div class="cal-cell'+(ds===td?' today':'')+'">'+(mo?'<span class="mdot">'+mo.e+'</span>':'')+d+'</div>';
   }
+  var legend=MOODS.map(function(m){return '<div style="display:flex;align-items:center;gap:4px;background:'+m.color+'33;border-radius:20px;padding:4px 10px"><span style="font-size:15px">'+m.e+'</span><span style="font-size:12px;font-weight:700;color:var(--text-mid)">'+m.label+'</span></div>'}).join('');
+  var total=Object.keys(moods).length;
+  return '<div class="page"><p class="page-title">mood history 📅</p><p class="page-sub">track your healing journey</p><div class="card" style="margin-bottom:16px"><div class="cal-nav"><button class="btn btn-ghost btn-sm" onclick="calPrev()">← prev</button><span style="font-weight:800;font-size:15px">'+mn+'</span><button class="btn btn-ghost btn-sm" onclick="calNext()">next →</button></div><div class="cal-grid" style="margin-bottom:4px">'+['S','M','T','W','T','F','S'].map(function(d){return '<div class="cal-dname">'+d+'</div>'}).join('')+'</div><div class="cal-grid">'+cells+'</div></div><div class="card"><p class="sec-title">mood legend</p><div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">'+legend+'</div><div class="divider"></div><p style="font-size:13px;color:var(--text-light);text-align:center">'+total+' mood'+(total!==1?'s':'')+' tracked total 💚</p></div></div>';
+}
+function calPrev(){if(state.calMonth===0){state.calMonth=11;state.calYear--;}else state.calMonth--;render()}
+function calNext(){if(state.calMonth===11){state.calMonth=0;state.calYear++;}else state.calMonth++;render()}
+// ===== JOURNAL =====
+function journalHTML(){
+  if(state.jView==='entries') return journalEntriesHTML();
+  if(state.jView==='write'&&state.jCat) return journalWriteHTML();
+  var cats=JCATS.map(function(c){return '<div class="cat-card" style="background:'+c.color+'" onclick="openJCat(\''+c.id+'\')"><span class="cat-emoji">'+c.emoji+'</span><span class="cat-name">'+c.name+'</span></div>'}).join('');
+  return '<div class="page"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px"><p class="page-title">journal 📓</p><button class="btn btn-ghost btn-sm" onclick="viewJEntries()">my entries →</button></div><p class="page-sub">pick a category to start writing</p><div class="cat-grid">'+cats+'</div></div>';
+}
+function openJCat(id){state.jCat=JCATS.find(function(c){return c.id===id});state.jPromptIdx=0;state.jText='';state.jView='write';render()}
+function viewJEntries(){state.jView='entries';render()}
+function journalWriteHTML(){
+  var c=state.jCat;
+  return '<div class="page"><div style="display:flex;align-items:center;gap:10px;margin-bottom:16px"><button class="btn btn-ghost btn-sm" onclick="nav(\'journal\')">← back</button><span style="font-size:22px">'+c.emoji+'</span><p class="page-title" style="font-size:18px">'+esc(c.name)+'</p></div><div class="card" style="margin-bottom:14px"><p style="font-size:15px;font-weight:700;line-height:1.5;margin-bottom:12px">💭 '+esc(c.prompts[state.jPromptIdx])+'</p><button class="btn btn-ghost btn-sm" onclick="nextPrompt()">try another prompt →</button></div><textarea id="j-text" placeholder="write freely here... this is your safe space 💕" style="min-height:220px;resize:vertical;margin-bottom:12px">'+esc(state.jText)+'</textarea><div id="j-status"></div><button class="btn btn-mint btn-full" onclick="saveJEntry()">save entry 💚</button></div>';
+}
+function journalEntriesHTML(){
+  var entries=ud('journal',[]);
+  var list=entries.length===0?'<div class="card" style="text-align:center;padding:40px"><p style="font-size:32px;margin-bottom:12px">📝</p><p style="font-size:15px;font-weight:700;color:var(--text-mid)">no entries yet</p><p style="font-size:13px;color:var(--text-light);margin-top:4px">start writing to see your journey unfold</p></div>':entries.map(function(e,i){
+    var d=new Date(e.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    var open=state.expandedEntry===e.id;
+    return '<div class="entry-item" onclick="toggleEntry(\''+e.id+'\')"><div class="entry-meta"><span class="entry-cat">'+e.emoji+' '+esc(e.catName)+'</span><span class="entry-date">'+d+'</span></div><p class="entry-prompt">"'+esc(e.prompt)+'"</p><p class="entry-text">'+(open?esc(e.text):esc(e.text.slice(0,120))+(e.text.length>120?'...':''))+'</p></div>';
+  }).join('');
+  return '<div class="page"><div style="display:flex;align-items:center;gap:10px;margin-bottom:20px"><button class="btn btn-ghost btn-sm" onclick="nav(\'journal\')">← back</button><p class="page-title">my entries 📖</p></div>'+list+'</div>';
+}
+function bindJournal(){
+  var ta=document.getElementById('j-text');
+  if(ta)ta.addEventListener('input',function(){state.jText=ta.value;document.getElementById('j-status').innerHTML='';});
+}
+function nextPrompt(){state.jPromptIdx=(state.jPromptIdx+1)%state.jCat.prompts.length;render()}
+function saveJEntry(){
+  var ta=document.getElementById('j-text');
+  var txt=(ta?ta.value:state.jText).trim();
+  if(!txt){document.getElementById('j-status').innerHTML='<p style="font-size:13px;color:#e53e3e;margin-bottom:10px">write something first 💕</p>';return;}
+  var entries=ud('journal',[]);
+  entries.unshift({id:Date.now().toString(),catName:state.jCat.name,emoji:state.jCat.emoji,prompt:state.jCat.prompts[state.jPromptIdx],text:txt,date:new Date().toISOString()});
+  sus('journal',entries);
+  document.getElementById('j-status').innerHTML='<div style="background:var(--mint-light);border-radius:10px;padding:12px;text-align:center;font-size:14px;font-weight:700;color:var(--mint-deep);margin-bottom:12px">saved! 💚 your words matter.</div>';
+  state.jText='';if(ta)ta.value='';
+}
+function toggleEntry(id){state.expandedEntry=state.expandedEntry===id?null:id;render()}
 
-  return(
-    <div className="page">
-      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:4}}>
-        <p className="page-title">journal 📓</p>
-        <button className="btn btn-ghost btn-sm" onClick={()=>setView('entries')}>my entries →</button>
-      </div>
-      <p className="page-sub">pick a category to start writing</p>
-      <div className="cat-grid">
-        {JOURNAL_CATS.map(cat=>(
-          <div key={cat.id} className="cat-card" style={{background:cat.color}} onClick={()=>openCat(cat)}>
-            <span className="cat-emoji">{cat.emoji}</span>
-            <span className="cat-name">{cat.name}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+// ===== AFFIRMATIONS =====
+function affirmationsHTML(){
+  var tab=state.affTab;
+  var idx=state.affIdx;var qidx=state.quoteIdx;
+  var tabBtns='<div class="tabs"><button class="tab'+(tab==='affirmations'?' active':'')+'" onclick="setAffTab(\'affirmations\')">Affirmations 💚</button><button class="tab'+(tab==='quotes'?' active':'')+'" onclick="setAffTab(\'quotes\')">Quotes 💜</button></div>';
+  if(tab==='affirmations'){
+    var list=PAGE_AFFS.map(function(a,i){return '<div class="card" style="margin-bottom:10px;padding:14px 18px;cursor:pointer;background:'+(i===idx?'var(--mint-light)':'var(--white)')+';border:2px solid '+(i===idx?'var(--mint-dark)':'transparent')+'" onclick="setAffIdx('+i+')"><p style="font-size:14px;font-weight:600;color:var(--text);line-height:1.6;font-style:italic">"'+esc(a)+'"</p></div>'}).join('');
+    return '<div class="page"><p class="page-title">affirmations 💬</p><p class="page-sub">words that heal & empower</p>'+tabBtns+'<div class="big-card"><p style="font-size:11px;font-weight:700;color:var(--mint-dark);margin-bottom:12px;letter-spacing:1px;text-transform:uppercase">affirmation '+(idx+1)+' of '+PAGE_AFFS.length+'</p><p class="big-text">"'+esc(PAGE_AFFS[idx])+'"</p></div><div style="display:flex;gap:10px;margin-bottom:20px"><button class="btn btn-outline btn-sm" style="flex:1" onclick="setAffIdx('+(idx===0?PAGE_AFFS.length-1:idx-1)+')">← prev</button><button class="btn btn-mint btn-sm" style="flex:1" onclick="shuffleAff()">shuffle ✨</button><button class="btn btn-outline btn-sm" style="flex:1" onclick="setAffIdx('+((idx+1)%PAGE_AFFS.length)+')">next →</button></div><p class="sec-title">all affirmations</p>'+list+'</div>';
+  } else {
+    var q=QUOTES[qidx];
+    var qlist=QUOTES.map(function(qt,i){return '<div class="quote-card" style="cursor:pointer;border:2px solid '+(i===qidx?'var(--lavender)':'transparent')+'" onclick="setQIdx('+i+')"><p class="quote-text">"'+esc(qt.t)+'"</p><p class="quote-author">— '+esc(qt.a)+'</p></div>'}).join('');
+    return '<div class="page"><p class="page-title">affirmations 💬</p><p class="page-sub">words that heal & empower</p>'+tabBtns+'<div class="big-card" style="background:linear-gradient(135deg,#faf5ff,#fff);border-left:4px solid var(--lavender)"><p style="font-size:11px;font-weight:700;color:var(--lavender);margin-bottom:12px;letter-spacing:1px;text-transform:uppercase">quote '+(qidx+1)+' of '+QUOTES.length+'</p><p class="big-text" style="font-size:16px">"'+esc(q.t)+'"</p><p class="quote-author" style="font-size:14px">— '+esc(q.a)+'</p></div><div style="display:flex;gap:10px;margin-bottom:20px"><button class="btn btn-outline btn-sm" style="flex:1" onclick="setQIdx('+(qidx===0?QUOTES.length-1:qidx-1)+')">← prev</button><button class="btn btn-sm" style="flex:1;background:var(--lavender);color:var(--text)" onclick="shuffleQ()">shuffle 💜</button><button class="btn btn-outline btn-sm" style="flex:1" onclick="setQIdx('+((qidx+1)%QUOTES.length)+')">next →</button></div><p class="sec-title">all quotes</p>'+qlist+'</div>';
+  }
+}
+function setAffTab(t){state.affTab=t;render()}
+function setAffIdx(i){state.affIdx=i;render()}
+function setQIdx(i){state.quoteIdx=i;render()}
+function shuffleAff(){state.affIdx=Math.floor(Math.random()*PAGE_AFFS.length);render()}
+function shuffleQ(){state.quoteIdx=Math.floor(Math.random()*QUOTES.length);render()}
+// ===== PLAYLISTS =====
+function playlistsHTML(){
+  var cards=PLAYLISTS.map(function(pl){
+    var songs=pl.songs.map(function(s){return '<li>'+esc(s)+'</li>'}).join('');
+    return '<div class="pl-card" style="background:'+pl.color+'"><p class="pl-mood">'+pl.mood+'</p><p class="pl-desc">'+esc(pl.desc)+'</p><ul class="song-list">'+songs+'</ul><a href="'+pl.url+'" target="_blank" class="btn btn-sm" style="background:'+pl.btn+';color:#fff;text-decoration:none">🎵 open in spotify</a></div>';
+  }).join('');
+  return '<div class="page"><p class="page-title">playlists 🎵</p><p class="page-sub">music for every part of your healing</p>'+cards+'<div class="card" style="text-align:center;padding:18px;margin-top:4px"><p class="info-box">💡 <strong>tip:</strong> match your playlist to your mood. it\'s okay to sit with sad songs sometimes. feeling your feelings is part of healing. 💚</p></div></div>';
 }
 
-function JournalEntry({entry}){
-  const [open,setOpen]=useState(false);
-  const d=new Date(entry.date);
-  const dateStr=d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-  return(
-    <div className="entry-item" onClick={()=>setOpen(o=>!o)}>
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-        <span className="entry-cat">{entry.catEmoji} {entry.catName}</span>
-        <span className="entry-date">{dateStr}</span>
-      </div>
-      <p className="entry-preview" style={{fontStyle:'italic',color:'var(--text-light)',fontSize:12,marginBottom:4}}>
-        "{entry.prompt}"
-      </p>
-      {open?<p style={{fontSize:14,color:'var(--text)',lineHeight:1.7,marginTop:8,whiteSpace:'pre-wrap'}}>{entry.text}</p>
-      :<p className="entry-preview">{entry.text.slice(0,120)}{entry.text.length>120?'...':''}</p>}
-    </div>
-  );
-}
-
-// ===== AFFIRMATIONS PAGE =====
-function AffirmationsPage(){
-  const [tab,setTab]=useState('affirmations');
-  const [affIdx,setAffIdx]=useState(0);
-  const [quoteIdx,setQuoteIdx]=useState(0);
-
-  const shuffle=arr=>arr[Math.floor(Math.random()*arr.length)];
-  const shuffleAff=()=>setAffIdx(Math.floor(Math.random()*PAGE_AFFIRMATIONS.length));
-  const shuffleQuote=()=>setQuoteIdx(Math.floor(Math.random()*QUOTES.length));
-
-  return(
-    <div className="page">
-      <p className="page-title">affirmations 💬</p>
-      <p className="page-sub">words that heal & empower</p>
-      <div className="tabs">
-        <button className={`tab${tab==='affirmations'?' active':''}`} onClick={()=>setTab('affirmations')}>Affirmations 💚</button>
-        <button className={`tab${tab==='quotes'?' active':''}`} onClick={()=>setTab('quotes')}>Quotes 💜</button>
-      </div>
-
-      {tab==='affirmations'?(
-        <>
-          <div className="affirmation-card" style={{minHeight:160,display:'flex',flexDirection:'column',justifyContent:'center'}}>
-            <p style={{fontSize:11,fontWeight:700,color:'var(--mint-dark)',marginBottom:14,letterSpacing:1,textTransform:'uppercase'}}>affirmation {affIdx+1} of {PAGE_AFFIRMATIONS.length}</p>
-            <p className="affirmation-text">"{PAGE_AFFIRMATIONS[affIdx]}"</p>
-          </div>
-          <div style={{display:'flex',gap:10,marginBottom:20}}>
-            <button className="btn btn-outline btn-sm" style={{flex:1}}
-              onClick={()=>setAffIdx(i=>i===0?PAGE_AFFIRMATIONS.length-1:i-1)}>← prev</button>
-            <button className="btn btn-mint btn-sm" style={{flex:1}} onClick={shuffleAff}>shuffle ✨</button>
-            <button className="btn btn-outline btn-sm" style={{flex:1}}
-              onClick={()=>setAffIdx(i=>(i+1)%PAGE_AFFIRMATIONS.length)}>next →</button>
-          </div>
-          <p className="section-title">all affirmations</p>
-          {PAGE_AFFIRMATIONS.map((a,i)=>(
-            <div key={i} className="card" style={{marginBottom:10,padding:'14px 18px',cursor:'pointer',background:i===affIdx?'var(--mint-light)':'var(--white)',border:i===affIdx?'2px solid var(--mint-dark)':'2px solid transparent'}}
-              onClick={()=>setAffIdx(i)}>
-              <p style={{fontSize:14,fontWeight:600,color:'var(--text)',lineHeight:1.6,fontStyle:'italic'}}>"{a}"</p>
-            </div>
-          ))}
-        </>
-      ):(
-        <>
-          <div className="quote-card" style={{marginBottom:16,padding:28}}>
-            <p style={{fontSize:11,fontWeight:700,color:'var(--lavender)',marginBottom:12,letterSpacing:1,textTransform:'uppercase'}}>quote {quoteIdx+1} of {QUOTES.length}</p>
-            <p className="quote-text" style={{fontSize:17}}>"{QUOTES[quoteIdx].text}"</p>
-            <p className="quote-author">— {QUOTES[quoteIdx].author}</p>
-          </div>
-          <div style={{display:'flex',gap:10,marginBottom:20}}>
-            <button className="btn btn-outline btn-sm" style={{flex:1}}
-              onClick={()=>setQuoteIdx(i=>i===0?QUOTES.length-1:i-1)}>← prev</button>
-            <button className="btn btn-sm" style={{flex:1,background:'var(--lavender)',color:'var(--text)'}} onClick={shuffleQuote}>shuffle 💜</button>
-            <button className="btn btn-outline btn-sm" style={{flex:1}}
-              onClick={()=>setQuoteIdx(i=>(i+1)%QUOTES.length)}>next →</button>
-          </div>
-          <p className="section-title">all quotes</p>
-          {QUOTES.map((q,i)=>(
-            <div key={i} className="quote-card" style={{cursor:'pointer',border:i===quoteIdx?'2px solid var(--lavender)':'2px solid transparent'}}
-              onClick={()=>setQuoteIdx(i)}>
-              <p className="quote-text">"{q.text}"</p>
-              <p className="quote-author">— {q.author}</p>
-            </div>
-          ))}
-        </>
-      )}
-    </div>
-  );
-}
-
-// ===== PLAYLISTS PAGE =====
-function PlaylistsPage(){
-  return(
-    <div className="page">
-      <p className="page-title">playlists 🎵</p>
-      <p className="page-sub">music for every part of your healing</p>
-      {PLAYLISTS.map((pl,i)=>(
-        <div key={i} className="playlist-card" style={{background:pl.color}}>
-          <p className="playlist-mood">{pl.mood}</p>
-          <p className="playlist-desc">{pl.desc}</p>
-          <ul className="song-list">
-            {pl.songs.map((s,j)=><li key={j}>{s}</li>)}
-          </ul>
-          <a href={pl.spotifyUrl} target="_blank" rel="noopener noreferrer"
-            className="btn btn-sm" style={{background:pl.btnColor,color:'#fff',textDecoration:'none'}}>
-            🎵 open in spotify
-          </a>
-        </div>
-      ))}
-      <div className="card" style={{textAlign:'center',padding:20,marginTop:4}}>
-        <p style={{fontSize:13,color:'var(--text-light)',lineHeight:1.7}}>
-          💡 <strong>tip:</strong> match your playlist to your mood — it's okay to sit with sad songs sometimes.
-          Feeling your feelings is part of healing. 💚
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// ===== DOPAMINE MENU PAGE =====
-function DopamineMenuPage({username}){
-  const canvasRef=useRef(null);
-  const initMenu=()=>{
-    const m={};
-    Object.entries(DOPAMINE_DEFAULTS).forEach(([cat,items])=>{
-      m[cat]=items.map(text=>({text,checked:false,custom:false}));
-    });
-    return m;
-  };
-  const [menu,setMenu]=useState(()=>{
-    const saved=getUserData(username,'dopamineMenu',null);
-    if(saved) return saved;
-    const m=initMenu();
-    setUserData(username,'dopamineMenu',m);
-    return m;
+// ===== DOPAMINE MENU =====
+function initDopMenu(){
+  var m={};
+  Object.keys(DOP_DEFAULTS).forEach(function(cat){
+    m[cat]=DOP_DEFAULTS[cat].map(function(text){return {text:text,checked:false,custom:false}});
   });
-  const [addText,setAddText]=useState({});
-
-  const toggle=(cat,idx)=>{
-    const updated={...menu,[cat]:menu[cat].map((item,i)=>i===idx?{...item,checked:!item.checked}:item)};
-    setMenu(updated);setUserData(username,'dopamineMenu',updated);
-  };
-  const deleteItem=(cat,idx)=>{
-    const updated={...menu,[cat]:menu[cat].filter((_,i)=>i!==idx)};
-    setMenu(updated);setUserData(username,'dopamineMenu',updated);
-  };
-  const addItem=cat=>{
-    const t=(addText[cat]||'').trim();
-    if(!t) return;
-    const updated={...menu,[cat]:[...menu[cat],{text:t,checked:false,custom:true}]};
-    setMenu(updated);setUserData(username,'dopamineMenu',updated);
-    setAddText(a=>({...a,[cat]:''}));
-  };
-
-  const downloadCanvas=()=>{
-    const canvas=document.createElement('canvas');
-    canvas.width=800;canvas.height=1100;
-    const ctx=canvas.getContext('2d');
-    // Background gradient
-    const grad=ctx.createLinearGradient(0,0,800,1100);
-    grad.addColorStop(0,'#E8F8F0');grad.addColorStop(1,'#F8F0FF');
-    ctx.fillStyle=grad;ctx.fillRect(0,0,800,1100);
-
-    // Decorative top bar
-    ctx.fillStyle='#2ECC89';ctx.fillRect(0,0,800,8);
-
-    // Title
-    ctx.fillStyle='#2ECC89';ctx.font='bold 36px Georgia, serif';
-    ctx.textAlign='center';ctx.fillText('my dopamine menu ⚡',400,60);
-
-    // Username & date
-    ctx.fillStyle='#718096';ctx.font='18px Arial';
-    ctx.fillText('@'+username+' · '+new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}),400,90);
-
-    ctx.fillStyle='#A8E6CF';ctx.fillRect(50,108,700,2);
-
-    let y=140;
-    const checkedAll=[];
-    Object.entries(menu).forEach(([cat,items])=>{
-      const checked=items.filter(i=>i.checked);
-      if(checked.length>0) checkedAll.push({cat,items:checked});
+  return m;
+}
+function dopamineHTML(){
+  var menu=state.dopMenu||(function(){var s=ud('dopMenu',null);if(!s){s=initDopMenu();sus('dopMenu',s);}state.dopMenu=s;return s;})();
+  var total=Object.values(menu).reduce(function(a,c){return a+c.length},0);
+  var checked=Object.values(menu).reduce(function(a,c){return a+c.filter(function(i){return i.checked}).length},0);
+  var cats=Object.keys(menu).map(function(cat){
+    var items=menu[cat].map(function(item,idx){
+      return '<div class="act-item'+(item.checked?' checked':'')+'" onclick="toggleDop(\''+encodeURIComponent(cat)+'\','+idx+')" style="position:relative"><div class="act-check'+(item.checked?' on':'')+'">'+(item.checked?'✓':'')+'</div><span class="act-text'+(item.checked?' done':'')+'" style="flex:1">'+esc(item.text)+'</span>'+(item.custom?'<button onclick="event.stopPropagation();deleteDop(\''+encodeURIComponent(cat)+'\','+idx+')" style="background:none;border:none;cursor:pointer;color:#ccc;font-size:15px;padding:0 4px">✕</button>':'')+'</div>';
+    }).join('');
+    var catId='add_'+encodeURIComponent(cat);
+    return '<div class="dop-cat"><p class="dop-cat-title">'+esc(cat)+'</p>'+items+'<div class="add-row"><input id="'+catId+'" placeholder="add your own..." style="padding:8px 12px;font-size:13px" onkeydown="if(event.key===\'Enter\')addDop(\''+encodeURIComponent(cat)+'\')"><button class="btn btn-mint btn-sm" onclick="addDop(\''+encodeURIComponent(cat)+'\')">add</button></div></div>';
+  }).join('');
+  return '<div class="page"><p class="page-title">dopamine menu ⚡</p><p class="page-sub">build your personalized feel-good toolkit</p><div class="card" style="margin-bottom:16px;background:linear-gradient(135deg,#e8f8f0,#f0fff4);border:1px solid rgba(168,230,207,.3)"><p style="font-size:14px;color:var(--text-mid);line-height:1.6;margin-bottom:12px">✅ check off what feels good today · ✏️ add your own · 💾 download your menu</p><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn btn-mint" onclick="downloadDop()">💾 download my menu</button>'+(checked>0?'<span style="font-size:13px;color:var(--mint-deep);font-weight:700">'+checked+' item'+(checked!==1?'s':'')+' selected ✨</span>':'')+'</div></div>'+cats+'</div>';
+}
+function toggleDop(catEnc,idx){
+  var cat=decodeURIComponent(catEnc);
+  state.dopMenu[cat][idx].checked=!state.dopMenu[cat][idx].checked;
+  sus('dopMenu',state.dopMenu);render();
+}
+function deleteDop(catEnc,idx){
+  var cat=decodeURIComponent(catEnc);
+  state.dopMenu[cat].splice(idx,1);sus('dopMenu',state.dopMenu);render();
+}
+function addDop(catEnc){
+  var cat=decodeURIComponent(catEnc);
+  var inp=document.getElementById('add_'+catEnc);
+  if(!inp)return;var t=inp.value.trim();if(!t)return;
+  state.dopMenu[cat].push({text:t,checked:false,custom:true});
+  sus('dopMenu',state.dopMenu);render();
+}
+function bindDopamine(){}
+function downloadDop(){
+  var menu=state.dopMenu||initDopMenu();
+  var canvas=document.createElement('canvas');
+  canvas.width=800;canvas.height=1120;
+  var ctx=canvas.getContext('2d');
+  var gr=ctx.createLinearGradient(0,0,800,1120);
+  gr.addColorStop(0,'#E8F8F0');gr.addColorStop(1,'#F8F0FF');
+  ctx.fillStyle=gr;ctx.fillRect(0,0,800,1120);
+  ctx.fillStyle='#2ECC89';ctx.fillRect(0,0,800,8);
+  ctx.fillStyle='#2ECC89';ctx.font='bold 34px Georgia,serif';ctx.textAlign='center';
+  ctx.fillText('my dopamine menu \u26A1',400,58);
+  ctx.fillStyle='#718096';ctx.font='17px Arial';
+  ctx.fillText('@'+state.user+' \u00B7 '+new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}),400,88);
+  ctx.fillStyle='#A8E6CF';ctx.fillRect(50,106,700,2);
+  var y=136;
+  var checkedCats=[];
+  Object.entries(menu).forEach(function(e){
+    var items=e[1].filter(function(i){return i.checked});
+    if(items.length>0)checkedCats.push({cat:e[0],items:items});
+  });
+  if(checkedCats.length===0){Object.entries(menu).forEach(function(e){checkedCats.push({cat:e[0],items:e[1].slice(0,4)})})}
+  checkedCats.forEach(function(g){
+    if(y>1040)return;
+    ctx.fillStyle='#2ECC89';ctx.font='bold 19px Arial';ctx.textAlign='left';
+    ctx.fillText(g.cat,60,y);y+=30;
+    g.items.slice(0,5).forEach(function(item){
+      if(y>1060)return;
+      ctx.fillStyle='#4A5568';ctx.font='16px Arial';
+      ctx.fillText('\u2713  '+item.text,80,y);y+=26;
     });
-
-    if(checkedAll.length===0){
-      // Show all items if none checked
-      Object.entries(menu).forEach(([cat,items])=>{
-        checkedAll.push({cat,items});
-      });
-    }
-
-    checkedAll.forEach(({cat,items})=>{
-      if(y>1020) return;
-      ctx.fillStyle='#2ECC89';ctx.font='bold 20px Arial';
-      ctx.textAlign='left';ctx.fillText(cat,60,y);y+=32;
-      items.slice(0,6).forEach(item=>{
-        if(y>1040) return;
-        ctx.fillStyle='#4A5568';ctx.font='16px Arial';
-        ctx.fillText('✓  '+item.text,80,y);y+=26;
-      });
-      y+=14;
-    });
-
-    // Footer
-    ctx.fillStyle='#A8E6CF';ctx.fillRect(50,1060,700,2);
-    ctx.fillStyle='#2ECC89';ctx.font='bold 18px Georgia';
-    ctx.textAlign='center';ctx.fillText('im good ✨  — your healing era starts now',400,1090);
-
-    const link=document.createElement('a');
-    link.download='my-dopamine-menu.png';
-    link.href=canvas.toDataURL('image/png');
-    link.click();
-  };
-
-  const checkedCount=Object.values(menu).flat().filter(i=>i.checked).length;
-
-  return(
-    <div className="page">
-      <p className="page-title">dopamine menu ⚡</p>
-      <p className="page-sub">build your personalized feel-good toolkit</p>
-      <div className="card" style={{marginBottom:16,background:'linear-gradient(135deg,#e8f8f0,#f0fff4)',border:'1px solid rgba(168,230,207,.3)'}}>
-        <p style={{fontSize:14,color:'var(--text-mid)',lineHeight:1.6,marginBottom:12}}>
-          ✅ check off what feels good today · ✏️ add your own · 💾 download your menu
-        </p>
-        <div style={{display:'flex',gap:10,alignItems:'center',flexWrap:'wrap'}}>
-          <button className="btn btn-mint" onClick={downloadCanvas}>
-            💾 download my menu
-          </button>
-          {checkedCount>0&&<span style={{fontSize:13,color:'var(--mint-deep)',fontWeight:700}}>
-            {checkedCount} item{checkedCount!==1?'s':''} selected ✨
-          </span>}
-        </div>
-      </div>
-
-      {Object.entries(menu).map(([cat,items])=>(
-        <div key={cat} className="dopamine-cat">
-          <p className="dopamine-cat-title">{cat}</p>
-          {items.map((item,idx)=>(
-            <div key={idx} style={{display:'flex',alignItems:'center',gap:8,marginBottom:6}}>
-              <div className={`activity-item${item.checked?' ':' '}`}
-                style={{flex:1,background:item.checked?'rgba(46,204,137,.15)':'var(--mint-light)',border:item.checked?'1.5px solid var(--mint-dark)':'1.5px solid transparent'}}
-                onClick={()=>toggle(cat,idx)}>
-                <div className={`activity-check${item.checked?' checked':''}`}>
-                  {item.checked&&<span style={{color:'#fff',fontSize:12}}>✓</span>}
-                </div>
-                <span className="activity-text" style={{textDecoration:item.checked?'line-through':'none',color:item.checked?'var(--mint-dark)':'var(--text-mid)'}}>{item.text}</span>
-              </div>
-              {item.custom&&<button onClick={()=>deleteItem(cat,idx)} style={{background:'none',border:'none',cursor:'pointer',fontSize:16,color:'#ccc',padding:'4px'}}>✕</button>}
-            </div>
-          ))}
-          <div className="add-input-row">
-            <input value={addText[cat]||''} onChange={e=>setAddText(a=>({...a,[cat]:e.target.value}))}
-              onKeyDown={e=>e.key==='Enter'&&addItem(cat)}
-              placeholder="add your own activity..."
-              style={{fontSize:13,padding:'8px 12px'}}/>
-            <button className="btn btn-mint btn-sm" onClick={()=>addItem(cat)}>add</button>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+    y+=12;
+  });
+  ctx.fillStyle='#A8E6CF';ctx.fillRect(50,1072,700,2);
+  ctx.fillStyle='#2ECC89';ctx.font='bold 17px Georgia';ctx.textAlign='center';
+  ctx.fillText('im good \u2728  \u2014 your healing era starts now',400,1100);
+  var a=document.createElement('a');a.download='my-dopamine-menu.png';a.href=canvas.toDataURL('image/png');a.click();
 }
 
-// ===== ABOUT PAGE =====
-function AboutPage(){
-  return(
-    <div className="page">
-      <div style={{textAlign:'center',marginBottom:28}}>
-        <p style={{fontFamily:'Pacifico, cursive',fontSize:36,color:'var(--mint-dark)',marginBottom:6}}>im good ✨</p>
-        <p style={{fontSize:16,color:'var(--text-mid)',fontWeight:700}}>for the girls in their healing era 🌿</p>
-      </div>
-
-      <div className="card about-section">
-        <h3>our mission 💚</h3>
-        <p style={{fontSize:14,color:'var(--text-mid)',lineHeight:1.8}}>
-          <em>im good</em> was built for every girl who has ever had to pretend she was fine when she wasn't.
-          This is your safe space — no judgment, no timelines, no pressure. Healing isn't linear,
-          and this app is here for every step of your journey: the ugly cries, the angry days,
-          the hopeful moments, and the days where you genuinely feel like yourself again. 💕
-        </p>
-      </div>
-
-      <div className="card about-section">
-        <h3>how to use this app 🌱</h3>
-        {[
-          ["Check in daily","Use the mood tracker on the home page every day — even just one tap. Watching your mood history change over time is genuinely healing."],
-          ["Journal it out","Pick a category that speaks to where you are. Write messy, write honestly. No one sees this but you."],
-          ["Read your affirmations","On hard days, go to the affirmations page and read until one lands. Screenshot the ones that hit."],
-          ["Use the dopamine menu","When you don't know what to do with yourself, open your menu. Pick one thing. Just one."],
-          ["Play the right music","Your playlist matches your mood. It's okay to cry to sad songs — and it's okay to bop to the glow-up playlist before you're fully healed."],
-          ["Be patient with yourself","This app can't rush your healing. But it can remind you that you're doing it, even on the days it doesn't feel like it."]
-        ].map(([title,desc],i)=>(
-          <div key={i} className="tip-item">
-            <div className="tip-num">{i+1}</div>
-            <div>
-              <p style={{fontSize:14,fontWeight:800,color:'var(--text)',marginBottom:2}}>{title}</p>
-              <p style={{fontSize:13,color:'var(--text-light)',lineHeight:1.6}}>{desc}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div className="card about-section" style={{background:'linear-gradient(135deg,#e8f8f0,#f0fff4)',border:'1px solid rgba(168,230,207,.3)'}}>
-        <h3>remember 🌟</h3>
-        {[
-          "You are not behind. There is no timeline for healing.",
-          "Every person who has ever healed thought they couldn't. You can.",
-          "The fact that you're here, taking care of yourself, is already enough."
-        ].map((text,i)=>(
-          <p key={i} style={{fontSize:14,color:'var(--text)',lineHeight:1.7,marginBottom:10,paddingLeft:12,borderLeft:'3px solid var(--mint-dark)',fontWeight:600}}>
-            {text}
-          </p>
-        ))}
-      </div>
-
-      <div style={{textAlign:'center',padding:'20px 0',color:'var(--text-light)',fontSize:12}}>
-        <p>made with 💚 for girls who are healing</p>
-        <p style={{marginTop:4}}>im good · v1.0.0</p>
-      </div>
-    </div>
-  );
+// ===== ABOUT =====
+function aboutHTML(){
+  var tips=[["Check in daily","Use the mood tracker on the home page every day. Watching your mood shift over time is genuinely healing."],["Journal it out","Pick a category that speaks to where you are. Write messy, write honestly. No one sees this but you."],["Read your affirmations","On hard days, go to the affirmations page and read until one lands. Screenshot the ones that hit."],["Use the dopamine menu","When you don't know what to do with yourself, open your menu. Pick one thing. Just one."],["Play the right music","Your playlist matches your mood. It's okay to cry to sad songs — and okay to bop to the glow-up playlist before you're fully healed."],["Be patient with yourself","This app can't rush your healing. But it can remind you that you're doing it, even on the days it doesn't feel like it."]];
+  var tipHTML=tips.map(function(t,i){return '<div class="tip-item"><div class="tip-num">'+(i+1)+'</div><div><p style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:2px">'+t[0]+'</p><p style="font-size:13px;color:var(--text-light);line-height:1.6">'+t[1]+'</p></div></div>'}).join('');
+  var remembers=["You are not behind. There is no timeline for healing.","Every person who has ever healed thought they couldn't. You can.","The fact that you're here, taking care of yourself, is already enough."];
+  var remHTML=remembers.map(function(r){return '<p class="remember-item">'+r+'</p>'}).join('');
+  return '<div class="page"><div style="text-align:center;margin-bottom:28px"><p style="font-family:\'Pacifico\',cursive;font-size:36px;color:var(--mint-dark);margin-bottom:6px">im good ✨</p><p style="font-size:16px;color:var(--text-mid);font-weight:700">for the girls in their healing era 🌿</p></div><div class="card" style="margin-bottom:16px"><h3 style="font-size:16px;font-weight:900;margin-bottom:12px">our mission 💚</h3><p style="font-size:14px;color:var(--text-mid);line-height:1.8"><em>im good</em> was built for every girl who has ever had to pretend she was fine when she wasn\'t. This is your safe space — no judgment, no timelines, no pressure. Healing isn\'t linear, and this app is here for every step of your journey: the ugly cries, the angry days, the hopeful moments, and the days where you genuinely feel like yourself again. 💕</p></div><div class="card" style="margin-bottom:16px"><h3 style="font-size:16px;font-weight:900;margin-bottom:14px">how to use this app 🌱</h3>'+tipHTML+'</div><div class="card" style="background:linear-gradient(135deg,#e8f8f0,#f0fff4);border:1px solid rgba(168,230,207,.3);margin-bottom:16px"><h3 style="font-size:16px;font-weight:900;margin-bottom:12px">remember 🌟</h3>'+remHTML+'</div><div style="text-align:center;padding:16px 0;color:var(--text-light);font-size:12px"><p>made with 💚 for girls who are healing</p><p style="margin-top:4px">im good · v1.0.0</p></div></div>';
 }
 
-// ===== MAIN APP =====
-function App(){
-  const [user,setUser]=useState(null);
-  const [loading,setLoading]=useState(true);
-  const [page,setPage]=useState('home');
-
-  useEffect(()=>{
-    const session=getSession();
-    if(session){
-      const users=getUsers();
-      if(users[session.toLowerCase()]) setUser(users[session.toLowerCase()].username||session);
-    }
-    setLoading(false);
-  },[]);
-
-  const handleLogin=u=>{setUser(u);setPage('home');};
-  const handleLogout=()=>{clearSession();setUser(null);setPage('home');};
-
-  if(loading) return <div className="center"><div className="spinner"/></div>;
-  if(!user) return <AuthScreen onLogin={handleLogin}/>;
-
-  const pages={
-    home:<HomePage username={user} onNav={setPage}/>,
-    history:<MoodHistoryPage username={user}/>,
-    journal:<JournalPage username={user}/>,
-    affirmations:<AffirmationsPage/>,
-    playlists:<PlaylistsPage/>,
-    dopamine:<DopamineMenuPage username={user}/>,
-    about:<AboutPage/>
-  };
-
-  return(
-    <div>
-      <Header username={user} onLogout={handleLogout} onNav={setPage}/>
-      <div style={{flex:1}}>
-        {pages[page]||pages.home}
-      </div>
-      <BottomNav page={page} onNav={setPage}/>
-    </div>
-  );
-}
-
-const root=ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App/>);
+// ===== INIT =====
+var sess=getSession();
+if(sess){var users=getUsers();if(users[sess.toLowerCase()])state.user=users[sess.toLowerCase()].username||sess;}
+render();
 </script>
 </body>
 </html>
